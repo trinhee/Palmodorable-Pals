@@ -1,5 +1,4 @@
 
-
 /**
  * Generic item class for food and gift
  * @author Kaegan Walker Fulton
@@ -103,11 +102,11 @@ public class Item {
 
                 if(pet.getHappiness() + this.effectiveness <= pet.getMaxHappiness()){
 
-                    pet.setHappiness() += this.effectiveness;  
+                    pet.setHappiness(pet.getHappiness() + this.effectiveness); 
                 }
                 
                 else{
-                    pet.setHappiness(pet.getMaxHappiness);
+                    pet.setHappiness(pet.getMaxHappiness());
                 }
                 
             }
@@ -116,11 +115,11 @@ public class Item {
                 
                 if(pet.getFullness() + this.effectiveness <= pet.getMaxFullness()){
 
-                    pet.setFullness() += this.effectiveness;  
+                    pet.setFullness(pet.getFullness() + this.effectiveness);  
                 }
                 
                 else{
-                    pet.setHappiness(pet.getMaxFullness);
+                    pet.setHappiness(pet.getMaxFullness());
                 }
             }
     

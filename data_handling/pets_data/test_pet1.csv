@@ -1,0 +1,6 @@
+pet_id,player_id,pet_name,type,health,sleep,hunger,happiness,sprite_state,state,last_saved
+101,1,Buddy,Type A,85,70,50,90,happy,normal,2024-11-01T15:30:00Z
+102,2,Charlie,Type B,75,60,65,80,hungry,normal,2024-11-05T10:15:00Z
+103,3,Luna,Type A,95,80,40,95,playful,normal,2024-11-10T20:45:00Z
+104,1,Max,Type C,60,50,80,70,angry,angry,2024-11-12T08:00:00Z
+105,4,Bella,Type B,88,75,55,85,happy,normal,2024-11-15T14:25:00Z
