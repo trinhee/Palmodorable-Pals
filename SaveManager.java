@@ -142,6 +142,7 @@ public class SaveManager {
      * Loads all the saved data from the save file and updates the saveSlots list.
      * This method reads the CSV file and fills the saveSlots with the pet data from each save slot.
      * If the file does not exist, it starts fresh with empty save slots.
+     *** WILL CHANGE TO HAVE A SEPARATE PET FILE FOR EACH PET ***
      * @version 1.0
      */
     public void loadAllSaves() {
@@ -210,7 +211,7 @@ public class SaveManager {
          * @return A CSV representation of the save file.
          */
         public String toCSV() {
-            String inventoryString = inventory == null ? "" : String.join("|", inventory.stream().map(Item::getName).toArray(String[]::new));
+            String inventoryString = ""; /** will change */
             return String.join(",", petName, String.valueOf(petID), String.valueOf(fullness), String.valueOf(happiness), String.valueOf(sleep), String.valueOf(health), inventoryString);
         }
 
@@ -232,12 +233,8 @@ public class SaveManager {
             int health = Integer.parseInt(parts[5]);
 
             List<Item> inventory = new ArrayList<>();
-            if (parts.length > 6 && !parts[6].isEmpty()) {
-                String[] items = parts[6].split("\\|");
-                for (String itemName : items) {
-                    inventory.add(new Item(itemName)); /** Assuming Item has a constructor taking the name */
-                }
-            }
+            
+            /** Will add logic for converting string */
 
             SaveFile save = new SaveFile(new Pet(petName, petID, fullness, happiness, sleep, health, inventory));
             return save;
