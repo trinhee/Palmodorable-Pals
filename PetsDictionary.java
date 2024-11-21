@@ -1,16 +1,16 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class PetsArray {
-    String fileName;
-    List<Pet> pets; 
+public class PetsDictionary {
+    private String fileName;
+    private Map<String, Pet> pets;
 
-    public PetsArray() {
+    public PetsDictionary() {
         this.fileName = "data_handling/pets_data.csv";
-        this.pets = new ArrayList<>();
+        this.pets = new HashMap<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(this.fileName))) {
             String line;
@@ -19,7 +19,7 @@ public class PetsArray {
             while ((line = br.readLine()) != null) {
                 if (isFirstRow) {
                     isFirstRow = false;
-                    continue;
+                    continue; // Skip header row
                 }
 
                 String[] values = line.split(",");
@@ -38,20 +38,24 @@ public class PetsArray {
                 pet.setFullness(fullness);
                 pet.setHappiness(happiness);
 
-                pets.add(pet);            
-
+                pets.put(name, pet);
             }
         } catch (IOException e) {
             System.err.println("Error reading the CSV file: " + e.getMessage());
         }
     }
 
-    public List<Pet> getPets() {
+    public Map<String, Pet> getPets() {
         return this.pets;
     }
 
+    public Pet getPetByName(String name) {
+        return this.pets.get(name);
+    }
+
     public void displayPets() {
-        for (Pet pet : pets) {
+        for (Map.Entry<String, Pet> entry : pets.entrySet()) {
+            Pet pet = entry.getValue();
             System.out.println("Name: " + pet.getName());
             System.out.println("Health: " + pet.getHealth());
             System.out.println("Sleep: " + pet.getSleep());
@@ -63,4 +67,3 @@ public class PetsArray {
         }
     }
 }
-

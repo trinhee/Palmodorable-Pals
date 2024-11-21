@@ -2,7 +2,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class GameManager {
-    String fileName;
+    
 
     public GameManager() {
         String fileName = "pets_data.csv";
