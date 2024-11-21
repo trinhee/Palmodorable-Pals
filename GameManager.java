@@ -1,16 +1,24 @@
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class GameManager {
-    // Load current instance of pet
-    // List<SaveFile>
+    String fileName;
+
+    public GameManager() {
+        String fileName = "pets_data.csv";
+    }
 
     public void saveGame() {
         // Save current instance of pet
     }
 
-    public void loadGame(int saveFile) {
-        // Load current instance of pet
+    public void loadGame(String petName) {
+        //load pet instance
+        //change screen
+        
     }
 
     public void updatePetState() {
-        // Updates pet stat (fullness for food, happiness for gift)
+        //given time past we want to update the pet objects values
     }
 }

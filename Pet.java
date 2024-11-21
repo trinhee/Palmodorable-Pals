@@ -43,20 +43,19 @@ public class Pet {
      * @param sleepEffectiveness Effectiveness(stat increase) of sleep
      * @param playEffectiveness Effectiveness(stat increase) of play
      */
-    Pet(String name, int maxHealth, int maxSleep, int maxFullness, int maxHappiness, int sleepEffectiveness, int playEffectiveness){
-
+    Pet(String name, int sleepEffectiveness, int playEffectiveness) {
         this.name = name;
-        this.health = maxHealth;
-        this.maxHealth = maxHealth;
-        this.sleep = maxSleep;
-        this.maxSleep = maxSleep;
-        this.fullness = maxFullness;
-        this.maxFullness = maxFullness;
-        this.happiness = maxHappiness;
-        this.maxHappiness = maxHappiness;
+        this.maxHealth = 100;
+        this.maxSleep = 100;
+        this.maxFullness = 100;
+        this.maxHappiness = 100;
+        this.health = this.maxHealth;
+        this.sleep = this.maxSleep;
+        this.fullness = this.maxFullness;
+        this.happiness = this.maxHappiness;
         this.sleepEffectiveness = sleepEffectiveness;
         this.playEffectiveness = playEffectiveness;
-
+        
     }
 
     
