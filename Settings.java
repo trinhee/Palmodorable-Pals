@@ -95,12 +95,16 @@ public class Settings {
         return this.petName;
     }
 
-    public void displaySettings() {
-        System.out.println("Settings for Pet: " + this.petName);
-        System.out.println("Background Music: " + this.backgroundMusic);
-        System.out.println("Is Parent: " + (this.isParent ? "Yes" : "No"));
-        System.out.println("Study Time: " + this.studyTime + " minutes");
-        System.out.println("Break Time: " + this.breakTime + " minutes");
-        System.out.println("Target Study Time: " + this.targetStudyTime + " sessions");
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Settings for Pet: ").append(this.petName).append("\n");
+        sb.append("Background Music: ").append(this.backgroundMusic).append("\n");
+        sb.append("Is Parent: ").append(this.isParent ? "Yes" : "No").append("\n");
+        sb.append("Study Time: ").append(this.studyTime).append(" minutes\n");
+        sb.append("Break Time: ").append(this.breakTime).append(" minutes\n");
+        sb.append("Target Study Time: ").append(this.targetStudyTime).append(" sessions\n");
+        return sb.toString();
     }
+    
 }

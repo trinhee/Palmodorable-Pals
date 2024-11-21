@@ -1,4 +1,4 @@
-name,health,sleep,fullness,happiness,sleepEffectiveness,playEffectiveness
-Buddy,100,100,100,100,10,15
-Fluffy,100,100,100,100,20,25
-Max,100,100,100,100,15,10
+name,health,sleep,fullness,happiness,sleepEffectiveness,playEffectiveness,inventory
+Buddy,100,100,100,100,10,15,"Food: 5, Gift: 3"
+Fluffy,100,100,100,100,20,25,"Food: 4, Gift: 2"
+Max,100,100,100,100,15,10,"Food: 6, Gift: 2"

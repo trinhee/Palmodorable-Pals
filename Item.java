@@ -1,138 +1,101 @@
+import java.util.Objects;
 
 /**
  * Generic item class for food and gift
- * @author Kaegan Walker Fulton
+ * Author: Kaegan Walker Fulton
  */
 public class Item {
 
-    /**The items name */
-    public String name;
-    /**The item's type */
-    public String type;
-    /**The item's effectiveness(how much it will increase stat) */
-    public int effectiveness;
-    
+    /** The item's name */
+    private String name;
+    /** The item's type */
+    private String type;
+    /** The item's effectiveness (how much it will increase stat) */
+    private int effectiveness;
+
     /**
      * Item constructor. Creates an instance of an Item object. Sets initial values to given values.
-     * 
-     * @param name Name of item
-     * @param type Type of item. gift for Gift, food for Food.
+     *
+     * @param name          Name of item
+     * @param type          Type of item. "gift" for Gift, "food" for Food.
      * @param effectiveness Increase in stat. Happiness for Gift, fullness for Food.
      */
-    Item(String name, String type, int effectiveness){
-
+    public Item(String name, String type, int effectiveness) {
         this.name = name;
         this.type = type;
         this.effectiveness = effectiveness;
     }
 
-    
-    /** 
-     * Name Setter.
-     * 
-     * @param name item name
-     */
-    public void setName(String name){
+    // Getters and Setters
 
+    public void setName(String name) {
         this.name = name;
-
     }
 
-    
-    /** 
-     * Type Setter.
-     * 
-     * @param type item type
-     */
-    public void setType(String type){
+    public void setType(String type) {
         this.type = type;
     }
 
-    
-    /**
-     * Effectiveness Setter.
-     *  
-     * @param effectiveness item effectiveness
-     */
-    public void setEffectiveness(int effectiveness){
+    public void setEffectiveness(int effectiveness) {
         this.effectiveness = effectiveness;
     }
 
-    
-    /** 
-     * Name Getter.
-     * 
-     * @return item name
-     */
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
-    
-    /** 
-     * Type Getter.
-     * 
-     * @return item type
-     */
-    public String getType(){
+    public String getType() {
         return this.type;
     }
 
-    
-    /** 
-     * Effectiveness Getter.
-     * 
-     * @return item effectiveness
-     */
-    public int getEffectiveness(){
+    public int getEffectiveness() {
         return this.effectiveness;
     }
 
-    
     /**
      * Updates pet stat (fullness for food, happiness for gift).
-     *  
+     *
      * @param pet The pet in the game
      */
-    public void applyEffect(Pet pet){
-
+    public void applyEffect(Pet pet) {
         try {
-            
-            if(this.type.equals("gift")){
-
-                if(pet.getHappiness() + this.effectiveness <= pet.getMaxHappiness()){
-
-                    pet.setHappiness(pet.getHappiness() + this.effectiveness); 
-                }
-                
-                else{
+            if (this.type.equalsIgnoreCase("gift")) {
+                if (pet.getHappiness() + this.effectiveness <= pet.getMaxHappiness()) {
+                    pet.setHappiness(pet.getHappiness() + this.effectiveness);
+                } else {
                     pet.setHappiness(pet.getMaxHappiness());
                 }
-                
-            }
-    
-            else if(this.type.equals("type")){
-                
-                if(pet.getFullness() + this.effectiveness <= pet.getMaxFullness()){
-
-                    pet.setFullness(pet.getFullness() + this.effectiveness);  
+            } else if (this.type.equalsIgnoreCase("food")) { // Fixed from "type" to "food"
+                if (pet.getFullness() + this.effectiveness <= pet.getMaxFullness()) {
+                    pet.setFullness(pet.getFullness() + this.effectiveness);
+                } else {
+                    pet.setFullness(pet.getMaxFullness()); // Fixed setting fullness instead of happiness
                 }
-                
-                else{
-                    pet.setHappiness(pet.getMaxFullness());
-                }
-            }
-    
-            else{
-    
+            } else {
                 throw new Exception("Invalid type in item class");
             }
-
-        } 
-        
-        catch (Exception e) {
-            ;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
+    // Override equals and hashCode for proper functioning in HashMap
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Item other = (Item) obj;
+        return Objects.equals(name, other.name) &&
+               Objects.equals(type, other.type) &&
+               effectiveness == other.effectiveness;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, type, effectiveness);
+    }
 }

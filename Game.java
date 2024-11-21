@@ -28,15 +28,17 @@ public class Game {
         return settings;
     }
 
-    public void displayGameInfo() {
-        System.out.println("=== Game Information ===");
-        System.out.println("Pet Information:");
-        System.out.println("Name: " + pet.getName());
-        System.out.println("Health: " + pet.getHealth());
-        System.out.println("Sleep: " + pet.getSleep());
-        System.out.println("Fullness: " + pet.getFullness());
-        System.out.println("Happiness: " + pet.getHappiness());
-        System.out.println("Settings:");
-        settings.displaySettings();
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== Game Information ===\n");
+        sb.append("Pet Information:\n");
+        sb.append("Name: ").append(pet.getName()).append("\n");
+        sb.append("Health: ").append(pet.getHealth()).append("\n");
+        sb.append("Sleep: ").append(pet.getSleep()).append("\n");
+        sb.append("Fullness: ").append(pet.getFullness()).append("\n");
+        sb.append("Happiness: ").append(pet.getHappiness()).append("\n");
+        sb.append("Settings:\n");
+        sb.append(settings.toString());
+        return sb.toString();
     }
 }

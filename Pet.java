@@ -328,4 +328,16 @@ public class Pet {
         this.setHealth(this.getMaxHealth());
     }
 
+    @Override
+    public String toString() {
+        return "=== Pet Information ===\n" +
+            "Name: " + name + "\n" +
+            "Health: " + health + "/" + maxHealth + "\n" +
+            "Sleep: " + sleep + "/" + maxSleep + "\n" +
+            "Fullness: " + fullness + "/" + maxFullness + "\n" +
+            "Happiness: " + happiness + "/" + maxHappiness + "\n" +
+            "Sleep Effectiveness: " + sleepEffectiveness + "\n" +
+            "Play Effectiveness: " + playEffectiveness + "\n";
+    }
+    
 }
