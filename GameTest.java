@@ -1,11 +1,12 @@
 public class GameTest {
     public static void main(String[] args) {
         // Initialize a game with a specific pet
-        Game game = new Game("Buddy");
+        GameManager gameManager = new GameManager("Buddy");
 
         // Display game information
-        if (game.getPet() != null) {
-            System.err.println(game);
-        }
+        gameManager.givePet("food");
+        gameManager.givePet("gift");
+
+        gameManager.saveGame();
     }
 }

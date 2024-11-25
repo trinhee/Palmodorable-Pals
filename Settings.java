@@ -6,21 +6,36 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@code Settings} class manages the game settings associated with a specific pet.
+ * Settings include study time, break time, target study time, background music, and parent mode.
+ * The class provides functionality to load settings from and save settings to a CSV file.
+ */
 public class Settings {
 
-    private int studyTime;
-    private int breakTime;
-    private int targetStudyTime;
-    private boolean backgroundMusic; // Changed to boolean
-    private boolean isParent;
-    private String petName;
+    private int studyTime; // The study time in minutes
+    private int breakTime; // The break time in minutes
+    private int targetStudyTime; // The target number of study sessions
+    private boolean backgroundMusic; // Indicates if background music is enabled
+    private boolean isParent; // Indicates if the player is in parent mode
+    private String petName; // The name of the associated pet
 
-    private static final String FILE_NAME = "data_handling/game_settings.csv";
+    private static final String FILE_NAME = "data_handling/game_settings.csv"; // The settings file path
 
+    /**
+     * Constructs a {@code Settings} object for a specific pet and loads its settings from the CSV file.
+     *
+     * @param petName The name of the pet whose settings will be loaded.
+     */
     public Settings(String petName) {
         loadSettings(petName);
     }
 
+    /**
+     * Loads the settings for the specified pet from the CSV file.
+     *
+     * @param petName The name of the pet whose settings will be loaded.
+     */
     private void loadSettings(String petName) {
         try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
@@ -29,15 +44,14 @@ public class Settings {
             while ((line = br.readLine()) != null) {
                 if (isFirstRow) {
                     isFirstRow = false;
-                    continue; 
+                    continue; // Skip the header row
                 }
 
                 String[] values = line.split(",");
 
-                // Check if the petName matches the current row
                 if (values[0].equalsIgnoreCase(petName)) {
                     this.petName = values[0];
-                    this.backgroundMusic = parseBoolean(values[1]); // Parse background music as boolean
+                    this.backgroundMusic = parseBoolean(values[1]);
                     this.isParent = parseBoolean(values[2]);
                     this.studyTime = Integer.parseInt(values[3]);
                     this.breakTime = Integer.parseInt(values[4]);
@@ -50,6 +64,10 @@ public class Settings {
         }
     }
 
+    /**
+     * Saves the current settings for the pet to the CSV file.
+     * If the pet's settings exist, they are updated; otherwise, an exception is thrown.
+     */
     public void saveToFile() {
         List<String> lines = new ArrayList<>();
         boolean updated = false;
@@ -57,16 +75,13 @@ public class Settings {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
 
-            // Read each line of the file
             while ((line = reader.readLine()) != null) {
                 String[] values = line.split(",", -1);
 
-                // If the line matches the pet name, update it
                 if (values[0].equalsIgnoreCase(this.petName)) {
-                    line = String.format("%s,%s,%d,%d,,%d,%d,%d",
+                    line = String.format("%s,%d,%d,%d,%d,%d",
                             this.petName,
-                            values[1], // player_id remains unchanged
-                            this.backgroundMusic ? 1 : 0, // Write boolean as 1/0
+                            this.backgroundMusic ? 1 : 0,
                             this.isParent ? 1 : 0,
                             this.studyTime,
                             this.breakTime,
@@ -74,14 +89,13 @@ public class Settings {
                     updated = true;
                 }
 
-                lines.add(line); // Add the (updated or unchanged) line to the list
+                lines.add(line);
             }
         } catch (IOException e) {
             System.err.println("Error reading the CSV file: " + e.getMessage());
             return;
         }
 
-        // If the pet name was not found, throw an exception
         if (!updated) {
             throw new IllegalArgumentException("Pet not found in the file: " + this.petName);
         }
@@ -98,50 +112,113 @@ public class Settings {
         }
     }
 
+    /**
+     * Converts a string value to a boolean.
+     *
+     * @param value The string value to parse (1 = true, 0 = false).
+     * @return The parsed boolean value.
+     */
     private boolean parseBoolean(String value) {
         return "1".equals(value);
     }
 
+    // Getter and Setter Methods
+
+    /**
+     * Sets the study time.
+     *
+     * @param time The new study time in minutes.
+     */
     public void setStudyTime(int time) {
         this.studyTime = time;
     }
 
+    /**
+     * Retrieves the study time.
+     *
+     * @return The study time in minutes.
+     */
     public int getStudyTime() {
         return this.studyTime;
     }
 
+    /**
+     * Sets the break time.
+     *
+     * @param time The new break time in minutes.
+     */
     public void setBreakTime(int time) {
         this.breakTime = time;
     }
 
+    /**
+     * Retrieves the break time.
+     *
+     * @return The break time in minutes.
+     */
     public int getBreakTime() {
         return this.breakTime;
     }
 
+    /**
+     * Sets the target study time.
+     *
+     * @param time The new target number of study sessions.
+     */
     public void setTargetStudyTime(int time) {
         this.targetStudyTime = time;
     }
 
+    /**
+     * Retrieves the target study time.
+     *
+     * @return The target number of study sessions.
+     */
     public int getTargetStudyTime() {
         return this.targetStudyTime;
     }
 
+    /**
+     * Retrieves whether background music is enabled.
+     *
+     * @return {@code true} if background music is enabled; {@code false} otherwise.
+     */
     public boolean getBackgroundMusic() {
         return this.backgroundMusic;
     }
 
+    /**
+     * Sets whether background music is enabled.
+     *
+     * @param backgroundMusic {@code true} to enable background music; {@code false} to disable it.
+     */
     public void setBackgroundMusic(boolean backgroundMusic) {
         this.backgroundMusic = backgroundMusic;
     }
 
+    /**
+     * Checks if the player is in parent mode.
+     *
+     * @return {@code true} if the player is in parent mode; {@code false} otherwise.
+     */
     public boolean isParent() {
         return this.isParent;
     }
 
+    /**
+     * Retrieves the name of the associated pet.
+     *
+     * @return The pet's name.
+     */
     public String getPetName() {
         return this.petName;
     }
 
+    /**
+     * Returns a string representation of the settings for the pet.
+     *
+     * @return A formatted string describing the settings.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

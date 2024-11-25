@@ -3,18 +3,26 @@ import java.time.format.DateTimeFormatter;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.print.DocFlavor.STRING;
 
+/**
+ * The {@code StatisticsTracker} class is responsible for managing study statistics
+ * for a specific entity (e.g., a pet). It handles loading and saving data to a CSV file,
+ * and tracks details such as the last study session, daily start and end times, and total study time.
+ */
 public class StatisticsTracker {
-    // Attributes
-    private String name;
-    private String lastStudySession;
-    private String lastLogout;
-    private String dayStart;
-    private String dayEnd;
-    private int totalStudyTime;
 
-    // Constructor
+    private String name; // The name of the entity (e.g., pet or user)
+    private String lastStudySession; // The timestamp of the last study session
+    private String lastLogout; // The timestamp of the last logout
+    private String dayStart; // The start time for the current day
+    private String dayEnd; // The end time for the current day
+    private int totalStudyTime; // The total study time in minutes
+
+    /**
+     * Constructs a {@code StatisticsTracker} instance and loads statistics for the specified name.
+     *
+     * @param dogName The name of the entity whose statistics are being tracked.
+     */
     public StatisticsTracker(String dogName) {
         try (BufferedReader br = new BufferedReader(new FileReader("data_handling/statistics_tracker.csv"))) {
             String line;
@@ -47,7 +55,9 @@ public class StatisticsTracker {
         }
     }
 
-
+    /**
+     * Saves the current statistics to the CSV file. Updates the corresponding entry if it exists.
+     */
     public void saveToFile() {
         String fileName = "data_handling/statistics_tracker.csv";
         List<String> lines = new ArrayList<>();
@@ -66,7 +76,7 @@ public class StatisticsTracker {
                     line = String.format("%s,%s,%s,%s,%s,%d",
                             name,
                             lastStudySession,
-                            lastLogout, // Assuming Last Logout is the same as Last Study Session
+                            lastLogout,
                             dayStart,
                             dayEnd,
                             totalStudyTime);
@@ -79,69 +89,125 @@ public class StatisticsTracker {
             System.err.println("Error reading the file: " + e.getMessage());
             return;
         }
-    
 
-    // If the name was not found in the file, print an error
-    if (!updated) {
-        System.err.println("Name not found in the file: " + name);
-        return;
-    }
-
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-        // Write back all lines to the file
-        for (String line : lines) {
-            writer.write(line);
-            writer.newLine();
+        // If the name was not found in the file, print an error
+        if (!updated) {
+            System.err.println("Name not found in the file: " + name);
+            return;
         }
 
-        System.out.println("Data successfully updated in file: " + fileName);
-    } catch (IOException e) {
-        System.err.println("Error writing to the file: " + e.getMessage());
-    }
-    }
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            // Write back all lines to the file
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
 
+            System.out.println("Data successfully updated in file: " + fileName);
+        } catch (IOException e) {
+            System.err.println("Error writing to the file: " + e.getMessage());
+        }
+    }
 
     // Getters and Setters
+
+    /**
+     * Retrieves the name associated with the statistics tracker.
+     *
+     * @return The name of the entity being tracked.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name for the statistics tracker.
+     *
+     * @param name The new name to set.
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Retrieves the timestamp of the last study session.
+     *
+     * @return The last study session timestamp.
+     */
     public String getLastStudySession() {
         return lastStudySession;
     }
 
+    /**
+     * Sets the timestamp of the last study session.
+     *
+     * @param lastStudySession The new timestamp to set.
+     */
     public void setLastStudySession(String lastStudySession) {
         this.lastStudySession = lastStudySession;
     }
 
+    /**
+     * Retrieves the start time for the current day.
+     *
+     * @return The start time for the day.
+     */
     public String getDayStart() {
         return dayStart;
     }
 
+    /**
+     * Sets the start time for the current day.
+     *
+     * @param dayStart The new start time to set.
+     */
     public void setDayStart(String dayStart) {
         this.dayStart = dayStart;
     }
 
+    /**
+     * Retrieves the end time for the current day.
+     *
+     * @return The end time for the day.
+     */
     public String getDayEnd() {
         return dayEnd;
     }
 
+    /**
+     * Sets the end time for the current day.
+     *
+     * @param dayEnd The new end time to set.
+     */
     public void setDayEnd(String dayEnd) {
         this.dayEnd = dayEnd;
     }
 
+    /**
+     * Retrieves the total study time in minutes.
+     *
+     * @return The total study time.
+     */
     public int getTotalStudyTime() {
         return totalStudyTime;
     }
 
+    /**
+     * Sets the total study time in minutes.
+     *
+     * @param totalStudyTime The new total study time to set.
+     */
     public void setTotalStudyTime(int totalStudyTime) {
         this.totalStudyTime = totalStudyTime;
     }
 
+    /**
+     * Formats a {@code LocalDateTime} object into a human-readable string.
+     *
+     * @param dateTime The {@code LocalDateTime} object to format.
+     * @return A formatted date-time string in "yyyy-MM-dd hh:mm a" format.
+     * @throws IllegalArgumentException if the {@code dateTime} is null.
+     */
     public static String formatLocalDateTime(LocalDateTime dateTime) {
         if (dateTime == null) {
             throw new IllegalArgumentException("The LocalDateTime object cannot be null");
@@ -153,7 +219,11 @@ public class StatisticsTracker {
         return formatted;
     }
 
-    // Override toString method with formatted output
+    /**
+     * Returns a string representation of the statistics.
+     *
+     * @return A formatted string containing the tracked statistics.
+     */
     @Override
     public String toString() {
         return "Statistics Tracker Information:\n" +
@@ -162,19 +232,5 @@ public class StatisticsTracker {
                "Day Start: " + dayStart + "\n" +
                "Day End: " + dayEnd + "\n" +
                "Total Study Time: " + totalStudyTime + " minutes";
-    }
-    
-
-    public static void main(String[] args) {
-        // Example usage
-        StatisticsTracker tracker = new StatisticsTracker("Buddy");
-        System.out.println(tracker);
-    
-        // Update some data
-        tracker.setLastStudySession("2024-11-23 02:00 PM");
-        tracker.setTotalStudyTime(60);
-    
-        // Save to file
-        tracker.saveToFile();
     }
 }

@@ -1,6 +1,5 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -8,52 +7,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Pet to be played with in the game.
+ * The {@code Pet} class represents a virtual pet in the game.
+ * The pet has attributes such as health, sleep, fullness, happiness, and their respective maximum values.
+ * The pet can perform actions like sleeping, playing, and using items, which affect its stats.
+ * 
+ * This class includes functionality for saving pet data to a file.
  * 
  * @author Kaegan Walker Fulton
  */
-
 public class Pet {
 
-    /**Pet's name */
+    /** Pet's name */
     public String name;
-    /**Pet's health */
+    /** Pet's current health */
     public int health;
-    /**Pet's sleep */
+    /** Pet's current sleep level */
     public int sleep;
-    /**Pets fullness */
+    /** Pet's current fullness */
     public int fullness;
-    /**Pet's happiness */
+    /** Pet's current happiness */
     public int happiness;
-    /**Pet's maximum health */
+    /** Pet's maximum health */
     public int maxHealth;
-    /**Pet's maximum sleep */
+    /** Pet's maximum sleep level */
     public int maxSleep;
-    /**Pet's maximum fullness */
+    /** Pet's maximum fullness */
     public int maxFullness;
-    /**Pet's maximum happiness */
+    /** Pet's maximum happiness */
     public int maxHappiness;
-    /**The effectiveness (stat increase) of sleep */
+    /** The effectiveness (stat increase) of sleep */
     public int sleepEffectiveness;
-    /**The effectiveness (stat increase) of play */
+    /** The effectiveness (stat increase) of play */
     public int playEffectiveness;
 
-    public Inventory inventory = new Inventory();
 
     /**
-     * Pet Constructor. Initializes max's to given values.
-     * Initializes current values to max's.
-     * Sets sleep and play effectiveness to given value.
+     * Constructs a {@code Pet} instance and initializes its attributes.
+     * Current values are set to their maximums.
      * 
-     * @param name Pet's name
-     * @param maxHealth Pet's maximum health
-     * @param maxSleep Pet's maximum sleep
-     * @param maxFullness Pet's maximum fullness
-     * @param maxHappiness Pet's maximum happiness
-     * @param sleepEffectiveness Effectiveness(stat increase) of sleep
-     * @param playEffectiveness Effectiveness(stat increase) of play
+     * @param name               The pet's name.
+     * @param sleepEffectiveness The effectiveness of sleep (stat increase).
+     * @param playEffectiveness  The effectiveness of play (stat increase).
      */
-    Pet(String name, int sleepEffectiveness, int playEffectiveness) {
+    public Pet(String name, int sleepEffectiveness, int playEffectiveness) {
         this.name = name;
         this.maxHealth = 100;
         this.maxSleep = 100;
@@ -65,61 +61,65 @@ public class Pet {
         this.happiness = this.maxHappiness;
         this.sleepEffectiveness = sleepEffectiveness;
         this.playEffectiveness = playEffectiveness;
-        inventory.loadInventory(name);
-        
     }
-    
+
+    /**
+     * Saves the pet's data to a CSV file.
+     * If the pet already exists in the file, its data is updated; otherwise, a new record is added.
+     */
+/**
+ * Saves the pet's data to a CSV file.
+ * If the pet already exists in the file, its data is updated; otherwise, a new record is added.
+ */
     public void saveToFile() {
         String fileName = "data_handling/pets_data.csv";
         List<String> lines = new ArrayList<>();
         boolean updated = false;
-    
+
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
-    
+
             while ((line = reader.readLine()) != null) {
                 if (line.trim().isEmpty()) {
                     continue; // Skip empty lines
                 }
-    
+
                 String[] data = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-    
-                if (data.length < 8) {
+
+                if (data.length < 7) { // Adjusted to match the new format without inventory
                     System.err.println("Invalid data format: " + line);
                     continue; // Skip invalid lines
                 }
-    
+
                 if (data[0].equalsIgnoreCase(name)) {
-                    line = String.format("%s,%d,%d,%d,%d,%d,%d,\"%s\"",
+                    line = String.format("%s,%d,%d,%d,%d,%d,%d",
                             name,
                             health,
                             sleep,
                             fullness,
                             happiness,
                             sleepEffectiveness,
-                            playEffectiveness,
-                            inventory.toString());
+                            playEffectiveness);
                     updated = true;
                 }
-    
+
                 lines.add(line);
             }
-    
+
             if (!updated) {
-                lines.add(String.format("%s,%d,%d,%d,%d,%d,%d,\"%s\"",
+                lines.add(String.format("%s,%d,%d,%d,%d,%d,%d",
                         name,
                         health,
                         sleep,
                         fullness,
                         happiness,
                         sleepEffectiveness,
-                        playEffectiveness,
-                        inventory.toString()));
+                        playEffectiveness));
             }
         } catch (IOException e) {
             System.err.println("Error reading the file: " + e.getMessage());
         }
-    
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             for (String line : lines) {
                 writer.write(line);
@@ -129,297 +129,122 @@ public class Pet {
         } catch (IOException e) {
             System.err.println("Error writing to the file: " + e.getMessage());
         }
-    
-    
-
-        // If the name was not found, add a new line for the pet
-
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-            // Write back all lines to the file
-            for (String line : lines) {
-                writer.write(line);
-                writer.newLine();
-            }
-
-            System.out.println("Pet data successfully saved to file: " + fileName);
-        } catch (IOException e) {
-            System.err.println("Error writing to the file: " + e.getMessage());
-        }
-    }
-    
-    /** 
-     * Name Setter.
-     * 
-     * @param name pet's name
-     */
-    public void setName(String name){
-        this.name = name;
     }
 
-    
-    /** 
-     * Health Setter.
-     * 
-     * @param health pet's health
-     */
-    public void setHealth(int health){
-        this.health = health;
-    }
+    // Setter methods
+    /** @param name Sets the pet's name. */
+    public void setName(String name) { this.name = name; }
 
-    
-    /** 
-     * Maximum Health Setter.
-     * 
-     * @param maxHealth pet's maximum health
-     */
-    public void setMaxHealth(int maxHealth){
-        this.maxHealth = maxHealth;
-    }
+    /** @param health Sets the pet's health. */
+    public void setHealth(int health) { this.health = health; }
 
-    
-    /** 
-     * Sleep Setter.
-     * 
-     * @param sleep pet's sleep
-     */
-    public void setSleep(int sleep){
-        this.sleep = sleep;
-    }
+    /** @param maxHealth Sets the pet's maximum health. */
+    public void setMaxHealth(int maxHealth) { this.maxHealth = maxHealth; }
 
-    
-    /** 
-     * Maximum Sleep Setter.
-     * 
-     * @param maxSleep pet's maximum sleep
-     */
-    public void setMaxSleep(int maxSleep){
-        this.maxSleep = maxSleep;
-    }
+    /** @param sleep Sets the pet's sleep level. */
+    public void setSleep(int sleep) { this.sleep = sleep; }
 
-    
-    /** 
-     * Fullness Setter.
-     * 
-     * @param fullness pet's sleep
-     */
-    public void setFullness(int fullness){
-        this.fullness = fullness;
-    }
-    
-    
-    /** 
-     * Maximum Fullness Setter.
-     * 
-     * @param maxFullness pet's maximum fullness
-     */
-    public void setMaxFullness(int maxFullness){
-        this.maxFullness = maxFullness;
-    }
+    /** @param maxSleep Sets the pet's maximum sleep level. */
+    public void setMaxSleep(int maxSleep) { this.maxSleep = maxSleep; }
 
-    
-    /** 
-     * Happiness Setter.
-     * 
-     * @param happiness pet's happiness
-     */
-    public void setHappiness(int happiness){
-        this.happiness = happiness;
-    }
+    /** @param fullness Sets the pet's fullness. */
+    public void setFullness(int fullness) { this.fullness = fullness; }
 
-    
-    /** 
-     * Maximum Happiness Setter.
-     * 
-     * @param maxHappiness pet's maximum hapiness
-     */
-    public void setMaxHappiness(int maxHappiness){
-        this.maxHappiness = maxHappiness;
-    }
+    /** @param maxFullness Sets the pet's maximum fullness. */
+    public void setMaxFullness(int maxFullness) { this.maxFullness = maxFullness; }
 
-    
-    /** 
-     * Sleep Effectiveness Setter.
-     * 
-     * @param sleepEffectiveness sleep (stat increase) effectiveness
-     */
-    public void setSleepEffectiveness(int sleepEffectiveness){
-        this.sleepEffectiveness = sleepEffectiveness;
-    }
+    /** @param happiness Sets the pet's happiness. */
+    public void setHappiness(int happiness) { this.happiness = happiness; }
 
-    
-    /** 
-     * Play Effectiveness Setter
-     * 
-     * @param playEffectiveness play (stat increase) effectiveness
-     */
-    public void setPlayEffectiveness(int playEffectiveness){
-        this.playEffectiveness = playEffectiveness;
-    }
+    /** @param maxHappiness Sets the pet's maximum happiness. */
+    public void setMaxHappiness(int maxHappiness) { this.maxHappiness = maxHappiness; }
 
-    
-    /** 
-     * Name Getter.
-     * 
-     * @return pet's name
-     */
-    public String getName(){
-        return this.name;
-    }
+    /** @param sleepEffectiveness Sets the effectiveness of sleep. */
+    public void setSleepEffectiveness(int sleepEffectiveness) { this.sleepEffectiveness = sleepEffectiveness; }
 
-    
-    /** 
-     * Health Getter.
-     * 
-     * @return pet's health
-     */
-    public int getHealth(){
-        return this.health;
-    }
+    /** @param playEffectiveness Sets the effectiveness of play. */
+    public void setPlayEffectiveness(int playEffectiveness) { this.playEffectiveness = playEffectiveness; }
 
-    
-    /**
-     * Maximum Health Getter.
-     *  
-     * @return pet's maximum health
-     */
-    public int getMaxHealth(){
-        return this.maxHealth;
-    }
+    // Getter methods
+    /** @return The pet's name. */
+    public String getName() { return this.name; }
 
-    
-    /** 
-     * Sleep Getter.
-     * 
-     * @return pet's sleep
-     */
-    public int getSleep(){
-        return this.sleep;
-    }
+    /** @return The pet's health. */
+    public int getHealth() { return this.health; }
 
-    public Inventory getInventory() {
-        return inventory;
-    }
+    /** @return The pet's maximum health. */
+    public int getMaxHealth() { return this.maxHealth; }
+
+    /** @return The pet's sleep level. */
+    public int getSleep() { return this.sleep; }
+
+    /** @return The pet's maximum sleep level. */
+    public int getMaxSleep() { return this.maxSleep; }
+
+    /** @return The pet's fullness. */
+    public int getFullness() { return this.fullness; }
+
+    /** @return The pet's maximum fullness. */
+    public int getMaxFullness() { return this.maxFullness; }
+
+    /** @return The pet's happiness. */
+    public int getHappiness() { return this.happiness; }
+
+    /** @return The pet's maximum happiness. */
+    public int getMaxHappiness() { return this.maxHappiness; }
+
+    /** @return The effectiveness of sleep. */
+    public int getSleepEffectiveness() { return this.sleepEffectiveness; }
+
+    /** @return The effectiveness of play. */
+    public int getPlayEffectiveness() { return this.playEffectiveness; }
 
     /**
-     * Maximum Sleep Getter.
-     *  
-     * @return pet's maximum sleep
+     * Increases the pet's sleep level by the sleep effectiveness value.
+     * Caps sleep at the maximum sleep level.
      */
-    public int getMaxSleep(){
-        return this.maxSleep;
-    }
-
-    
-    /** 
-     * Fullness Getter.
-     * 
-     * @return pet's fullness
-     */
-    public int getFullness(){
-        return this.fullness;
-    }
-
-    
-    /** 
-     * Maximum Fullness Getter.
-     * 
-     * @return pet's maximum fullness
-     */
-    public int getMaxFullness(){
-        return this.maxFullness;
-    }
-
-    
-    /** 
-     * Happiness Getter.
-     * 
-     * @return pet's happiness
-     */
-    public int getHappiness(){
-        return this.happiness;
-    }
-
-    
-    /** 
-     * Maximum Happiness Setter.
-     * 
-     * @return pet's maximum happiness
-     */
-    public int getMaxHappiness(){
-        return this.maxHappiness;
-    }
-
-    
-    /**
-     * Sleep Effectiveness Getter.
-     * 
-     * @return pet's sleep (stat increase) effectiveness
-     */
-    public int getSleepEffectiveness(){
-        return this.sleepEffectiveness;
-    }
-
-    
-    /** 
-     * Play Effectiveness Getter.
-     * 
-     * @return pet's play (stat increase) effectiveness
-     */
-    public int getPlayEffectiveness(){
-        return this.playEffectiveness;
-    }
-
-
-    /**
-     * Adds sleep (stat increase) effectiveness to sleep.
-     * 
-     */
-    public void sleep(){
-
-        if(this.getSleep() + this.getSleepEffectiveness() < this.getSleepEffectiveness()){
+    public void sleep() {
+        if (this.getSleep() + this.getSleepEffectiveness() < this.getMaxSleep()) {
             this.setSleep(this.getSleep() + this.getSleepEffectiveness());
-        }
-
-        else{
+        } else {
             this.setSleep(this.getMaxSleep());
         }
     }
 
-    
-    /** 
-     * Applys effect of item to pet.
-     * 
-     * @param item the item to be used
-     */
-    public void useItem(Item item){
-        item.applyEffect(this);
-    }
-
-
     /**
-     * Adds play (stat increase) effectiveness to happiness.
-     * 
+     * Increases the pet's happiness by the play effectiveness value.
+     * Caps happiness at the maximum happiness level.
      */
-    public void play(){
-
-        if(this.getHappiness() + this.getPlayEffectiveness() < this.getMaxHappiness()){
-            this.setHappiness(this.getMaxHappiness() + this.getPlayEffectiveness());
-        }
-
-        else{
+    public void play() {
+        if (this.getHappiness() + this.getPlayEffectiveness() < this.getMaxHappiness()) {
+            this.setHappiness(this.getHappiness() + this.getPlayEffectiveness());
+        } else {
             this.setHappiness(this.getMaxHappiness());
         }
     }
 
+
     /**
-     * Sets health to maximum health.
-     * 
+     * Resets the pet's health to the maximum health level.
      */
-    public void takeToVet(){
+    public void takeToVet() {
         this.setHealth(this.getMaxHealth());
     }
 
+    /**
+     * Uses the specified item on the pet, applying its effect.
+     * 
+     * @param item The item to be used.
+     */
+    public void useItem(Item item) {
+        item.applyEffect(this);
+    }
+
+    /**
+     * Returns a string representation of the pet's current state.
+     *
+     * @return A formatted string containing the pet's details.
+     */
     @Override
     public String toString() {
         return "=== Pet Information ===\n" +
@@ -431,5 +256,4 @@ public class Pet {
             "Sleep Effectiveness: " + sleepEffectiveness + "\n" +
             "Play Effectiveness: " + playEffectiveness + "\n";
     }
-    
 }

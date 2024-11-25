@@ -4,10 +4,20 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The {@code PetsDictionary} class is responsible for loading and managing a collection of pets
+ * from a CSV file. It provides functionality to retrieve pets by their name or access all pets as a map.
+ */
 public class PetsDictionary {
-    private String fileName;
-    private Map<String, Pet> pets;
 
+    private String fileName; // Path to the CSV file containing pet data.
+    private Map<String, Pet> pets; // A map of pet names to their respective Pet objects.
+
+    /**
+     * Constructs a {@code PetsDictionary} instance and loads pet data from a CSV file.
+     * Each row in the file represents a pet, with attributes such as name, health, sleep, fullness, happiness,
+     * sleep effectiveness, and play effectiveness.
+     */
     public PetsDictionary() {
         this.fileName = "data_handling/pets_data.csv";
         this.pets = new HashMap<>();
@@ -19,7 +29,7 @@ public class PetsDictionary {
             while ((line = br.readLine()) != null) {
                 if (isFirstRow) {
                     isFirstRow = false;
-                    continue; // Skip header row
+                    continue; // Skip the header row
                 }
 
                 String[] values = line.split(",");
@@ -45,14 +55,32 @@ public class PetsDictionary {
         }
     }
 
+    /**
+     * Retrieves the map of all pets.
+     *
+     * @return A map where the keys are pet names and the values are {@code Pet} objects.
+     */
     public Map<String, Pet> getPets() {
         return this.pets;
     }
 
+    /**
+     * Retrieves a pet by its name.
+     *
+     * @param name The name of the pet to retrieve.
+     * @return The {@code Pet} object corresponding to the given name, or {@code null} if not found.
+     */
     public Pet getPetByName(String name) {
         return this.pets.get(name);
     }
 
+    /**
+     * Returns a string representation of all the pets in the dictionary.
+     * The details for each pet include its name, health, sleep, fullness, happiness,
+     * sleep effectiveness, and play effectiveness.
+     *
+     * @return A formatted string containing the details of all pets in the dictionary.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -69,5 +97,4 @@ public class PetsDictionary {
         }
         return sb.toString();
     }
-    
 }

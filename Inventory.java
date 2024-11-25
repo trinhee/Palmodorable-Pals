@@ -1,23 +1,36 @@
 import java.util.HashMap;
 import java.util.List;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * The {@code Inventory} class represents an inventory system that stores and manages items for a pet.
+ * It allows adding, removing, and retrieving items, as well as loading inventory data from a CSV file.
+ */
 public class Inventory {
 
-    private Map<Item, Integer> inventory;
+    private Map<Item, Integer> inventory; // A map of items and their quantities in the inventory.
 
     /**
-     * Constructor for Inventory. Initializes an empty inventory.
+     * Constructor for {@code Inventory}.
+     * Initializes an empty inventory.
      */
     public Inventory() {
         inventory = new HashMap<>();
     }
 
+    /**
+     * Parses a CSV line into an array of values, handling commas inside quoted strings.
+     *
+     * @param line The CSV line to parse.
+     * @return An array of strings representing the values in the CSV line.
+     */
     private String[] parseCSVLine(String line) {
         List<String> values = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
@@ -38,6 +51,68 @@ public class Inventory {
         return values.toArray(new String[0]);
     }
 
+    /**
+     * Loads inventory data for a specific pet from a CSV file.
+     * The CSV file must have the columns: name, health, sleep, fullness, happiness, sleepEffectiveness, 
+     * playEffectiveness, and inventory. The inventory column should be in the format "Food: X, Gift: Y".
+     *
+     * @param petName The name of the pet whose inventory to load.
+     */
+
+    public void saveToFile(String petName) {
+        String fileName = "data_handling/pets_data.csv";
+        List<String> lines = new ArrayList<>();
+        boolean updated = false;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                if (line.trim().isEmpty()) {
+                    continue; // Skip empty lines
+                }
+
+                String[] data = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+
+                if (data.length < 7) {
+                    System.err.println("Invalid data format: " + line);
+                    continue; // Skip invalid lines
+                }
+
+                if (data[0].trim().equalsIgnoreCase(petName)) {
+                    // Update the pet's inventory
+                    line = String.format("%s,%s,%s,%s,%s,%s,%s,\"%s\"",
+                            data[0].trim(),
+                            data[1].trim(),
+                            data[2].trim(),
+                            data[3].trim(),
+                            data[4].trim(),
+                            data[5].trim(),
+                            data[6].trim(),
+                            this.toString()); // Use Inventory's toString() method
+                    updated = true;
+                }
+
+                lines.add(line);
+            }
+
+            if (!updated) {
+                System.err.println("Pet with name " + petName + " not found in the file.");
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading the file: " + e.getMessage());
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+            System.out.println("Pet data successfully saved to file: " + fileName);
+        } catch (IOException e) {
+            System.err.println("Error writing to the file: " + e.getMessage());
+        }
+    }
     public void loadInventory(String petName) {
         String csvFilePath = "data_handling/pets_data.csv";
         try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
@@ -45,13 +120,11 @@ public class Inventory {
             boolean isHeader = true;
 
             while ((line = br.readLine()) != null) {
-                // Skip the header
                 if (isHeader) {
                     isHeader = false;
-                    continue;
+                    continue; // Skip the header row
                 }
 
-                // Handle potential commas within quoted strings
                 String[] data = parseCSVLine(line);
                 if (data.length < 8) {
                     System.err.println("Invalid CSV format.");
@@ -62,7 +135,6 @@ public class Inventory {
                 if (name.equalsIgnoreCase(petName)) {
                     String inventoryData = data[7].trim(); // Assuming inventory is at column index 7
 
-                    // Remove surrounding quotes if present
                     if (inventoryData.startsWith("\"") && inventoryData.endsWith("\"")) {
                         inventoryData = inventoryData.substring(1, inventoryData.length() - 1);
                     }
@@ -87,25 +159,23 @@ public class Inventory {
 
                         Item inventoryItem = null;
 
-                        // Define default items based on type
                         switch (itemType) {
                             case "food":
-                                inventoryItem = new Item("Basic Food", "food", 10); // Customize as needed
+                                inventoryItem = new Item("Food", "food", 10);
                                 break;
                             case "gift":
-                                inventoryItem = new Item("Basic Gift", "gift", 10); // Customize as needed
+                                inventoryItem = new Item("Gift", "gift", 10);
                                 break;
                             default:
                                 System.err.println("Unknown item type: " + itemType);
                                 continue;
                         }
 
-                        // Add the item and quantity to the inventory
                         this.addItem(inventoryItem, quantity);
                     }
 
                     System.out.println("Inventory loaded for " + name);
-                    break; // Exit after loading the current pet's inventory
+                    break;
                 }
             }
 
@@ -115,9 +185,9 @@ public class Inventory {
             System.err.println("Error reading the inventory file: " + e.getMessage());
         }
     }
-    
+
     /**
-     * Adds a single item to the inventory. If the item already exists, increments its quantity.
+     * Adds a single item to the inventory. If the item already exists, its quantity is incremented by one.
      *
      * @param item The item to add to the inventory.
      */
@@ -126,18 +196,18 @@ public class Inventory {
     }
 
     /**
-     * Adds multiple quantities of an item to the inventory. If the item already exists, increments its quantity.
+     * Adds a specified quantity of an item to the inventory. If the item already exists, its quantity is updated.
      *
      * @param item     The item to add to the inventory.
-     * @param quantity The number of items to add.
+     * @param quantity The quantity of the item to add.
      */
     public void addItem(Item item, int quantity) {
         inventory.put(item, inventory.getOrDefault(item, 0) + quantity);
     }
 
     /**
-     * Removes an item from the inventory. If the item's quantity is greater than 1, decrements it.
-     * If the quantity reaches 0, removes the item from the inventory.
+     * Removes one instance of an item from the inventory. If the item's quantity is greater than one, it decrements
+     * the quantity. If the quantity reaches zero, the item is removed from the inventory.
      *
      * @param item The item to remove from the inventory.
      */
@@ -155,7 +225,7 @@ public class Inventory {
     }
 
     /**
-     * Gets a list of all items in the inventory.
+     * Gets a list of all items currently in the inventory.
      *
      * @return A list of items in the inventory.
      */
@@ -164,10 +234,10 @@ public class Inventory {
     }
 
     /**
-     * Finds and returns an item from the inventory by its name.
+     * Retrieves an item from the inventory by its type.
      *
-     * @param name The name of the item to find.
-     * @return The item with the given name, or null if not found.
+     * @param name The name or type of the item to find.
+     * @return The item if found, or {@code null} if not found.
      */
     public Item getItem(String name) {
         for (Item item : inventory.keySet()) {
@@ -181,15 +251,18 @@ public class Inventory {
     /**
      * Gets the quantity of a specific item in the inventory.
      *
-     * @param item The item whose quantity to retrieve.
-     * @return The quantity of the item, or 0 if the item is not in the inventory.
+     * @param item The item whose quantity is to be retrieved.
+     * @return The quantity of the item, or 0 if the item is not found.
      */
     public int getItemCount(Item item) {
         return inventory.getOrDefault(item, 0);
     }
 
     /**
-     * Prints the inventory for debugging or display purposes.
+     * Returns a string representation of the inventory.
+     * The format is "ItemName: Quantity, ItemName: Quantity, ...".
+     *
+     * @return A string representation of the inventory contents.
      */
     @Override
     public String toString() {

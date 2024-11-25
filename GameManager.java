@@ -1,19 +1,26 @@
 import java.io.*;
 import java.util.*;
 import java.time.*;
+
+/**
+ * The {@code GameManager} class handles the management of the game, including the pet, inventory, settings,
+ * and statistics tracking. It provides functionalities to start the game, save the game state, manage inventory,
+ * track study sessions, and exit the game.
+ */
 public class GameManager {
 
-    private Game currentGame;
-    private Pet currentPet;
-    private Inventory currentInventory;
-    private Settings currentSettings;
-    private String csvFilePath;
-    private StatisticsTracker currentStatisticsTracker;
+    private Game currentGame; // The current game instance.
+    private Pet currentPet; // The current pet being managed in the game.
+    private Inventory currentInventory; // The inventory associated with the current pet.
+    private Settings currentSettings; // The settings for the current game.
+    private String csvFilePath; // Path to the CSV file for storing inventory data.
+    private StatisticsTracker currentStatisticsTracker; // Tracks statistics for the current pet.
+
     /**
-     * Constructor for GameManager.
+     * Constructor for {@code GameManager}.
+     * Initializes the game with the given pet name and loads relevant settings, inventory, and statistics.
      *
-     * @param petName     The name of the pet.
-     * @param csvFilePath The path to the CSV file.
+     * @param petName The name of the pet.
      */
     public GameManager(String petName) {
         this.currentGame = new Game(petName);
@@ -28,21 +35,7 @@ public class GameManager {
     }
 
     /**
-     * Loads the inventory for the current pet from a CSV file.
-     * The CSV file should have columns: name,health,sleep,fullness,happiness,sleepEffectiveness,playEffectiveness,inventory
-     * The inventory column should be in the format: "Food: X, Gift: Y"
-     */
-
-
-    /**
-     * Parses a CSV line, considering quoted commas.
-     *
-     * @param line The CSV line to parse.
-     * @return An array of values.
-     */
-
-    /**
-     * Starts the game and displays the loaded inventory.
+     * Starts the game by displaying the loaded pet and inventory information.
      */
     public void startGame() {
         System.out.println("Starting game with pet: " + currentPet.getName());
@@ -50,68 +43,97 @@ public class GameManager {
     }
 
     /**
-     * Saves the game state to a file.
+     * Saves the current game state, including pet data, settings, and statistics.
      */
     public void saveGame() {
-        // Save the inventory to the CSV file
         currentPet.saveToFile();
         currentSettings.saveToFile();
-        System.out.println("Game saved successfully."); 
+        currentStatisticsTracker.saveToFile();
+        currentInventory.saveToFile(this.currentPet.getName());
+        System.out.println("Game saved successfully.");
     }
 
-    // Getter methods for accessing private fields
-
+    /**
+     * Retrieves the current {@code Game} instance.
+     *
+     * @return The current game instance.
+     */
     public Game getCurrentGame() {
         return currentGame;
     }
 
+    /**
+     * Retrieves the current pet.
+     *
+     * @return The pet being managed in the game.
+     */
     public Pet getCurrentPet() {
         return currentPet;
     }
 
+    /**
+     * Retrieves the current settings.
+     *
+     * @return The settings associated with the game.
+     */
     public Settings getCurrentSettings() {
         return currentSettings;
     }
 
+    /**
+     * Retrieves the current inventory.
+     *
+     * @return The inventory of the current pet.
+     */
     public Inventory getCurrentInventory() {
         return currentInventory;
     }
 
+    /**
+     * Retrieves the current statistics tracker.
+     *
+     * @return The statistics tracker associated with the current pet.
+     */
     public StatisticsTracker getCurrentStatisticsTracker() {
         return currentStatisticsTracker;
     }
 
+    /**
+     * Gives an item from the inventory to the pet. The item type must match an item in the inventory.
+     *
+     * @param itemType The type of item to give (e.g., "Food").
+     */
     public void givePet(String itemType) {
         Item inventoryItem = this.currentInventory.getItem(itemType);
         if (inventoryItem != null) {
             this.currentInventory.removeItem(inventoryItem);
             this.currentPet.useItem(inventoryItem);
-        }
-        else {
+        } else {
             System.out.println("Item not found in inventory.");
         }
     }
 
-
+    /**
+     * Starts a study session, including study time and break time.
+     * Tracks the study progress, handles interruptions, and updates statistics accordingly.
+     */
     public void startStudySession() {
         int studyTime = currentSettings.getStudyTime(); // in minutes
         int breakTime = currentSettings.getBreakTime(); // in minutes
         int totalStudyTime = currentStatisticsTracker.getTotalStudyTime();
-    
+
         int totalStudySeconds = studyTime; // Convert minutes to seconds for countdown
         int totalBreakSeconds = breakTime; // Convert break time to seconds
-    
+
         System.out.println("Study session started! Study time: " + studyTime + " minutes.");
         System.out.println("Press 'q' at any time to break the study session.");
-    
-        // Progress bar setup
+
         int barLength = 50; // Length of the progress bar
-    
+
         // Study session countdown
         int actualStudySeconds = countDownWithProgressBar(totalStudySeconds, barLength, "Study");
-        int actualStudyMinutes = actualStudySeconds; // Convert back to minutes
-    
-        // Update the study time based on actual time studied
+        int actualStudyMinutes = actualStudySeconds;
+
         totalStudyTime += actualStudyMinutes;
         currentStatisticsTracker.setTotalStudyTime(totalStudyTime);
         LocalDateTime now = LocalDateTime.now();
@@ -119,28 +141,33 @@ public class GameManager {
         currentStatisticsTracker.setLastStudySession(now.toString());
         System.out.println("\nTotal study time updated to: " + currentStatisticsTracker.getTotalStudyTime() + " minutes.");
         System.out.println("Last study session: " + time);
-    
-        // If interrupted during study, exit early
+
         if (actualStudySeconds < totalStudySeconds) {
             System.out.println("\nStudy session interrupted early.");
             return;
         }
-    
-        // After study time, take a break
+
         System.out.println("\nTime for a break! Break time: " + breakTime + " minutes.");
         int actualBreakSeconds = countDownWithProgressBar(totalBreakSeconds, barLength, "Break");
-    
+
         if (actualBreakSeconds < totalBreakSeconds) {
             System.out.println("\nBreak interrupted early.");
         } else {
             System.out.println("\nBreak time is over. Study session completed!");
         }
     }
-    
+
+    /**
+     * Handles a countdown timer with a progress bar.
+     *
+     * @param totalSeconds The total duration of the countdown in seconds.
+     * @param barLength    The length of the progress bar.
+     * @param phase        The current phase of the timer (e.g., "Study" or "Break").
+     * @return The number of seconds completed before interruption.
+     */
     private int countDownWithProgressBar(int totalSeconds, int barLength, String phase) {
         Scanner scanner = new Scanner(System.in);
         for (int i = 0; i < totalSeconds; i++) {
-            // Display the progress bar
             int progress = (i * barLength) / totalSeconds;
             System.out.print("\r" + phase + " Progress: [");
             for (int j = 0; j < barLength; j++) {
@@ -151,41 +178,47 @@ public class GameManager {
                 }
             }
             System.out.print("] " + (totalSeconds - i) + "s remaining");
-    
-            // Check for user interruption
+
             try {
                 if (System.in.available() > 0 && scanner.nextLine().equalsIgnoreCase("q")) {
-                    return i; // Return the number of seconds completed
+                    return i;
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-    
-            // Wait for 1 second
+
             try {
-                Thread.sleep(1000); // 1000ms = 1 second
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 System.err.println("Timer interrupted: " + e.getMessage());
             }
         }
-        return totalSeconds; // Return the full duration if completed
+
+        return totalSeconds;
     }
 
+    /**
+     * Exits the game after saving the current state.
+     */
     public void exitGame() {
         saveGame();
         System.out.println("Exiting game. Goodbye!");
     }
-    
 
-
-
+    /**
+     * Provides a string representation of the {@code GameManager} object, including game details, inventory,
+     * and statistics tracker.
+     *
+     * @return A formatted string representation of the {@code GameManager}.
+     */
     @Override
     public String toString() {
-        return "GameManager {" +
+        return 
                "\n" + currentGame +
                "Inventory: " + currentInventory +
-                "\n" + currentStatisticsTracker +
+               "\n" + currentStatisticsTracker +
                "\n}";
+    
     }
 
 }

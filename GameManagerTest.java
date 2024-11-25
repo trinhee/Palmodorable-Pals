@@ -61,6 +61,7 @@ public class GameManagerTest {
 
                 case "4":
                     // Exit the test
+                    gameManager.saveGame();
                     running = false;
                     break;
 

@@ -1,8 +1,19 @@
+/**
+ * The {@code Game} class represents a game where a player interacts with a virtual pet.
+ * It initializes the pet and game settings and provides methods to retrieve game details.
+ */
 public class Game {
 
-    private Pet pet;
-    private Settings settings;
-    
+    private Pet pet; // The pet being managed in the game.
+    private Settings settings; // The settings specific to the game.
+
+    /**
+     * Constructs a {@code Game} instance with the specified pet name.
+     * The constructor initializes the game with a pet fetched from the {@code PetsDictionary}.
+     * If the pet name is not found, an error is logged, and the game will not be fully initialized.
+     *
+     * @param petName the name of the pet to initialize the game with.
+     */
     public Game(String petName) {
         PetsDictionary petsDictionary = new PetsDictionary();
         this.pet = petsDictionary.getPetByName(petName);
@@ -19,14 +30,30 @@ public class Game {
         System.out.println("Game settings loaded for pet: " + this.pet.getName());
     }
 
+    /**
+     * Retrieves the pet associated with this game.
+     *
+     * @return the pet being managed in the game.
+     */
     public Pet getPet() {
         return pet;
     }
 
+    /**
+     * Retrieves the settings associated with this game.
+     *
+     * @return the settings specific to the game.
+     */
     public Settings getSettings() {
         return settings;
     }
 
+    /**
+     * Returns a string representation of the game's details, including pet information and settings.
+     *
+     * @return a formatted string containing the game's details.
+     */
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("=== Game Information ===\n");

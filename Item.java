@@ -1,24 +1,21 @@
 import java.util.Objects;
 
 /**
- * Generic item class for food and gift
- * Author: Kaegan Walker Fulton
+ * The {@code Item} class represents an item that can be used to affect a pet's attributes.
+ * Each item has a name, type, and an effectiveness value.
  */
 public class Item {
 
-    /** The item's name */
-    private String name;
-    /** The item's type */
-    private String type;
-    /** The item's effectiveness (how much it will increase stat) */
-    private int effectiveness;
+    private String name; // The name of the item.
+    private String type; // The type of the item (e.g., "food", "gift").
+    private int effectiveness; // The effectiveness value of the item.
 
     /**
-     * Item constructor. Creates an instance of an Item object. Sets initial values to given values.
+     * Constructs an {@code Item} with the specified name, type, and effectiveness.
      *
-     * @param name          Name of item
-     * @param type          Type of item. "gift" for Gift, "food" for Food.
-     * @param effectiveness Increase in stat. Happiness for Gift, fullness for Food.
+     * @param name         the name of the item.
+     * @param type         the type of the item (e.g., "food", "gift").
+     * @param effectiveness the effectiveness value of the item.
      */
     public Item(String name, String type, int effectiveness) {
         this.name = name;
@@ -26,36 +23,69 @@ public class Item {
         this.effectiveness = effectiveness;
     }
 
-    // Getters and Setters
-
+    /**
+     * Sets the name of the item.
+     *
+     * @param name the new name of the item.
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Sets the type of the item.
+     *
+     * @param type the new type of the item (e.g., "food", "gift").
+     */
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Sets the effectiveness value of the item.
+     *
+     * @param effectiveness the new effectiveness value of the item.
+     */
     public void setEffectiveness(int effectiveness) {
         this.effectiveness = effectiveness;
     }
 
+    /**
+     * Retrieves the name of the item.
+     *
+     * @return the name of the item.
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Retrieves the type of the item.
+     *
+     * @return the type of the item (e.g., "food", "gift").
+     */
     public String getType() {
         return this.type;
     }
 
+    /**
+     * Retrieves the effectiveness value of the item.
+     *
+     * @return the effectiveness value of the item.
+     */
     public int getEffectiveness() {
         return this.effectiveness;
     }
 
     /**
-     * Updates pet stat (fullness for food, happiness for gift).
+     * Applies the item's effect to the specified pet. The effect depends on the item's type:
+     * <ul>
+     *   <li>If the type is "gift", it increases the pet's happiness.</li>
+     *   <li>If the type is "food", it increases the pet's fullness.</li>
+     * </ul>
+     * If the pet's happiness or fullness exceeds its maximum value, it is capped at the maximum.
      *
-     * @param pet The pet in the game
+     * @param pet the pet to which the item's effect will be applied.
      */
     public void applyEffect(Pet pet) {
         try {
@@ -65,11 +95,11 @@ public class Item {
                 } else {
                     pet.setHappiness(pet.getMaxHappiness());
                 }
-            } else if (this.type.equalsIgnoreCase("food")) { // Fixed from "type" to "food"
+            } else if (this.type.equalsIgnoreCase("food")) {
                 if (pet.getFullness() + this.effectiveness <= pet.getMaxFullness()) {
                     pet.setFullness(pet.getFullness() + this.effectiveness);
                 } else {
-                    pet.setFullness(pet.getMaxFullness()); // Fixed setting fullness instead of happiness
+                    pet.setFullness(pet.getMaxFullness());
                 }
             } else {
                 throw new Exception("Invalid type in item class");
@@ -79,23 +109,38 @@ public class Item {
         }
     }
 
-    // Override equals and hashCode for proper functioning in HashMap
+    /**
+     * Checks if this {@code Item} is equal to another object. Two items are considered equal
+     * if their name, type, and effectiveness are the same.
+     *
+     * @param obj the object to compare to.
+     * @return {@code true} if the items are equal, {@code false} otherwise.
+     */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (this.getClass() != obj.getClass()) {
             return false;
+        }
         Item other = (Item) obj;
-        return Objects.equals(name, other.name) &&
-               Objects.equals(type, other.type) &&
-               effectiveness == other.effectiveness;
+        return Objects.equals(this.name, other.name) &&
+               Objects.equals(this.type, other.type) &&
+               this.effectiveness == other.effectiveness;
     }
 
+    /**
+     * Computes the hash code for this {@code Item}.
+     * The hash code is based on the name, type, and effectiveness.
+     *
+     * @return the hash code for this item.
+     */
     @Override
     public int hashCode() {
-        return Objects.hash(name, type, effectiveness);
+        return Objects.hash(this.name, this.type, this.effectiveness);
     }
 }
