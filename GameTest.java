@@ -5,7 +5,7 @@ public class GameTest {
 
         // Display game information
         if (game.getPet() != null) {
-            game.displayGameInfo();
+            System.err.println(game);
         }
     }
 }

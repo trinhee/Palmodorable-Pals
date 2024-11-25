@@ -1,13 +1,17 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Settings {
 
     private int studyTime;
     private int breakTime;
     private int targetStudyTime;
-    private String backgroundMusic;
+    private boolean backgroundMusic; // Changed to boolean
     private boolean isParent;
     private String petName;
 
@@ -33,11 +37,11 @@ public class Settings {
                 // Check if the petName matches the current row
                 if (values[0].equalsIgnoreCase(petName)) {
                     this.petName = values[0];
-                    this.backgroundMusic = parseBackgroundMusic(values[2]);
-                    this.isParent = Integer.parseInt(values[3]) == 1;
-                    this.studyTime = Integer.parseInt(values[5]);
-                    this.breakTime = Integer.parseInt(values[6]);
-                    this.targetStudyTime = Integer.parseInt(values[7]);
+                    this.backgroundMusic = parseBoolean(values[1]); // Parse background music as boolean
+                    this.isParent = parseBoolean(values[2]);
+                    this.studyTime = Integer.parseInt(values[3]);
+                    this.breakTime = Integer.parseInt(values[4]);
+                    this.targetStudyTime = Integer.parseInt(values[5]);
                     break;
                 }
             }
@@ -46,17 +50,56 @@ public class Settings {
         }
     }
 
-    private String parseBackgroundMusic(String value) {
-        switch (value) {
-            case "1":
-                return "Lofi";
-            case "2":
-                return "Classical";
-            case "3":
-                return "Jazz";
-            default:
-                return "Unknown";
+    public void saveToFile() {
+        List<String> lines = new ArrayList<>();
+        boolean updated = false;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+
+            // Read each line of the file
+            while ((line = reader.readLine()) != null) {
+                String[] values = line.split(",", -1);
+
+                // If the line matches the pet name, update it
+                if (values[0].equalsIgnoreCase(this.petName)) {
+                    line = String.format("%s,%s,%d,%d,,%d,%d,%d",
+                            this.petName,
+                            values[1], // player_id remains unchanged
+                            this.backgroundMusic ? 1 : 0, // Write boolean as 1/0
+                            this.isParent ? 1 : 0,
+                            this.studyTime,
+                            this.breakTime,
+                            this.targetStudyTime);
+                    updated = true;
+                }
+
+                lines.add(line); // Add the (updated or unchanged) line to the list
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading the CSV file: " + e.getMessage());
+            return;
         }
+
+        // If the pet name was not found, throw an exception
+        if (!updated) {
+            throw new IllegalArgumentException("Pet not found in the file: " + this.petName);
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
+            for (String updatedLine : lines) {
+                writer.write(updatedLine);
+                writer.newLine();
+            }
+
+            System.out.println("Settings successfully saved for pet: " + this.petName);
+        } catch (IOException e) {
+            System.err.println("Error writing to the file: " + e.getMessage());
+        }
+    }
+
+    private boolean parseBoolean(String value) {
+        return "1".equals(value);
     }
 
     public void setStudyTime(int time) {
@@ -83,8 +126,12 @@ public class Settings {
         return this.targetStudyTime;
     }
 
-    public String getBackgroundMusic() {
+    public boolean getBackgroundMusic() {
         return this.backgroundMusic;
+    }
+
+    public void setBackgroundMusic(boolean backgroundMusic) {
+        this.backgroundMusic = backgroundMusic;
     }
 
     public boolean isParent() {
@@ -99,12 +146,11 @@ public class Settings {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Settings for Pet: ").append(this.petName).append("\n");
-        sb.append("Background Music: ").append(this.backgroundMusic).append("\n");
+        sb.append("Background Music: ").append(this.backgroundMusic ? "On" : "Off").append("\n");
         sb.append("Is Parent: ").append(this.isParent ? "Yes" : "No").append("\n");
         sb.append("Study Time: ").append(this.studyTime).append(" minutes\n");
         sb.append("Break Time: ").append(this.breakTime).append(" minutes\n");
         sb.append("Target Study Time: ").append(this.targetStudyTime).append(" sessions\n");
         return sb.toString();
     }
-    
 }

@@ -4,7 +4,7 @@ public class PetsDictionaryTest {
         PetsDictionary petsDictionary = new PetsDictionary();
 
         // Display all pets
-        petsDictionary.displayPets();
+        System.out.println(petsDictionary);
 
         // Retrieve a specific pet by name
         Pet buddy = petsDictionary.getPetByName("Buddy");

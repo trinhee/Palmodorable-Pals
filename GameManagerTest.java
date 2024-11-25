@@ -1,29 +1,75 @@
+import java.util.Scanner;
+
 public class GameManagerTest {
+
     public static void main(String[] args) {
+        // Initialize GameManager with a sample pet
+        GameManager gameManager = new GameManager("Buddy");
 
-        String petName = "Buddy"; 
+        // Print the current game state
+        System.out.println(gameManager);
 
-        GameManager gameManager = new GameManager(petName);
+        // Scanner for user interaction
+        Scanner scanner = new Scanner(System.in);
+        boolean running = true;
 
-        Game game = gameManager.getCurrentGame();
-        Pet pet = gameManager.getCurrentPet();
-        Settings settings = gameManager.getCurrentSettings();
-        Inventory inventory = gameManager.getCurrentInventory();
+        while (running) {
+            System.out.println("\nChoose an option:");
+            System.out.println("1. Start Study Session");
+            System.out.println("2. Give Item to Pet");
+            System.out.println("3. View Current Game State");
+            System.out.println("4. Exit");
 
-        // Print Game Details
-        System.out.println("\n--- Game Details ---");
-        System.out.println(game);
+            String choice = scanner.next(); // Use next() to ensure precise input
 
-        // Print Pet Details
-        System.out.println("\n--- Pet Details ---");
-        System.out.println(pet);
+            switch (choice) {
+                case "1":
+                    // Test startStudySession
+                    gameManager.startStudySession();
+                    break;
 
-        // Print Settings Details
-        System.out.println("\n--- Settings Details ---");
-        System.out.println(settings);
+                case "2":
+                    // Test giveItem
+                    System.out.println("Current Inventory:");
+                    System.out.println(gameManager.getCurrentInventory());
+                    System.out.println("Enter the type of the item to give (e.g., 'food', 'gift'): ");
+                    String itemName = scanner.next(); // Use next() to ensure exact input (no spaces)
 
-        // Print Inventory Details
-        System.out.println("\n--- Inventory Details ---");
-        inventory.printInventory();
+                    // Retrieve the item from the inventory
+
+                    switch (itemName) {
+                        case "food":
+                            gameManager.givePet("food");
+                            break;
+                        case "gift":
+                            gameManager.givePet("gift");
+                            break;
+                    
+                        default:
+                            System.out.println("Unknown item type: " + itemName);
+                            break;
+                    }
+                    break;
+
+                case "3":
+                    // View the current game state
+                    Pet pet = gameManager.getCurrentPet();
+                    System.out.println(gameManager);
+                    System.out.println(pet);
+                    System.out.println(gameManager.getCurrentInventory());
+                    break;
+
+                case "4":
+                    // Exit the test
+                    running = false;
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+
+        scanner.close();
+        System.out.println("Test finished.");
     }
 }

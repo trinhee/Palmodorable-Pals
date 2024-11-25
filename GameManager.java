@@ -1,6 +1,6 @@
 import java.io.*;
 import java.util.*;
-
+import java.time.*;
 public class GameManager {
 
     private Game currentGame;
@@ -8,21 +8,22 @@ public class GameManager {
     private Inventory currentInventory;
     private Settings currentSettings;
     private String csvFilePath;
-
+    private StatisticsTracker currentStatisticsTracker;
     /**
      * Constructor for GameManager.
      *
      * @param petName     The name of the pet.
      * @param csvFilePath The path to the CSV file.
      */
-    public GameManager(String petName, String csvFilePath) {
+    public GameManager(String petName) {
         this.currentGame = new Game(petName);
         this.currentPet = currentGame.getPet();
         this.currentSettings = currentGame.getSettings();
         this.currentInventory = new Inventory(); // Initialize Inventory
-        this.csvFilePath = csvFilePath;
+        this.csvFilePath = "data_handling/pets_data.csv"; // Default inventory file path
+        this.currentStatisticsTracker = new StatisticsTracker(petName);
+        this.currentInventory.loadInventory(petName);
 
-        loadInventory(); // Load inventory upon game start
         startGame();
     }
 
@@ -31,82 +32,7 @@ public class GameManager {
      * The CSV file should have columns: name,health,sleep,fullness,happiness,sleepEffectiveness,playEffectiveness,inventory
      * The inventory column should be in the format: "Food: X, Gift: Y"
      */
-    public void loadInventory() {
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
-            String line;
-            boolean isHeader = true;
 
-            while ((line = br.readLine()) != null) {
-                // Skip the header
-                if (isHeader) {
-                    isHeader = false;
-                    continue;
-                }
-
-                // Handle potential commas within quoted strings
-                String[] data = parseCSVLine(line);
-                if (data.length < 8) {
-                    System.err.println("Invalid CSV format.");
-                    continue;
-                }
-
-                String name = data[0].trim();
-                if (name.equalsIgnoreCase(currentPet.getName())) {
-                    String inventoryData = data[7].trim(); // Assuming inventory is at column index 7
-
-                    // Remove surrounding quotes if present
-                    if (inventoryData.startsWith("\"") && inventoryData.endsWith("\"")) {
-                        inventoryData = inventoryData.substring(1, inventoryData.length() - 1);
-                    }
-
-                    String[] inventoryItems = inventoryData.split(",");
-
-                    for (String item : inventoryItems) {
-                        String[] parts = item.split(":");
-                        if (parts.length != 2) {
-                            System.err.println("Invalid inventory item format: " + item);
-                            continue;
-                        }
-
-                        String itemType = parts[0].trim().toLowerCase();
-                        int quantity;
-                        try {
-                            quantity = Integer.parseInt(parts[1].trim());
-                        } catch (NumberFormatException e) {
-                            System.err.println("Invalid quantity for item: " + item);
-                            continue;
-                        }
-
-                        Item inventoryItem = null;
-
-                        // Define default items based on type
-                        switch (itemType) {
-                            case "food":
-                                inventoryItem = new Item("Basic Food", "food", 20); // Customize as needed
-                                break;
-                            case "gift":
-                                inventoryItem = new Item("Basic Gift", "gift", 15); // Customize as needed
-                                break;
-                            default:
-                                System.err.println("Unknown item type: " + itemType);
-                                continue;
-                        }
-
-                        // Add the item and quantity to the inventory
-                        currentInventory.addItem(inventoryItem, quantity);
-                    }
-
-                    System.out.println("Inventory loaded for " + name);
-                    break; // Exit after loading the current pet's inventory
-                }
-            }
-
-        } catch (FileNotFoundException e) {
-            System.err.println("Inventory file not found: " + e.getMessage());
-        } catch (IOException e) {
-            System.err.println("Error reading the inventory file: " + e.getMessage());
-        }
-    }
 
     /**
      * Parses a CSV line, considering quoted commas.
@@ -114,39 +40,23 @@ public class GameManager {
      * @param line The CSV line to parse.
      * @return An array of values.
      */
-    private String[] parseCSVLine(String line) {
-        List<String> values = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-        boolean inQuotes = false;
-
-        for (char ch : line.toCharArray()) {
-            if (ch == '\"') {
-                inQuotes = !inQuotes;
-            } else if (ch == ',' && !inQuotes) {
-                values.add(sb.toString());
-                sb.setLength(0);
-            } else {
-                sb.append(ch);
-            }
-        }
-        values.add(sb.toString());
-
-        return values.toArray(new String[0]);
-    }
 
     /**
      * Starts the game and displays the loaded inventory.
      */
     public void startGame() {
         System.out.println("Starting game with pet: " + currentPet.getName());
-        currentInventory.printInventory(); // Optional: Display loaded inventory
+        System.out.println(currentInventory); // Optional: Display loaded inventory
     }
 
     /**
      * Saves the game state to a file.
      */
     public void saveGame() {
-        // Implement saving logic here
+        // Save the inventory to the CSV file
+        currentPet.saveToFile();
+        currentSettings.saveToFile();
+        System.out.println("Game saved successfully."); 
     }
 
     // Getter methods for accessing private fields
@@ -166,4 +76,116 @@ public class GameManager {
     public Inventory getCurrentInventory() {
         return currentInventory;
     }
+
+    public StatisticsTracker getCurrentStatisticsTracker() {
+        return currentStatisticsTracker;
+    }
+
+    public void givePet(String itemType) {
+        Item inventoryItem = this.currentInventory.getItem(itemType);
+        if (inventoryItem != null) {
+            this.currentInventory.removeItem(inventoryItem);
+            this.currentPet.useItem(inventoryItem);
+        }
+        else {
+            System.out.println("Item not found in inventory.");
+        }
+    }
+
+
+    public void startStudySession() {
+        int studyTime = currentSettings.getStudyTime(); // in minutes
+        int breakTime = currentSettings.getBreakTime(); // in minutes
+        int totalStudyTime = currentStatisticsTracker.getTotalStudyTime();
+    
+        int totalStudySeconds = studyTime; // Convert minutes to seconds for countdown
+        int totalBreakSeconds = breakTime; // Convert break time to seconds
+    
+        System.out.println("Study session started! Study time: " + studyTime + " minutes.");
+        System.out.println("Press 'q' at any time to break the study session.");
+    
+        // Progress bar setup
+        int barLength = 50; // Length of the progress bar
+    
+        // Study session countdown
+        int actualStudySeconds = countDownWithProgressBar(totalStudySeconds, barLength, "Study");
+        int actualStudyMinutes = actualStudySeconds; // Convert back to minutes
+    
+        // Update the study time based on actual time studied
+        totalStudyTime += actualStudyMinutes;
+        currentStatisticsTracker.setTotalStudyTime(totalStudyTime);
+        LocalDateTime now = LocalDateTime.now();
+        String time = StatisticsTracker.formatLocalDateTime(now);
+        currentStatisticsTracker.setLastStudySession(now.toString());
+        System.out.println("\nTotal study time updated to: " + currentStatisticsTracker.getTotalStudyTime() + " minutes.");
+        System.out.println("Last study session: " + time);
+    
+        // If interrupted during study, exit early
+        if (actualStudySeconds < totalStudySeconds) {
+            System.out.println("\nStudy session interrupted early.");
+            return;
+        }
+    
+        // After study time, take a break
+        System.out.println("\nTime for a break! Break time: " + breakTime + " minutes.");
+        int actualBreakSeconds = countDownWithProgressBar(totalBreakSeconds, barLength, "Break");
+    
+        if (actualBreakSeconds < totalBreakSeconds) {
+            System.out.println("\nBreak interrupted early.");
+        } else {
+            System.out.println("\nBreak time is over. Study session completed!");
+        }
+    }
+    
+    private int countDownWithProgressBar(int totalSeconds, int barLength, String phase) {
+        Scanner scanner = new Scanner(System.in);
+        for (int i = 0; i < totalSeconds; i++) {
+            // Display the progress bar
+            int progress = (i * barLength) / totalSeconds;
+            System.out.print("\r" + phase + " Progress: [");
+            for (int j = 0; j < barLength; j++) {
+                if (j <= progress) {
+                    System.out.print("=");
+                } else {
+                    System.out.print(" ");
+                }
+            }
+            System.out.print("] " + (totalSeconds - i) + "s remaining");
+    
+            // Check for user interruption
+            try {
+                if (System.in.available() > 0 && scanner.nextLine().equalsIgnoreCase("q")) {
+                    return i; // Return the number of seconds completed
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+    
+            // Wait for 1 second
+            try {
+                Thread.sleep(1000); // 1000ms = 1 second
+            } catch (InterruptedException e) {
+                System.err.println("Timer interrupted: " + e.getMessage());
+            }
+        }
+        return totalSeconds; // Return the full duration if completed
+    }
+
+    public void exitGame() {
+        saveGame();
+        System.out.println("Exiting game. Goodbye!");
+    }
+    
+
+
+
+    @Override
+    public String toString() {
+        return "GameManager {" +
+               "\n" + currentGame +
+               "Inventory: " + currentInventory +
+                "\n" + currentStatisticsTracker +
+               "\n}";
+    }
+
 }

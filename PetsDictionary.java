@@ -53,17 +53,21 @@ public class PetsDictionary {
         return this.pets.get(name);
     }
 
-    public void displayPets() {
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, Pet> entry : pets.entrySet()) {
             Pet pet = entry.getValue();
-            System.out.println("Name: " + pet.getName());
-            System.out.println("Health: " + pet.getHealth());
-            System.out.println("Sleep: " + pet.getSleep());
-            System.out.println("Fullness: " + pet.getFullness());
-            System.out.println("Happiness: " + pet.getHappiness());
-            System.out.println("Sleep Effectiveness: " + pet.getSleepEffectiveness());
-            System.out.println("Play Effectiveness: " + pet.getPlayEffectiveness());
-            System.out.println("-------------------------");
+            sb.append("Name: ").append(pet.getName()).append("\n")
+              .append("Health: ").append(pet.getHealth()).append("\n")
+              .append("Sleep: ").append(pet.getSleep()).append("\n")
+              .append("Fullness: ").append(pet.getFullness()).append("\n")
+              .append("Happiness: ").append(pet.getHappiness()).append("\n")
+              .append("Sleep Effectiveness: ").append(pet.getSleepEffectiveness()).append("\n")
+              .append("Play Effectiveness: ").append(pet.getPlayEffectiveness()).append("\n")
+              .append("-------------------------\n");
         }
+        return sb.toString();
     }
+    
 }

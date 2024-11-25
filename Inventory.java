@@ -1,5 +1,9 @@
 import java.util.HashMap;
 import java.util.List;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -14,6 +18,104 @@ public class Inventory {
         inventory = new HashMap<>();
     }
 
+    private String[] parseCSVLine(String line) {
+        List<String> values = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        boolean inQuotes = false;
+
+        for (char ch : line.toCharArray()) {
+            if (ch == '\"') {
+                inQuotes = !inQuotes;
+            } else if (ch == ',' && !inQuotes) {
+                values.add(sb.toString());
+                sb.setLength(0);
+            } else {
+                sb.append(ch);
+            }
+        }
+        values.add(sb.toString());
+
+        return values.toArray(new String[0]);
+    }
+
+    public void loadInventory(String petName) {
+        String csvFilePath = "data_handling/pets_data.csv";
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
+            String line;
+            boolean isHeader = true;
+
+            while ((line = br.readLine()) != null) {
+                // Skip the header
+                if (isHeader) {
+                    isHeader = false;
+                    continue;
+                }
+
+                // Handle potential commas within quoted strings
+                String[] data = parseCSVLine(line);
+                if (data.length < 8) {
+                    System.err.println("Invalid CSV format.");
+                    continue;
+                }
+
+                String name = data[0].trim();
+                if (name.equalsIgnoreCase(petName)) {
+                    String inventoryData = data[7].trim(); // Assuming inventory is at column index 7
+
+                    // Remove surrounding quotes if present
+                    if (inventoryData.startsWith("\"") && inventoryData.endsWith("\"")) {
+                        inventoryData = inventoryData.substring(1, inventoryData.length() - 1);
+                    }
+
+                    String[] inventoryItems = inventoryData.split(",");
+
+                    for (String item : inventoryItems) {
+                        String[] parts = item.split(":");
+                        if (parts.length != 2) {
+                            System.err.println("Invalid inventory item format: " + item);
+                            continue;
+                        }
+
+                        String itemType = parts[0].trim().toLowerCase();
+                        int quantity;
+                        try {
+                            quantity = Integer.parseInt(parts[1].trim());
+                        } catch (NumberFormatException e) {
+                            System.err.println("Invalid quantity for item: " + item);
+                            continue;
+                        }
+
+                        Item inventoryItem = null;
+
+                        // Define default items based on type
+                        switch (itemType) {
+                            case "food":
+                                inventoryItem = new Item("Basic Food", "food", 10); // Customize as needed
+                                break;
+                            case "gift":
+                                inventoryItem = new Item("Basic Gift", "gift", 10); // Customize as needed
+                                break;
+                            default:
+                                System.err.println("Unknown item type: " + itemType);
+                                continue;
+                        }
+
+                        // Add the item and quantity to the inventory
+                        this.addItem(inventoryItem, quantity);
+                    }
+
+                    System.out.println("Inventory loaded for " + name);
+                    break; // Exit after loading the current pet's inventory
+                }
+            }
+
+        } catch (FileNotFoundException e) {
+            System.err.println("Inventory file not found: " + e.getMessage());
+        } catch (IOException e) {
+            System.err.println("Error reading the inventory file: " + e.getMessage());
+        }
+    }
+    
     /**
      * Adds a single item to the inventory. If the item already exists, increments its quantity.
      *
@@ -69,7 +171,7 @@ public class Inventory {
      */
     public Item getItem(String name) {
         for (Item item : inventory.keySet()) {
-            if (item.getName().equalsIgnoreCase(name)) {
+            if (item.getType().equalsIgnoreCase(name)) {
                 return item;
             }
         }
@@ -89,9 +191,19 @@ public class Inventory {
     /**
      * Prints the inventory for debugging or display purposes.
      */
-    public void printInventory() {
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        boolean first = true;
         for (Map.Entry<Item, Integer> entry : inventory.entrySet()) {
-            System.out.println("Item: " + entry.getKey().getName() + ", Quantity: " + entry.getValue());
+            if (!first) {
+                sb.append(", ");
+            }
+            sb.append(entry.getKey().getName());
+            sb.append(": ");
+            sb.append(entry.getValue());
+            first = false;
         }
+        return sb.toString();
     }
 }

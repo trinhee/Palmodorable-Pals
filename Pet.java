@@ -1,3 +1,11 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Pet to be played with in the game.
@@ -30,6 +38,8 @@ public class Pet {
     /**The effectiveness (stat increase) of play */
     public int playEffectiveness;
 
+    public Inventory inventory = new Inventory();
+
     /**
      * Pet Constructor. Initializes max's to given values.
      * Initializes current values to max's.
@@ -55,9 +65,88 @@ public class Pet {
         this.happiness = this.maxHappiness;
         this.sleepEffectiveness = sleepEffectiveness;
         this.playEffectiveness = playEffectiveness;
+        inventory.loadInventory(name);
         
     }
+    
+    public void saveToFile() {
+        String fileName = "data_handling/pets_data.csv";
+        List<String> lines = new ArrayList<>();
+        boolean updated = false;
+    
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+    
+            while ((line = reader.readLine()) != null) {
+                if (line.trim().isEmpty()) {
+                    continue; // Skip empty lines
+                }
+    
+                String[] data = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+    
+                if (data.length < 8) {
+                    System.err.println("Invalid data format: " + line);
+                    continue; // Skip invalid lines
+                }
+    
+                if (data[0].equalsIgnoreCase(name)) {
+                    line = String.format("%s,%d,%d,%d,%d,%d,%d,\"%s\"",
+                            name,
+                            health,
+                            sleep,
+                            fullness,
+                            happiness,
+                            sleepEffectiveness,
+                            playEffectiveness,
+                            inventory.toString());
+                    updated = true;
+                }
+    
+                lines.add(line);
+            }
+    
+            if (!updated) {
+                lines.add(String.format("%s,%d,%d,%d,%d,%d,%d,\"%s\"",
+                        name,
+                        health,
+                        sleep,
+                        fullness,
+                        happiness,
+                        sleepEffectiveness,
+                        playEffectiveness,
+                        inventory.toString()));
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading the file: " + e.getMessage());
+        }
+    
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+            System.out.println("Pet data successfully saved to file: " + fileName);
+        } catch (IOException e) {
+            System.err.println("Error writing to the file: " + e.getMessage());
+        }
+    
+    
 
+        // If the name was not found, add a new line for the pet
+
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            // Write back all lines to the file
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+
+            System.out.println("Pet data successfully saved to file: " + fileName);
+        } catch (IOException e) {
+            System.err.println("Error writing to the file: " + e.getMessage());
+        }
+    }
     
     /** 
      * Name Setter.
@@ -208,7 +297,10 @@ public class Pet {
         return this.sleep;
     }
 
-    
+    public Inventory getInventory() {
+        return inventory;
+    }
+
     /**
      * Maximum Sleep Getter.
      *  
