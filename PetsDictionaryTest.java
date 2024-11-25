@@ -1,4 +1,8 @@
 public class PetsDictionaryTest {
+    
+    /** 
+     * @param args
+     */
     public static void main(String[] args) {
         // Create the PetsDictionary
         PetsDictionary petsDictionary = new PetsDictionary();

@@ -113,6 +113,10 @@ public class Inventory {
             System.err.println("Error writing to the file: " + e.getMessage());
         }
     }
+    
+    /** 
+     * @param petName
+     */
     public void loadInventory(String petName) {
         String csvFilePath = "data_handling/pets_data.csv";
         try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {

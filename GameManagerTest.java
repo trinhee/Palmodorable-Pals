@@ -2,6 +2,10 @@ import java.util.Scanner;
 
 public class GameManagerTest {
 
+    
+    /** 
+     * @param args
+     */
     public static void main(String[] args) {
         // Initialize GameManager with a sample pet
         GameManager gameManager = new GameManager("Buddy");

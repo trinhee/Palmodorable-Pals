@@ -1,4 +1,8 @@
 public class SettingsTest {
+    
+    /** 
+     * @param args
+     */
     public static void main(String[] args) {
         // Load settings for pet "Buddy"
         Settings settings = new Settings("Buddy");
