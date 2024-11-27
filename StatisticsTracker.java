@@ -257,6 +257,6 @@ public class StatisticsTracker {
     public static void main(String[] args) {
         StatisticsTracker tracker = new StatisticsTracker("Buddy");
         System.out.println(StatisticsTracker.formatStringToLocalDateTime(tracker.getLastStudySession()));
-
+        
     }
 }
