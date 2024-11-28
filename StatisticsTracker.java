@@ -1,3 +1,5 @@
+package com.mycompany.statisticstrackertest;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -66,6 +68,60 @@ public class StatisticsTracker {
      */
     public void saveToFile() {
         String fileName = "data_handling/statistics_tracker.csv";
+        List<String> lines = new ArrayList<>();
+        boolean updated = false;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+
+            // Read each line of the file
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(",");
+
+                // Check if the line corresponds to the current name
+                if (data[0].equalsIgnoreCase(name)) {
+                    // Update the row with new values
+                    line = String.format("%s,%s,%s,%s,%s,%d",
+                            name,
+                            lastStudySession,
+                            lastLogout,
+                            dayStart,
+                            dayEnd,
+                            totalStudyTime);
+                    updated = true;
+                }
+
+                lines.add(line); // Add the line to the list
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading the file: " + e.getMessage());
+            return;
+        }
+
+        // If the name was not found in the file, print an error
+        if (!updated) {
+            System.err.println("Name not found in the file: " + name);
+            return;
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            // Write back all lines to the file
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+
+            System.out.println("Data successfully updated in file: " + fileName);
+        } catch (IOException e) {
+            System.err.println("Error writing to the file: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * For Testing
+     * @param fileName name of file.
+     */
+    public void saveToFile(String fileName) {
         List<String> lines = new ArrayList<>();
         boolean updated = false;
 
