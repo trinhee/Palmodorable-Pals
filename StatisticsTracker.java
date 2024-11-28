@@ -175,6 +175,8 @@ public class StatisticsTracker {
         return dayEnd;
     }
 
+    public String getLastLogout() {return this.lastLogout;}
+
     /**
      * Sets the end time for the current day.
      *
@@ -247,16 +249,16 @@ public class StatisticsTracker {
     @Override
     public String toString() {
         return "Statistics Tracker Information:\n" +
-               "Name: " + name + "\n" +
-               "Last Study Session: " + lastStudySession + "\n" +
-               "Day Start: " + dayStart + "\n" +
-               "Day End: " + dayEnd + "\n" +
-               "Total Study Time: " + totalStudyTime + " minutes";
+                "Name: " + name + "\n" +
+                "Last Study Session: " + lastStudySession + "\n" +
+                "Day Start: " + dayStart + "\n" +
+                "Day End: " + dayEnd + "\n" +
+                "Total Study Time: " + totalStudyTime + " minutes";
     }
 
     public static void main(String[] args) {
         StatisticsTracker tracker = new StatisticsTracker("Buddy");
         System.out.println(StatisticsTracker.formatStringToLocalDateTime(tracker.getLastStudySession()));
-        
+
     }
 }

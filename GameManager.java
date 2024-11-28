@@ -1,6 +1,6 @@
 import java.io.*;
-import java.util.*;
 import java.time.*;
+import java.util.*;
 
 /**
  * The {@code GameManager} class handles the management of the game, including the pet, inventory, settings,
@@ -206,6 +206,146 @@ public class GameManager {
     }
 
     /**
+     * Decreases Health by 1 point per hour if happiness or fullness is at 0 or below. Decreases by 2 if both.
+     * Does the same for happiness with 25.
+     * @param tracker the StatisticsTracker instance of the game
+     * @param pet the pet to have points deducted from
+     */
+    public void updateStatsLogin(StatisticsTracker tracker, Pet pet) {
+        long timeElapsed;
+        LocalDateTime prevDateTime = StatisticsTracker.formatStringToLocalDateTime(tracker.getLastLogout());
+        LocalDateTime currDateTime = LocalDateTime.now();
+        Duration duration = Duration.between(currDateTime, prevDateTime);
+        timeElapsed = Math.abs(duration.toHours());
+        for(int i = (int)timeElapsed; i > 0; i--) {
+            if ((pet.getSleep() <= 25 || pet.getFullness() <= 25) && !(pet.getSleep() <= 25 && pet.getFullness() <= 25)) {
+
+
+                if (pet.getHappiness() - 1 <= 0) {
+                    pet.setHappiness(0);
+                } else {
+                    pet.setHappiness(pet.getHappiness() - 1);
+                }
+
+            }
+
+            if (pet.getSleep() <= 25 && pet.getFullness() <= 25) {
+
+                if (pet.getHappiness() - 2 <= 0) {
+
+                    pet.setHappiness(0);
+                } else {
+
+                    pet.setHappiness(pet.getHappiness() - 2);
+
+                }
+            }
+
+            if ((pet.getSleep() == 0 || pet.getFullness() == 0) && !(pet.getSleep() == 0 && pet.getFullness() == 0)) {
+
+
+                if (pet.getHealth() - 1 <= 0) {
+                    pet.setHealth(0);
+                } else {
+                    pet.setHealth(pet.getHealth() - 1);
+                }
+
+            }
+
+
+            if (pet.getSleep() == 0 && pet.getFullness() == 0) {
+                pet.setHealth(Math.max(0, pet.getHealth() - 2));
+            }
+
+
+            if (pet.getSleep() - (int) timeElapsed <= 0) {
+                pet.setSleep(0);
+            } else {
+                pet.setSleep(pet.getSleep() - (int) timeElapsed);
+            }
+            pet.setSleep(Math.max(0,pet.getSleep() -1));
+            pet.setFullness(Math.max(0,pet.getFullness() -1));
+        }
+    }
+
+
+    /**
+     * Decreases the Happiness if an hour has passed in game by 1 if sleep or fullness less than or equal to 25.
+     * Decreases by two if both.
+     * Does the same with Health and the value of 0.
+     *
+     * @param pet The pet to be acted upon
+     * @param lastHour The last hour when health was deducted
+     *
+     * @return lastHour last hour passed.
+     */
+    public int updateStatsContinuous(Pet pet, int lastHour){
+        LocalDateTime currDateTime = LocalDateTime.now();
+
+
+        if(currDateTime.getHour() != lastHour){
+            if((pet.getSleep() <= 25 || pet.getFullness() <= 25) && !(pet.getSleep() <= 25 && pet.getFullness() <=25)){
+
+
+                if(pet.getHappiness() - 1 <= 0){
+                    pet.setHappiness(0);
+                }
+
+                else{
+                    pet.setHappiness(pet.getHappiness() - 1);
+                }
+
+            }
+
+            if(pet.getSleep() <= 25 && pet.getFullness()  <= 25){
+
+                if(pet.getHappiness() - 2 <= 0){
+
+                    pet.setHappiness(0);
+                }
+
+                else{
+
+                    pet.setHappiness(pet.getHappiness() - 2);
+
+                }
+            }
+
+            if((pet.getSleep() == 0 || pet.getFullness() == 0) && !(pet.getSleep() == 0 && pet.getFullness() == 0)){
+
+
+                if(pet.getHealth() - 1 <= 0){
+                    pet.setHealth(0);
+                }
+
+                else{
+                    pet.setHealth(pet.getHealth() - 1);
+                }
+
+            }
+
+            if(pet.getSleep() == 0 && pet.getFullness()  == 0){
+
+                if(pet.getHealth() - 2 <= 0){
+                    pet.setHealth(0);
+                }
+                else{
+
+                    pet.setHealth(pet.getHealth() - 2);
+                }
+
+
+            }
+            pet.setSleep(Math.max(0,pet.getSleep() -1));
+            pet.setFullness(Math.max(0,pet.getFullness() -1));
+
+        }
+
+
+        return currDateTime.getHour();
+    }
+
+    /**
      * Provides a string representation of the {@code GameManager} object, including game details, inventory,
      * and statistics tracker.
      *
@@ -213,12 +353,12 @@ public class GameManager {
      */
     @Override
     public String toString() {
-        return 
-               "\n" + currentGame +
-               "Inventory: " + currentInventory +
-               "\n" + currentStatisticsTracker +
-               "\n}";
-    
+        return
+                "\n" + currentGame +
+                        "Inventory: " + currentInventory +
+                        "\n" + currentStatisticsTracker +
+                        "\n}";
+
     }
 
 }
