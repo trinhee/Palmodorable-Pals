@@ -9,8 +9,7 @@ import java.util.Map;
  * from a CSV file. It provides functionality to retrieve pets by their name or access all pets as a map.
  */
 public class PetsDictionary {
-
-    private String fileName; // Path to the CSV file containing pet data.
+    private static final String FILE_NAME = "data_handling/pets_data.csv";
     private Map<String, Pet> pets; // A map of pet names to their respective Pet objects.
 
     /**
@@ -19,10 +18,14 @@ public class PetsDictionary {
      * sleep effectiveness, and play effectiveness.
      */
     public PetsDictionary() {
-        this.fileName = "data_handling/pets_data.csv";
+        this(FILE_NAME); // Corrected from FILE_PATH to FILE_NAME
+    }
+
+    public PetsDictionary(String filePath) {
+        String fileName = filePath;
         this.pets = new HashMap<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(this.fileName))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             boolean isFirstRow = true;
 
@@ -52,6 +55,8 @@ public class PetsDictionary {
             }
         } catch (IOException e) {
             System.err.println("Error reading the CSV file: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.err.println("Error parsing number from CSV file: " + e.getMessage());
         }
     }
 

@@ -40,6 +40,7 @@ public class Pet {
     /** The effectiveness (stat increase) of play */
     public int playEffectiveness;
 
+    private static final String FILE_PATH = "data_handling/pets_data.csv"; // The pet data file path
 
     /**
      * Constructs a {@code Pet} instance and initializes its attributes.
@@ -71,8 +72,12 @@ public class Pet {
  * Saves the pet's data to a CSV file.
  * If the pet already exists in the file, its data is updated; otherwise, a new record is added.
  */
-    public void saveToFile() {
-        String fileName = "data_handling/pets_data.csv";
+    public void saveToFile () {
+        saveToFile(FILE_PATH);
+    }
+    
+    public void saveToFile(String filePath) {
+        String fileName = filePath;
         List<String> lines = new ArrayList<>();
         boolean updated = false;
 
