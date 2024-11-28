@@ -338,7 +338,6 @@ public class GameManager {
             }
             pet.setSleep(Math.max(0,pet.getSleep() -1));
             pet.setFullness(Math.max(0,pet.getFullness() -1));
-
         }
 
 

@@ -173,6 +173,7 @@ public class StatisticsTracker {
      */
     public String getDayEnd() {
         return dayEnd;
+
     }
 
     public String getLastLogout() {return this.lastLogout;}
