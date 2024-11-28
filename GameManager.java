@@ -116,6 +116,7 @@ public class GameManager {
     /**
      * Starts a study session, including study time and break time.
      * Tracks the study progress, handles interruptions, and updates statistics accordingly.
+     * If study session is completed, gives a random food or gift.
      */
     public void startStudySession() {
         int studyTime = currentSettings.getStudyTime(); // in minutes
@@ -153,7 +154,30 @@ public class GameManager {
         if (actualBreakSeconds < totalBreakSeconds) {
             System.out.println("\nBreak interrupted early.");
         } else {
+            long foodOrGift = Math.round(Math.random());
             System.out.println("\nBreak time is over. Study session completed!");
+
+            if(foodOrGift == 0){
+                Item foodArray[] = new Item[3];
+                foodArray[0] = new Item("Treat", "food", 10);
+                foodArray[1] = new Item("Snack", "food", 25);
+                foodArray[2] = new Item("Meal", "food", 50);
+                Random rand = new Random();
+                int randNum = rand.nextInt(3);
+                System.out.println("Food given: " + foodArray[randNum].getName());
+                this.getCurrentInventory().addItem(foodArray[randNum]);
+            }
+
+            if(foodOrGift == 1){
+                Item giftArray[] = new Item[3];
+                giftArray[0] = new Item("Keychain", "gift", 10);
+                giftArray[1] = new Item("Toy", "gift", 25);
+                giftArray[2] = new Item("Playset", "fgift", 50);
+                Random rand = new Random();
+                int randNum = rand.nextInt(3);
+                System.out.println("Gift given: " + giftArray[randNum].getName());
+                this.getCurrentInventory().addItem(giftArray[randNum]);
+            }
         }
     }
 
@@ -258,11 +282,7 @@ public class GameManager {
             }
 
 
-            if (pet.getSleep() - (int) timeElapsed <= 0) {
-                pet.setSleep(0);
-            } else {
-                pet.setSleep(pet.getSleep() - (int) timeElapsed);
-            }
+
             pet.setSleep(Math.max(0,pet.getSleep() -1));
             pet.setFullness(Math.max(0,pet.getFullness() -1));
         }
@@ -342,6 +362,64 @@ public class GameManager {
 
 
         return currDateTime.getHour();
+    }
+
+
+    /**
+     * Adds 24 hours to the time and updates stats.
+     */
+    public void updateStatsNextDayDemo(){
+
+        LocalDateTime currDateTime = LocalDateTime.now();
+        LocalDateTime nextDateTime = LocalDateTime.now().plusDays(1);
+        Duration duration = Duration.between(currDateTime, nextDateTime);
+        long timeElapsed = Math.abs(duration.toHours());
+        for(int i = (int)timeElapsed; i > 0; i--) {
+            if ((this.getCurrentPet().getSleep() <= 25 || this.getCurrentPet().getFullness() <= 25) && !(this.getCurrentPet().getSleep() <= 25 && this.getCurrentPet().getFullness() <= 25)) {
+
+
+                if (this.getCurrentPet().getHappiness() - 1 <= 0) {
+                    this.getCurrentPet().setHappiness(0);
+                } else {
+                    this.getCurrentPet().setHappiness(this.getCurrentPet().getHappiness() - 1);
+                }
+
+            }
+
+            if (this.getCurrentPet().getSleep() <= 25 && this.getCurrentPet().getFullness() <= 25) {
+
+                if (this.getCurrentPet().getHappiness() - 2 <= 0) {
+
+                    this.getCurrentPet().setHappiness(0);
+                } else {
+
+                    this.getCurrentPet().setHappiness(this.getCurrentPet().getHappiness() - 2);
+
+                }
+            }
+
+            if ((this.getCurrentPet().getSleep() == 0 || this.getCurrentPet().getFullness() == 0) && !(this.getCurrentPet().getSleep() == 0 && this.getCurrentPet().getFullness() == 0)) {
+
+
+                if (this.getCurrentPet().getHealth() - 1 <= 0) {
+                    this.getCurrentPet().setHealth(0);
+                } else {
+                    this.getCurrentPet().setHealth(this.getCurrentPet().getHealth() - 1);
+                }
+
+            }
+
+
+            if (this.getCurrentPet().getSleep() == 0 && this.getCurrentPet().getFullness() == 0) {
+                this.getCurrentPet().setHealth(Math.max(0, this.getCurrentPet().getHealth() - 2));
+            }
+
+
+
+            this.getCurrentPet().setSleep(Math.max(0,this.getCurrentPet().getSleep() -1));
+            this.getCurrentPet().setFullness(Math.max(0,this.getCurrentPet().getFullness() -1));
+        }
+
     }
 
     /**

@@ -4,6 +4,21 @@ import java.util.Scanner;
 public class GameManagerTest {
 
 
+    public static void testUpdateStatsNextDayDemo(){
+        GameManager gameManager = new GameManager("Buddy");
+        gameManager.getCurrentGame().getPet().setFullness(100);
+        gameManager.getCurrentGame().getPet().setSleep(20);
+        System.out.println("Buddys Health Before: " + gameManager.getCurrentGame().getPet().getHealth());
+        System.out.println("Buddys Fullness Before: " + gameManager.getCurrentGame().getPet().getFullness());
+        System.out.println("Buddys Sleep Before: " + gameManager.getCurrentGame().getPet().getSleep());
+        System.out.println("Buddys Happiness Before: " + gameManager.getCurrentGame().getPet().getHappiness());
+        gameManager.updateStatsNextDayDemo();
+        System.out.println("Buddys Health After: " + gameManager.getCurrentGame().getPet().getHealth());
+        System.out.println("Buddys Fullness After: " + gameManager.getCurrentGame().getPet().getFullness());
+        System.out.println("Buddys Sleep After: " + gameManager.getCurrentGame().getPet().getSleep());
+        System.out.println("Buddys Happiness After: " + gameManager.getCurrentGame().getPet().getHappiness());
+    }
+
     public static void testUpdateStatsContinuous(){
         GameManager gameManager = new GameManager("Buddy");
         LocalDateTime currDateTime = LocalDateTime.now();
@@ -138,6 +153,10 @@ public class GameManagerTest {
 
         System.out.println("Update Stats Continuous Test:");
         GameManagerTest.testUpdateStatsContinuous();
+        System.out.println("Test finished");
+
+        System.out.println("Update Stats Next Day Test:");
+        GameManagerTest.testUpdateStatsNextDayDemo();
         System.out.println("Test finished");
     }
 }
