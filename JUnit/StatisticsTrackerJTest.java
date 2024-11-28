@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Unit tests for the {@code StatisticsTracker} class.
  * Tests various functionalities including reading, updating, and saving statistics.
  */
-public class StatisticsTrackerTest {
+public class StatisticsTrackerJTest {
 
     private static final String TEST_CSV_PATH = "statistics_trackerTest.csv";
     /** Might need to change filename in StatisticsTracker.java for netbeans JUnit Tests. */
@@ -20,7 +20,7 @@ public class StatisticsTrackerTest {
         // Create a test CSV file with initial data for testing
         Files.write(Paths.get(TEST_CSV_PATH),
             java.util.Collections.singletonList(
-                "Fluffy,2024-11-24 10:00 AM,2024-11-24 11:00 AM,08:00,18:00,60\n" +
+                "Name,LastLogin,LastLogout,DayStart,DayEnd,TotalStudyTime\n" + 
                 "TestPet,2024-11-25 10:00 AM,2024-11-25 11:00 AM,08:00,18:00,60"
             )
         );
