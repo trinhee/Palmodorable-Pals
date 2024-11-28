@@ -1,5 +1,6 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -179,6 +180,8 @@ public class StatisticsTracker {
         return dayEnd;
     }
 
+    public String getLastLogout() {return this.lastLogout;}
+
     /**
      * Sets the end time for the current day.
      *
@@ -224,6 +227,25 @@ public class StatisticsTracker {
         return formatted;
     }
 
+    public static LocalDateTime formatStringToLocalDateTime(String dateTime) {
+        try {
+            // Normalize the input string to match the expected format
+            dateTime = dateTime.replace("AM", "a.m.");
+            dateTime = dateTime.replace("PM", "p.m.");
+            System.out.println(dateTime);
+            // Define the formatter for the normalized string
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a");
+
+            // Parse the normalized string into a LocalDateTime
+            return LocalDateTime.parse(dateTime, formatter);
+
+        } catch (DateTimeParseException e) {
+            // Print the error message and rethrow the exception
+            System.err.println("Error parsing date-time string: " + e.getMessage());
+            throw e;
+        }
+    }
+
     /**
      * Returns a string representation of the statistics.
      *
@@ -237,5 +259,11 @@ public class StatisticsTracker {
                "Day Start: " + dayStart + "\n" +
                "Day End: " + dayEnd + "\n" +
                "Total Study Time: " + totalStudyTime + " minutes";
+    }
+
+    public static void main(String[] args) {
+        StatisticsTracker tracker = new StatisticsTracker("Buddy");
+        System.out.println(StatisticsTracker.formatStringToLocalDateTime(tracker.getLastStudySession()));
+
     }
 }
