@@ -17,14 +17,19 @@ public class StatisticsTracker {
     private String dayStart; // The start time for the current day
     private String dayEnd; // The end time for the current day
     private int totalStudyTime; // The total study time in minutes
-
+    private static final String FILE_PATH = "data_handling/statistics_tracker.csv"; // The statistics file path
     /**
      * Constructs a {@code StatisticsTracker} instance and loads statistics for the specified name.
      *
      * @param dogName The name of the entity whose statistics are being tracked.
      */
+
     public StatisticsTracker(String dogName) {
-        try (BufferedReader br = new BufferedReader(new FileReader("data_handling/statistics_tracker.csv"))) {
+        this(dogName, FILE_PATH);
+    }
+
+    public StatisticsTracker(String dogName, String filePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             boolean found = false;
 
