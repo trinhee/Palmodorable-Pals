@@ -9,7 +9,7 @@ public class SettingsTest {
         System.out.println(settings);
 
         settings.setBackgroundMusic(false); // Turn off background music
-        settings.setStudyTime(40);
+        settings.setStudyTime(40); 
         settings.setBreakTime(10);
         settings.saveToFile();
         
