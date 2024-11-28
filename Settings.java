@@ -20,7 +20,7 @@ public class Settings {
     private boolean isParent; // Indicates if the player is in parent mode
     private String petName; // The name of the associated pet
 
-    private static final String FILE_NAME = "data_handling/game_settings.csv"; // The settings file path
+    private static final String FILE_PATH = "data_handling/game_settings.csv"; // The settings file path
 
     /**
      * Constructs a {@code Settings} object for a specific pet and loads its settings from the CSV file.
@@ -28,8 +28,13 @@ public class Settings {
      * @param petName The name of the pet whose settings will be loaded.
      */
     public Settings(String petName) {
-        loadSettings(petName);
+        loadSettings(petName, FILE_PATH);
     }
+
+    public Settings(String petName, String filePath) {
+        loadSettings(petName, filePath);
+    }
+
 
     /**
      * Loads the settings for the specified pet from the CSV file.
@@ -37,7 +42,11 @@ public class Settings {
      * @param petName The name of the pet whose settings will be loaded.
      */
     private void loadSettings(String petName) {
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
+        loadSettings(petName, this.FILE_PATH);
+    }
+
+    private void loadSettings(String petName, String filePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             boolean isFirstRow = true;
 
@@ -68,11 +77,15 @@ public class Settings {
      * Saves the current settings for the pet to the CSV file.
      * If the pet's settings exist, they are updated; otherwise, an exception is thrown.
      */
+
     public void saveToFile() {
+        saveToFile(this.FILE_PATH); 
+    }
+    public void saveToFile(String filePath) {
         List<String> lines = new ArrayList<>();
         boolean updated = false;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
 
             while ((line = reader.readLine()) != null) {
@@ -100,7 +113,7 @@ public class Settings {
             throw new IllegalArgumentException("Pet not found in the file: " + this.petName);
         }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (String updatedLine : lines) {
                 writer.write(updatedLine);
                 writer.newLine();

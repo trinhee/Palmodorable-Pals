@@ -5,7 +5,7 @@ public class SettingsTest {
      */
     public static void main(String[] args) {
         // Load settings for pet "Buddy"
-        Settings settings = new Settings("Buddy");
+        Settings settings = new Settings("Buddy", "data_handling/game_settings.csv");
         System.out.println(settings);
 
         settings.setBackgroundMusic(false); // Turn off background music

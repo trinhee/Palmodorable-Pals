@@ -14,7 +14,7 @@ import java.util.Map;
  * It allows adding, removing, and retrieving items, as well as loading inventory data from a CSV file.
  */
 public class Inventory {
-
+    private static final String FILE_PATH = "data_handling/pets_data.csv"; // The inventory file path
     private Map<Item, Integer> inventory; // A map of items and their quantities in the inventory.
 
     /**
@@ -58,9 +58,12 @@ public class Inventory {
      *
      * @param petName The name of the pet whose inventory to load.
      */
-
     public void saveToFile(String petName) {
-        String fileName = "data_handling/pets_data.csv";
+        saveToFile(petName, FILE_PATH);
+    }
+
+    public void saveToFile(String petName, String filePath) {
+        String fileName = filePath;
         List<String> lines = new ArrayList<>();
         boolean updated = false;
 
@@ -118,7 +121,10 @@ public class Inventory {
      * @param petName
      */
     public void loadInventory(String petName) {
-        String csvFilePath = "data_handling/pets_data.csv";
+        loadInventory(petName, FILE_PATH);
+    }
+    public void loadInventory(String petName, String filePath) {
+        String csvFilePath = filePath;
         try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
             String line;
             boolean isHeader = true;
