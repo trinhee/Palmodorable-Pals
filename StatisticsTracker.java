@@ -173,7 +173,6 @@ public class StatisticsTracker {
      */
     public String getDayEnd() {
         return dayEnd;
-
     }
 
     public String getLastLogout() {return this.lastLogout;}
@@ -250,11 +249,11 @@ public class StatisticsTracker {
     @Override
     public String toString() {
         return "Statistics Tracker Information:\n" +
-                "Name: " + name + "\n" +
-                "Last Study Session: " + lastStudySession + "\n" +
-                "Day Start: " + dayStart + "\n" +
-                "Day End: " + dayEnd + "\n" +
-                "Total Study Time: " + totalStudyTime + " minutes";
+               "Name: " + name + "\n" +
+               "Last Study Session: " + lastStudySession + "\n" +
+               "Day Start: " + dayStart + "\n" +
+               "Day End: " + dayEnd + "\n" +
+               "Total Study Time: " + totalStudyTime + " minutes";
     }
 
     public static void main(String[] args) {
