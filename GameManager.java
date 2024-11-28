@@ -1,202 +1,224 @@
+import java.io.*;
+import java.util.*;
+import java.time.*;
+
 /**
- * Manages the creation and updating of pets. Also controls logic behind 
- * the starting of the game, the study sessions, as well as the reward system
- * @author Cameron Solomway
- * @version 1.0
+ * The {@code GameManager} class handles the management of the game, including the pet, inventory, settings,
+ * and statistics tracking. It provides functionalities to start the game, save the game state, manage inventory,
+ * track study sessions, and exit the game.
  */
-
-/** ArrayList implementation for save list */
-import java.util.ArrayList;  
-
-/** For Save List interface */
-import java.util.List;   
-
 public class GameManager {
-    private Pet currentPet;
-    private SaveManager saveManager;
 
-    /* Background Game Mechanics */
+    private Game currentGame; // The current game instance.
+    private Pet currentPet; // The current pet being managed in the game.
+    private Inventory currentInventory; // The inventory associated with the current pet.
+    private Settings currentSettings; // The settings for the current game.
+    private String csvFilePath; // Path to the CSV file for storing inventory data.
+    private StatisticsTracker currentStatisticsTracker; // Tracks statistics for the current pet.
 
     /**
-     * This constructor initializes the SaveManager and is responsible for handling 
-     * both new game starts and loading of existing saves.
-     * @version 1.0
+     * Constructor for {@code GameManager}.
+     * Initializes the game with the given pet name and loads relevant settings, inventory, and statistics.
+     *
+     * @param petName The name of the pet.
      */
-    public GameManager() {
-        /** Initialize SaveManager should activate loadAllSaves() to display the possible loads */
-        this.saveManager = new SaveManager(); 
-        
-        //Maybe something like
-        
-        //selectSlot() //to choose what save file is chosen
+    public GameManager(String petName) {
+        this.currentGame = new Game(petName);
+        this.currentPet = currentGame.getPet();
+        this.currentSettings = currentGame.getSettings();
+        this.currentInventory = new Inventory(); // Initialize Inventory
+        this.csvFilePath = "data_handling/pets_data.csv"; // Default inventory file path
+        this.currentStatisticsTracker = new StatisticsTracker(petName);
+        this.currentInventory.loadInventory(petName);
 
-        //If User Chooses New Game
-        //User input for pet name and type
-        
-        //Create New Pet
-        //this.currentPet = createPet(name, id);
-        //startGame();
-
-        //If User Chooses Existing Pet
-        //User selects save slot via gui
-        //loadGame(slot); //Takes status values from save file and sets currentPet to have data from csv file
-        //startGame();
-    }
-
-    /** 
-    * Creates a new instance of the pet with their max values set to 100, or loads an existing pet from save.
-    * This function is used to initialize a new pet based on the pet's name and type (petID), or to load a 
-    * previously saved pet from the save system via SaveManager.
-    * @version 1.0
-    * @param petName The name of the pet entered by the user.
-    * @param petID The type of pet (determined by an ID - for example, 0=Cat, 1=Dog, 2=Bird).
-    */
-    public void createPet(String petName, int petID) {
-        Pet pet = null;
-        /** Create empty inventory (can change so they start with items too!) */
-        List<Item> inventory = new ArrayList<>(); /** Inv will update in SaveManager if existing pet. */
-
-        /** Create new cat with default max values and special traits */
-        if (petID == 0) {
-            pet = new Pet(petName, petID, 100, 100, 100, 100, 15, 50, inventory);
-        }
-
-        /** Create new dog with default max values and special traits */
-        if (petID == 1) {
-            pet = new Pet(petName, petID, 100, 100, 100, 100, 25, 25), inventory;
-        }
-
-        /** Create new bird with default max values and special traits */
-        if (petID == 2) {
-            pet = new Pet(petName, petID, 100, 100, 100, 100, 50, 15, inventory);
-        }
-        if (pet != null) {
-            this.currentPet = pet;
-            System.out.println("Game started with " + pet.getName());
-        } 
-        else {
-            System.out.println("Invalid pet ID.");
-        }
+        startGame();
     }
 
     /**
-    * Saves the current game status into the selected save slot
-    * This method saves the current game state into the save file in the specified slot.
-    * @version 1.0
-    * @param slot The save slot index where the pet's current state will be saved.
-    */
-    public void saveGame(int slot) {
-        if (currentPet != null) {
-            // Save the current pet's state
-            saveManager.saveGame(currentPet, slot); 
-        }
-    }
-
-    /**
-     * Loads the pet based on the save slot the user picks.
-     * This method loads a pet from a save file and sets the pet as the current pet in the game.
-     * @version 1.0
-     * @param slot The save slot index selected by the user to load a saved pet.
-     *** May change to petName rather than slot***
+     * Starts the game by displaying the loaded pet and inventory information.
      */
-    public void loadGame(int slot) {
-        Pet loadedPet = saveManager.loadSave(slot);
-        if (loadedPet != null) {
-            this.currentPet = loadedPet;
-            System.out.println("Game loaded with " + currentPet.getName);
+    public void startGame() {
+        System.out.println("Starting game with pet: " + currentPet.getName());
+        System.out.println(currentInventory); // Optional: Display loaded inventory
+    }
+
+    /**
+     * Saves the current game state, including pet data, settings, and statistics.
+     */
+    public void saveGame() {
+        currentPet.saveToFile();
+        currentSettings.saveToFile();
+        currentStatisticsTracker.saveToFile();
+        currentInventory.saveToFile(this.currentPet.getName());
+        System.out.println("Game saved successfully.");
+    }
+
+    /**
+     * Retrieves the current {@code Game} instance.
+     *
+     * @return The current game instance.
+     */
+    public Game getCurrentGame() {
+        return currentGame;
+    }
+
+    /**
+     * Retrieves the current pet.
+     *
+     * @return The pet being managed in the game.
+     */
+    public Pet getCurrentPet() {
+        return currentPet;
+    }
+
+    /**
+     * Retrieves the current settings.
+     *
+     * @return The settings associated with the game.
+     */
+    public Settings getCurrentSettings() {
+        return currentSettings;
+    }
+
+    /**
+     * Retrieves the current inventory.
+     *
+     * @return The inventory of the current pet.
+     */
+    public Inventory getCurrentInventory() {
+        return currentInventory;
+    }
+
+    /**
+     * Retrieves the current statistics tracker.
+     *
+     * @return The statistics tracker associated with the current pet.
+     */
+    public StatisticsTracker getCurrentStatisticsTracker() {
+        return currentStatisticsTracker;
+    }
+
+    /**
+     * Gives an item from the inventory to the pet. The item type must match an item in the inventory.
+     *
+     * @param itemType The type of item to give (e.g., "Food").
+     */
+    public void givePet(String itemType) {
+        Item inventoryItem = this.currentInventory.getItem(itemType);
+        if (inventoryItem != null) {
+            this.currentInventory.removeItem(inventoryItem);
+            this.currentPet.useItem(inventoryItem);
+        } else {
+            System.out.println("Item not found in inventory.");
         }
     }
 
     /**
-     * Updates the pet's stats based on their care (e.g., hunger, happiness).
-     * This method will affect pet stats over time, simulating the impact of neglect or care.
-     * The pet's hunger decreases, and the pet's happiness and health may decrease 
-     * depending on the current hunger level.
-     *** PROB WILL NEED TO UPDATE THE LOGIC ***
-     * @version 1.0
+     * Starts a study session, including study time and break time.
+     * Tracks the study progress, handles interruptions, and updates statistics accordingly.
      */
-    public void updateStatus() {
-        int hunger = currentPet.getFullness(); 
-        int happiness = currentPet.getHappiness();
-        currentPet.setFullness(hunger - 2);
-        currentPet.setSleep(currentPet.getSleep() - 1);
+    public void startStudySession() {
+        int studyTime = currentSettings.getStudyTime(); // in minutes
+        int breakTime = currentSettings.getBreakTime(); // in minutes
+        int totalStudyTime = currentStatisticsTracker.getTotalStudyTime();
 
-        if (hunger >= 40 && hunger < 70){
-            currentPet.setHappiness(happiness - 1);
+        int totalStudySeconds = studyTime; // Convert minutes to seconds for countdown
+        int totalBreakSeconds = breakTime; // Convert break time to seconds
+
+        System.out.println("Study session started! Study time: " + studyTime + " minutes.");
+        System.out.println("Press 'q' at any time to break the study session.");
+
+        int barLength = 50; // Length of the progress bar
+
+        // Study session countdown
+        int actualStudySeconds = countDownWithProgressBar(totalStudySeconds, barLength, "Study");
+        int actualStudyMinutes = actualStudySeconds;
+
+        totalStudyTime += actualStudyMinutes;
+        currentStatisticsTracker.setTotalStudyTime(totalStudyTime);
+        LocalDateTime now = LocalDateTime.now();
+        String time = StatisticsTracker.formatLocalDateTime(now);
+        currentStatisticsTracker.setLastStudySession(now.toString());
+        System.out.println("\nTotal study time updated to: " + currentStatisticsTracker.getTotalStudyTime() + " minutes.");
+        System.out.println("Last study session: " + time);
+
+        if (actualStudySeconds < totalStudySeconds) {
+            System.out.println("\nStudy session interrupted early.");
+            return;
         }
 
-        /* If Pet is has less than 40% hunger left the pet begins taking damage and feeling unhappy */
-        else if (hunger >= 20 && hunger < 40){
-            currentPet.setHealth(currentPet.getHealth() - 1);
-            currentPet.setHappiness(happiness - 2);
-        }
+        System.out.println("\nTime for a break! Break time: " + breakTime + " minutes.");
+        int actualBreakSeconds = countDownWithProgressBar(totalBreakSeconds, barLength, "Break");
 
-        /* If Pet is has less than 20% hunger left the pet quickly begins taking damage and feeling unhappy */
-        else if (hunger < 20){
-            currentPet.setHealth(currentPet.getHealth() - 2); 
-            currentPet.setHappiness(happiness - 3);
-        }
-
-        /* Pet is starving! */
-        else if (hunger == 0){
-            currentPet.setHealth(currentPet.getHealth() - 3); /*values can change to inc or dec difficulty*/
-            currentPet.setHappiness(happiness - 5);
-        }
-
-        System.out.println("Pet status updated.");
-    }
-
-
-
-    /* Study Session Logic */
-
-
-    /**
-     * Simulates a study session and creates rewards which are added to the pet's inventory.
-     * After completing a study session, the pet earns rewards based on how long the session lasts.
-     * 
-     * @version 1.0
-     * @param studyTime The duration of the study session in minutes.
-     */
-    public void completeStudySession(int studyTime) {
-        System.out.println("Study session completed for " + studyTime + " minutes.");
-
-        /** Generate reward item based on study time */
-        Item reward = generateReward(studyTime);
-
-        if (reward != null) {
-            System.out.println("You earned a reward: " + reward.getName());
-            /** Add the reward to the pet's inventory */
-            currentPet.addToInventory(reward); /** may need to change name once added */
-        } 
-        else {
-            System.out.println("No rewards this time. Try studying for a little longer!");
+        if (actualBreakSeconds < totalBreakSeconds) {
+            System.out.println("\nBreak interrupted early.");
+        } else {
+            System.out.println("\nBreak time is over. Study session completed!");
         }
     }
 
     /**
-     * Generates an item reward based on the duration of the study session.
-     * The reward type and value are determined by how long the user studies.
-     * 
-     * @version 1.0
-     * @param studyTime The duration of the study session in minutes.
-     * @return The rewarded item. Returns null if the session is too short (less than 15 minutes).
-     *** WILL NEED TO UPDATE THE LOGIC TO WORK WITH STATISTICS ***
+     * Handles a countdown timer with a progress bar.
+     *
+     * @param totalSeconds The total duration of the countdown in seconds.
+     * @param barLength    The length of the progress bar.
+     * @param phase        The current phase of the timer (e.g., "Study" or "Break").
+     * @return The number of seconds completed before interruption.
      */
-    private Item generateReward(int studyTime) {
-        /** If user studies 15 - 29 mins */
-        if (studyTime >= 15 && studyTime < 30) {
-            return new Item("Treat", "food", 15); 
-        } 
-        /** If user studies 30 - 59 mins */
-        else if (studyTime >= 30 && studyTime < 60) {
-            return new Item("Ball", "gift", 20);
-        } 
-        /** If user studies 60+ mins */
-        else if (studyTime >= 60) {
-            return new Item("Meal", "food", 40);
+    private int countDownWithProgressBar(int totalSeconds, int barLength, String phase) {
+        Scanner scanner = new Scanner(System.in);
+        for (int i = 0; i < totalSeconds; i++) {
+            int progress = (i * barLength) / totalSeconds;
+            System.out.print("\r" + phase + " Progress: [");
+            for (int j = 0; j < barLength; j++) {
+                if (j <= progress) {
+                    System.out.print("=");
+                } else {
+                    System.out.print(" ");
+                }
+            }
+            System.out.print("] " + (totalSeconds - i) + "s remaining");
+
+            try {
+                if (System.in.available() > 0 && scanner.nextLine().equalsIgnoreCase("q")) {
+                    return i;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                System.err.println("Timer interrupted: " + e.getMessage());
+            }
         }
-        /** If User studies less than 15 mins they get nothing */
-        return null;
+
+        return totalSeconds;
     }
+
+    /**
+     * Exits the game after saving the current state.
+     */
+    public void exitGame() {
+        saveGame();
+        System.out.println("Exiting game. Goodbye!");
+    }
+
+    /**
+     * Provides a string representation of the {@code GameManager} object, including game details, inventory,
+     * and statistics tracker.
+     *
+     * @return A formatted string representation of the {@code GameManager}.
+     */
+    @Override
+    public String toString() {
+        return 
+               "\n" + currentGame +
+               "Inventory: " + currentInventory +
+               "\n" + currentStatisticsTracker +
+               "\n}";
+    
+    }
+
 }

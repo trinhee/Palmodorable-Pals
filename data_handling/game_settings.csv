@@ -1,6 +1,4 @@
-player_id,background_music,day_night_mode
-1,true,true
-2,false,true
-3,true,false
-4,true,true
-5,false,false
+pet_name,player_id,background_music,is_parent,study_time,break_time,target_study_time
+Buddy,1,0,0,40,10
+Max,1,1,0,30,10,5
+Fluffy,2,1,1,20,5,5
