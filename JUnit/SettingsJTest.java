@@ -1,10 +1,15 @@
-package com.mycompany.statisticstrackertest;
+package com.mycompany.settingstest;
 
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
+/**
+ * Testing the {@code settings} class
+ * @author Cameron Solomway
+ */
 
 public class SettingsJTest {
 

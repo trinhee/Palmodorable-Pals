@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Unit tests for the {@code StatisticsTracker} class.
  * Tests various functionalities including reading, updating, and saving statistics.
+ * @author Cameron Solomway
  */
 public class StatisticsTrackerJTest {
 
