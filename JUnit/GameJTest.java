@@ -1,24 +1,34 @@
+package JUnit;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.jupiter.api.Test;
+
+import Game;
+import Pet;
+import Settings;
 
 public class GameJTest {
    
     @Test
     void testGetPet() {
 
-        Pet fido = new Pet("Fluffy", 20, 25);
+        Pet fido = new Pet("Smokey", 20, 25);
 
-        //fido.saveToFile();
+        fido.saveToFile();
 
-        Pet Buddy = new Pet("Fluffy", 20, 25);
-
-        Game test1 = new Game("Fluffy");
+        Game test1 = new Game("Smokey");
 
         Pet actual = test1.getPet();
 
-        assertEquals(Buddy, fido);
+        assertEquals("Smokey", actual.getName());
+        assertEquals(100, actual.getHealth());
+        assertEquals(100, actual.getSleep());
+        assertEquals(100, actual.getFullness());
+        assertEquals(100, actual.getHappiness());
+        assertEquals(20, actual.getSleepEffectiveness());
+        assertEquals(25, actual.getPlayEffectiveness());
     }
 
     @Test
@@ -28,14 +38,12 @@ public class GameJTest {
 
         Settings actual = test.getSettings();
 
-        Settings settings = new Settings("Buddy");
-
-        settings.setBackgroundMusic(true);
-        settings.setStudyTime(0);
-        settings.setBreakTime(40);
-        settings.setTargetStudyTime(10);
-
-        assertEquals(settings, actual);
+        assertEquals("Buddy", actual.getPetName());
+        assertFalse(actual.getBackgroundMusic());
+        assertFalse(actual.isParent());
+        assertEquals(10, actual.getBreakTime());
+        assertEquals(40, actual.getStudyTime());
+        assertEquals(10, actual.getTargetStudyTime());
 
     }
 
