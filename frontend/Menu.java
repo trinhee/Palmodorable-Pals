@@ -12,8 +12,8 @@ public class Menu extends JPanel {
     private JPanel mainPanel;
     private BufferedImage backgroundImage;
     private ImageIcon titleIcon;
-    private JButton[] buttons = new JButton[4];
-    private Image[] buttonImages = new Image[4];
+    private JButton[] buttons = new JButton[5]; // Updated to include the "Quit" button
+    private Image[] buttonImages = new Image[5]; // Updated for 5 buttons
     private int buttonWidth = 522;
     private int buttonHeight = 208;
     private float fadeOpacity = 0.0f;
@@ -37,7 +37,7 @@ public class Menu extends JPanel {
 
         // Timer to handle background fade-in
         fadeTimer = new Timer(50, e -> {
-            fadeOpacity = clamp(fadeOpacity + 0.02f, 0.0f, 1.0f); // Clamp fadeOpacity
+            fadeOpacity = clamp(fadeOpacity + 0.05f, 0.0f, 1.0f); // Clamp fadeOpacity
             repaint();
             if (fadeOpacity >= 1.0f) {
                 fadeTimer.stop();
@@ -60,7 +60,7 @@ public class Menu extends JPanel {
             titleIcon = new ImageIcon(titleUrl);
 
             // Load button images
-            String[] buttonPaths = {"/new_button.png", "/load_button.png", "/tutorial_button.png", "/parent_button.png"};
+            String[] buttonPaths = {"/new_button.png", "/load_button.png", "/tutorial_button.png", "/parent_button.png", "/quit_button.png"};
             for (int i = 0; i < buttonPaths.length; i++) {
                 URL buttonUrl = getClass().getResource(buttonPaths[i]);
                 if (buttonUrl == null) throw new RuntimeException("Resource not found: " + buttonPaths[i]);
@@ -73,15 +73,13 @@ public class Menu extends JPanel {
     }
 
     private void initializeButtons() {
-        String[] buttonNames = {"New", "Load", "Tutorial", "Parent"};
+        String[] buttonNames = {"New", "Load", "Tutorial", "Parent", "Quit"};
         for (int i = 0; i < buttons.length; i++) {
             int index = i; // Capture index for lambda and listeners
             buttons[i] = new JButton(new ImageIcon(buttonImages[i]));
             buttons[i].setFocusPainted(false);
             buttons[i].setContentAreaFilled(false);
             buttons[i].setBorderPainted(false);
-
-            // buttons[i].setBorder(new LineBorder(Color.ORANGE, 2)); // testing
 
             // Add mouse listener for hover effect
             buttons[i].addMouseListener(new MouseAdapter() {
@@ -98,23 +96,28 @@ public class Menu extends JPanel {
                 }
             });
 
-            buttons[i].addActionListener(e ->{
-                if (buttonNames[index].equals("New")){
-                    cardLayout.show(mainPanel, "ChoosePet");
-                } else if (buttonNames[index].equals("Tutorial")){
-                    cardLayout.show(mainPanel, "Tutorial");
-                } else if (buttonNames[index].equals("Load")){
-                    cardLayout.show(mainPanel, "Save");
-                } else if (buttonNames[index].equals("Parent")){
-                    cardLayout.show(mainPanel, "Parent");
-                }
-                System.out.println(buttonNames[index] + " button clicked");
-            });
+            // Add action listeners
+            if (buttonNames[index].equals("Quit")) {
+                buttons[i].addActionListener(e -> System.exit(0)); // Quit the application
+            } else {
+                buttons[i].addActionListener(e -> {
+                    if (buttonNames[index].equals("New")) {
+                        cardLayout.show(mainPanel, "ChoosePet");
+                    } else if (buttonNames[index].equals("Tutorial")) {
+                        cardLayout.show(mainPanel, "Tutorial");
+                    } else if (buttonNames[index].equals("Load")) {
+                        cardLayout.show(mainPanel, "Save");
+                    } else if (buttonNames[index].equals("Parent")) {
+                        cardLayout.show(mainPanel, "Parent");
+                    }
+                    System.out.println(buttonNames[index] + " button clicked");
+                });
+            }
             add(buttons[i]);
         }
     }
 
-    private Image createTransparentImage(Image originalImage, float opacity) {
+    public Image createTransparentImage(Image originalImage, float opacity) {
         int width = originalImage.getWidth(null);
         int height = originalImage.getHeight(null);
 
@@ -171,7 +174,7 @@ public class Menu extends JPanel {
             g2d.setComposite(originalComposite);
         }
 
-        // Center buttons in a 2x2 grid
+        // Center buttons in a 2x2 grid with Quit button below
         int panelWidth = getWidth();
         int panelHeight = getHeight();
         int totalButtonWidth = (buttonWidth * 2) + spacing;
@@ -179,13 +182,20 @@ public class Menu extends JPanel {
         int startX = (panelWidth - totalButtonWidth) / 2;
         int startY = (panelHeight - totalButtonHeight) / 2;
 
-        for (int i = 0; i < buttons.length; i++) {
+        // Position the first 4 buttons
+        for (int i = 0; i < buttons.length - 1; i++) {
             int row = i / 2;
             int col = i % 2;
             int x = startX + (col * (buttonWidth + spacing));
             int y = startY + (row * (buttonHeight + spacing));
             buttons[i].setBounds(x, y, buttonWidth, buttonHeight);
         }
+
+        // Position the Quit button
+        JButton quitButton = buttons[4];
+        int quitX = (panelWidth - buttonWidth) / 2;
+        int quitY = startY + (buttonHeight * 2) + (spacing * 2); // Below the grid
+        quitButton.setBounds(quitX, quitY, buttonWidth, buttonHeight);
 
         // Draw title GIF when the background is fully visible
         if (fadeOpacity >= 1.0f && titleIcon != null) {

@@ -2,7 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Save extends JPanel {
+    private CardLayout cardLayout;
+    private JPanel mainPanel;
+
     public Save(CardLayout cardLayout, JPanel mainPanel) {
+        this.cardLayout = cardLayout;
+        this.mainPanel = mainPanel;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); // Stack elements vertically
         setBackground(Color.LIGHT_GRAY);
 
@@ -35,6 +40,7 @@ public class Save extends JPanel {
         backButton.addActionListener(e -> cardLayout.show(mainPanel, "Menu")); // Return to the main menu
         add(Box.createVerticalStrut(20));
         add(backButton);
+        PanelUtils.moveBack(this, "Menu", cardLayout, mainPanel);
     }
 
     private JButton createButton(String text) {

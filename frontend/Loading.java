@@ -16,6 +16,7 @@ public class Loading extends JPanel {
     private int loadingProgress = 0;
     private Timer animationTimer;
     private Timer loadingTimer;
+    private Music music;
 
     public Loading() {
         setBackground(Color.DARK_GRAY);
@@ -37,12 +38,12 @@ public class Loading extends JPanel {
                 repaint();
             } else {
                 ((Timer) e.getSource()).stop();
-                playMenuMusic();
+                Music.getInstance().play("/Happy.wav");
             }
         });
         loadingTimer.start();
     }
-
+    /*
     private void playMenuMusic() {
         try{
             URL soundURL = getClass().getResource("/Happy.wav");
@@ -58,6 +59,8 @@ public class Loading extends JPanel {
             e.printStackTrace();
         }
     }
+
+     */
 
     private void loadSpriteSheet() {
         try {
@@ -110,5 +113,9 @@ public class Loading extends JPanel {
 
     public boolean isLoadingComplete() {
         return loadingProgress >= 100;
+    }
+
+    public Music getMusicInstance(){
+        return music;
     }
 }

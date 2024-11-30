@@ -2,7 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Tutorial extends JPanel {
+    private CardLayout cardLayout;
+    private JPanel mainPanel;
+
     public Tutorial(CardLayout cardLayout, JPanel mainPanel) {
+        this.cardLayout = cardLayout;
+        this.mainPanel = mainPanel;
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
@@ -42,5 +47,7 @@ public class Tutorial extends JPanel {
         backButton.setFont(new Font("Arial", Font.PLAIN, 16));
         backButton.addActionListener(e -> cardLayout.show(mainPanel, "Menu")); // Return to the main menu
         add(backButton, BorderLayout.SOUTH);
+
+        PanelUtils.moveBack(this, "Menu", cardLayout, mainPanel);
     }
 }

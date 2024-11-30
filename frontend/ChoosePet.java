@@ -1,49 +1,246 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import javax.swing.border.LineBorder;
+import java.io.IOException;
+import java.net.URL;
 
 public class ChoosePet extends JPanel {
-    public ChoosePet(CardLayout cardLayout, JPanel mainPanel) {
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); // Stack elements vertically
-        setBackground(Color.LIGHT_GRAY);
+    private Timer animationTimer;
+    private int currentFrame = 0;
+    private BufferedImage background;
+    private BufferedImage[] dogFrames;
+    private BufferedImage[] catFrames;
+    private BufferedImage[] birdFrames;
 
-        // Title
-        JLabel title = new JLabel("Adopt a Pet!");
-        title.setFont(new Font("Arial", Font.BOLD, 32));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(Box.createVerticalStrut(50)); // Add vertical spacing
-        add(title);
+    private Menu menu;
+    private JFrame parentFrame;
 
-        // Buttons
-        JButton dogButton = createButton("Dog");
-        JButton catButton = createButton("Cat");
-        JButton birdButton = createButton("Bird");
+    private CardLayout cardLayout;
+    private JPanel mainPanel;
 
-        // Button actions
-        dogButton.addActionListener(e -> System.out.println("Dog button clicked"));
-        catButton.addActionListener(e -> System.out.println("Cat button clicked"));
-        birdButton.addActionListener(e -> System.out.println("Bird button clicked"));
 
-        add(Box.createVerticalStrut(20)); // Add spacing between title and buttons
-        add(dogButton);
-        add(Box.createVerticalStrut(10)); // Spacing between buttons
-        add(catButton);
-        add(Box.createVerticalStrut(10)); // Spacing between buttons
-        add(birdButton);
+    public ChoosePet(CardLayout cardLayout, JPanel mainPanel, Menu menu, JFrame parentFrame) {
+        this.cardLayout = cardLayout;
+        this.mainPanel = mainPanel;
+        this.menu = menu;
+        this.parentFrame = parentFrame;
+        // Load background image
+        try {
+            URL bgUrl = getClass().getResource("/choose_pet_background.jpg");
+            if (bgUrl == null) {
+                throw new RuntimeException("Resource not found: /choose_pet_background.png");
+            }
+            background = ImageIO.read(bgUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
 
-        // Back button (Optional)
-        JButton backButton = createButton("Back");
-        backButton.addActionListener(e -> cardLayout.show(mainPanel, "Menu")); // Return to the main menu
-        add(Box.createVerticalStrut(20));
-        add(backButton);
+        setLayout(new BorderLayout());
+
+        // Image Title at the Top Center
+        JLabel imageTitle = new JLabel();
+        imageTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        imageTitle.setVerticalAlignment(SwingConstants.CENTER);
+        try {
+            URL titleImageURL = getClass().getResource("/adopt_title.png");
+            if (titleImageURL == null) {
+                throw new RuntimeException("Resource not found: /adopt_title.png");
+            }
+            ImageIcon titleIcon = new ImageIcon(titleImageURL);
+            imageTitle.setIcon(titleIcon);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        add(imageTitle, BorderLayout.NORTH);
+
+        // Load sprite sheets
+        dogFrames = loadSpriteSheet("/dog_idle.png", 48, 48);
+        catFrames = loadSpriteSheet("/cat_idle.png", 48, 48);
+        birdFrames = loadSpriteSheet("/bird_idle.png", 32, 32);
+
+        // Create the button panel
+        JPanel buttonPanel = new JPanel(new GridBagLayout());
+        buttonPanel.setOpaque(false); // Allow the background to show through
+        buttonPanel.setBackground(new Color(0, 0, 0, 0)); // Transparent panel background
+
+        // Constraints for centering buttons with increased spacing
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(100, 100, 100, 100); // Double the spacing (Insets for top, left, bottom, right)
+
+        // Animated Buttons
+        JButton dogButton = createAnimatedButton(dogFrames, "Dog", 384, 384);
+        JButton catButton = createAnimatedButton(catFrames, "Cat", 384, 384);
+        JButton birdButton = createAnimatedButton(birdFrames, "Bird", 256, 256);
+
+        dogButton.addActionListener(e -> showPopUp("/pop_up.png", "Dog Name: ", "dog"));
+        catButton.addActionListener(e -> showPopUp("/pop_up.png", "Cat Name: ", "cat"));
+        birdButton.addActionListener(e -> showPopUp("/pop_up.png", "Bird Name: ","bird"));
+
+        // Add buttons to the panel
+        buttonPanel.add(dogButton, gbc);
+        gbc.gridx++;
+        buttonPanel.add(catButton, gbc);
+        gbc.gridx++;
+        buttonPanel.add(birdButton, gbc);
+
+        add(buttonPanel, BorderLayout.CENTER);
+
+        PanelUtils.moveBack(this, "Menu", cardLayout, mainPanel);
+
+        // Start the animation timer
+        startAnimation();
     }
 
-    private JButton createButton(String text) {
-        JButton button = new JButton(text);
-        button.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the button
-        button.setFont(new Font("Arial", Font.PLAIN, 18));
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        // Draw the background image
+        if (background != null) {
+            g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+
+    private BufferedImage[] loadSpriteSheet(String resourcePath, int frameWidth, int frameHeight) {
+        try {
+            URL spriteSheetURL = getClass().getResource(resourcePath);
+            if (spriteSheetURL == null) {
+                throw new RuntimeException("Resource not found: " + resourcePath);
+            }
+            BufferedImage spriteSheet = ImageIO.read(spriteSheetURL);
+
+            int frameCount = spriteSheet.getWidth() / frameWidth;
+
+            if (spriteSheet.getHeight() < frameHeight) {
+                throw new RuntimeException("Sprite sheet height is smaller than expected: " + resourcePath);
+            }
+
+            BufferedImage[] frames = new BufferedImage[frameCount];
+            for (int i = 0; i < frameCount; i++) {
+                frames[i] = spriteSheet.getSubimage(i * frameWidth, 0, frameWidth, frameHeight);
+            }
+            return frames;
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        return null;
+    }
+
+    private JButton createAnimatedButton(BufferedImage[] frames, String name, int width, int height) {
+        // Scale frames to desired size
+        BufferedImage[] scaledFrames = new BufferedImage[frames.length];
+        for (int i = 0; i < frames.length; i++) {
+            scaledFrames[i] = scaleImage(frames[i], width, height);
+        }
+
+        JButton button = new JButton(new ImageIcon(scaledFrames[0])); // Set the first frame
+        button.setPreferredSize(new Dimension(width, height)); // Adjust button size
         button.setFocusPainted(false);
-        button.setPreferredSize(new Dimension(150, 40)); // Set button size
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+
+        button.setBorder(new LineBorder(Color.ORANGE, 2));
+
+        // Add hover effect
+        button.addMouseListener(new MouseAdapter() {
+            private boolean isHovered = false;
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                isHovered = true;
+                animationTimer.stop(); // Pause animation
+                Image hoverImage = menu.createTransparentImage(scaledFrames[currentFrame], 0.75f);
+                button.setIcon(new ImageIcon(hoverImage));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                isHovered = false;
+                animationTimer.start(); // Resume animation
+                button.setIcon(new ImageIcon(scaledFrames[currentFrame])); // Restore current frame
+            }
+        });
+
+
+
+        // Set animation update
+        button.putClientProperty("frames", scaledFrames);
+
         return button;
+    }
+
+    private void showPopUp(String imagePath, String placeholder, String petType) {
+        PopUp popup = new PopUp(parentFrame, imagePath, placeholder, e -> {
+            String input = e.getActionCommand();
+            System.out.println("User input: " + input);
+
+            // Create a new pet object based on user input and pet type
+            Pet newPet;
+            switch (petType.toLowerCase()) {
+                case "dog":
+                    newPet = new Pet(input, 10, 15); // Example stats for a dog
+                    break;
+                case "cat":
+                    newPet = new Pet(input, 8, 12); // Example stats for a cat
+                    break;
+                case "bird":
+                    newPet = new Pet(input, 5, 10); // Example stats for a bird
+                    break;
+                default:
+                    System.err.println("Invalid pet type!");
+                    return;
+            }
+
+            // Save the pet data
+            newPet.saveToFile();
+            System.out.println("New pet saved: " + newPet);
+
+            // Transition to the game screen
+            cardLayout.show(mainPanel, "Game");
+
+            // Fade out the current music
+            Music.getInstance().fadeOut(4000);
+        });
+        popup.show();
+    }
+
+
+    private void startAnimation() {
+        animationTimer = new Timer(100, e -> {
+            currentFrame = (currentFrame + 1) % 4; // 4 frames in each sprite sheet
+            for (Component comp : getComponents()) {
+                if (comp instanceof JPanel) {
+                    JPanel buttonPanel = (JPanel) comp;
+                    for (Component buttonComp : buttonPanel.getComponents()) {
+                        if (buttonComp instanceof JButton) {
+                            JButton button = (JButton) buttonComp;
+                            BufferedImage[] frames = (BufferedImage[]) button.getClientProperty("frames");
+                            if (frames != null) {
+                                button.setIcon(new ImageIcon(frames[currentFrame]));
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        animationTimer.start();
+    }
+
+    private BufferedImage scaleImage(BufferedImage originalImage, int width, int height) {
+        Image scaledImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = bufferedImage.createGraphics();
+        g2d.drawImage(scaledImage, 0, 0, null);
+        g2d.dispose();
+        return bufferedImage;
     }
 }
