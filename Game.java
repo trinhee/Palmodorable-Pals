@@ -7,7 +7,7 @@ public class Game {
     private Pet pet; // The pet being managed in the game.
     private Settings settings; // The settings specific to the game.
 
-    /**
+    /** 
      * Constructs a {@code Game} instance with the specified pet name.
      * The constructor initializes the game with a pet fetched from the {@code PetsDictionary}.
      * If the pet name is not found, an error is logged, and the game will not be fully initialized.

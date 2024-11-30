@@ -79,7 +79,7 @@ public class Settings {
      */
 
     public void saveToFile() {
-        saveToFile(this.FILE_PATH); 
+        saveToFile(FILE_PATH); 
     }
     public void saveToFile(String filePath) {
         List<String> lines = new ArrayList<>();

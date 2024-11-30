@@ -1,4 +1,3 @@
-package com.mycompany.statisticstrackertest;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -12,7 +11,7 @@ import java.util.List;
  * for a specific entity (e.g., a pet). It handles loading and saving data to a CSV file,
  * and tracks details such as the last study session, daily start and end times, and total study time.
  */
-public class StatisticsTracker {
+public class StatisticsTracker { 
 
     private String name; // The name of the entity (e.g., pet or user)
     private String lastStudySession; // The timestamp of the last study session
