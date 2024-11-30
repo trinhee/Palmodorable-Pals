@@ -16,10 +16,10 @@ import java.util.ArrayList;
  * Unit tests for the {@code Inventory} class.
  * @author Cameron Solomway
  */
-public class InventoryJTest {
+public class InventoryTest {
     
     private Inventory instance;
-     private static final String FILE_NAME = "pets_data.csv";
+    private static final String FILE_NAME = "pets_data.csv";
     
     @BeforeEach
     public void setUpClass() throws IOException {

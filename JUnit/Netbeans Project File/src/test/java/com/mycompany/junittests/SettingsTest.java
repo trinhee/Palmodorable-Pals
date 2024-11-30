@@ -6,12 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-/**
- * Testing the {@code settings} class
- * @author Cameron Solomway
- */
-
-public class SettingsJTest {
+public class SettingsTest {
 
     private static final String TEST_FILE_NAME = "test_game_settings.csv";
     
