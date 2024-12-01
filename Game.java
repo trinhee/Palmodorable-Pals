@@ -4,31 +4,35 @@
  */
 public class Game {
 
+
     private Pet pet; // The pet being managed in the game.
     private Settings settings; // The settings specific to the game.
 
-    /** 
+
+    /**
      * Constructs a {@code Game} instance with the specified pet name.
      * The constructor initializes the game with a pet fetched from the {@code PetsDictionary}.
      * If the pet name is not found, an error is logged, and the game will not be fully initialized.
      *
      * @param petName the name of the pet to initialize the game with.
      */
-    public Game(String petName) {
+    public Game(String petName, int petType) {
         PetsDictionary petsDictionary = new PetsDictionary();
         this.pet = petsDictionary.getPetByName(petName);
-        
+       
         if (this.pet == null) {
-            System.err.println("Error: Pet with name '" + petName + "' not found.");
-            return;
+            this.pet = new Pet(petName, petType, 50, 50); //Set 50 as base effectiveness.
         }
+
 
         // Initialize settings for the given pet
         this.settings = new Settings(petName);
 
+
         System.out.println("Game initialized with pet: " + this.pet.getName());
         System.out.println("Game settings loaded for pet: " + this.pet.getName());
     }
+
 
     /**
      * Retrieves the pet associated with this game.
@@ -39,6 +43,7 @@ public class Game {
         return pet;
     }
 
+
     /**
      * Retrieves the settings associated with this game.
      *
@@ -47,6 +52,7 @@ public class Game {
     public Settings getSettings() {
         return settings;
     }
+
 
     /**
      * Returns a string representation of the game's details, including pet information and settings.
@@ -59,6 +65,7 @@ public class Game {
         sb.append("=== Game Information ===\n");
         sb.append("Pet Information:\n");
         sb.append("Name: ").append(pet.getName()).append("\n");
+        sb.append("Type: ").append(pet.getType()).append("\n");
         sb.append("Health: ").append(pet.getHealth()).append("\n");
         sb.append("Sleep: ").append(pet.getSleep()).append("\n");
         sb.append("Fullness: ").append(pet.getFullness()).append("\n");
@@ -67,3 +74,5 @@ public class Game {
         return sb.toString();
     }
 }
+
+
