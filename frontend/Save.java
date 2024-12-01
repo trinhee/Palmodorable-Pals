@@ -1,5 +1,5 @@
 import javax.swing.*;
-import java.awt.*;
+import java.awt.*; 
 
 public class Save extends JPanel {
     private CardLayout cardLayout;
@@ -50,5 +50,9 @@ public class Save extends JPanel {
         button.setFocusPainted(false);
         button.setPreferredSize(new Dimension(200, 40)); // Set button size
         return button;
+    }
+
+    private void saveGame() {
+
     }
 }

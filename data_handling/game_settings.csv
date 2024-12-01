@@ -1,4 +1,2 @@
-pet_name,player_id,background_music,is_parent,study_time,break_time,target_study_time
-Buddy,0,0,40,10,10
-Max,1,1,0,30,10,5
-Fluffy,2,1,1,20,5,5
+background_music,study_time,break_time
+0,600,20

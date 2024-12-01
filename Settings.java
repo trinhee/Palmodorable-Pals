@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -15,10 +16,7 @@ public class Settings {
 
     private int studyTime; // The study time in minutes
     private int breakTime; // The break time in minutes
-    private int targetStudyTime; // The target number of study sessions
     private boolean backgroundMusic; // Indicates if background music is enabled
-    private boolean isParent; // Indicates if the player is in parent mode
-    private String petName; // The name of the associated pet
 
     private static final String FILE_PATH = "data_handling/game_settings.csv"; // The settings file path
 
@@ -27,12 +25,12 @@ public class Settings {
      *
      * @param petName The name of the pet whose settings will be loaded.
      */
-    public Settings(String petName) {
-        loadSettings(petName, FILE_PATH);
+    public Settings() {
+        loadSettings(FILE_PATH);
     }
 
-    public Settings(String petName, String filePath) {
-        loadSettings(petName, filePath);
+    public Settings(String filePath) {
+        loadSettings(filePath);
     }
 
 
@@ -41,11 +39,11 @@ public class Settings {
      *
      * @param petName The name of the pet whose settings will be loaded.
      */
-    private void loadSettings(String petName) {
-        loadSettings(petName, this.FILE_PATH);
+    private void loadSettings() {
+        loadSettings(this.FILE_PATH);
     }
 
-    private void loadSettings(String petName, String filePath) {
+    private void loadSettings(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             boolean isFirstRow = true;
@@ -58,15 +56,10 @@ public class Settings {
 
                 String[] values = line.split(",");
 
-                if (values[0].equalsIgnoreCase(petName)) {
-                    this.petName = values[0];
-                    this.backgroundMusic = parseBoolean(values[1]);
-                    this.isParent = parseBoolean(values[2]);
-                    this.studyTime = Integer.parseInt(values[3]);
-                    this.breakTime = Integer.parseInt(values[4]);
-                    this.targetStudyTime = Integer.parseInt(values[5]);
-                    break;
-                }
+                this.backgroundMusic = parseBoolean(values[0]);
+                this.studyTime = Integer.parseInt(values[1]);
+                this.breakTime = Integer.parseInt(values[2]);
+                break;
             }
         } catch (IOException e) {
             System.err.println("Error reading the CSV file: " + e.getMessage());
@@ -83,23 +76,22 @@ public class Settings {
     }
     public void saveToFile(String filePath) {
         List<String> lines = new ArrayList<>();
-        boolean updated = false;
+        boolean isFirstRow = true;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
 
             while ((line = reader.readLine()) != null) {
+
                 String[] values = line.split(",", -1);
 
-                if (values[0].equalsIgnoreCase(this.petName)) {
-                    line = String.format("%s,%d,%d,%d,%d,%d",
-                            this.petName,
-                            this.backgroundMusic ? 1 : 0,
-                            this.isParent ? 1 : 0,
-                            this.studyTime,
-                            this.breakTime,
-                            this.targetStudyTime);
-                    updated = true;
+                if (values[0].length() == 1){
+                    
+                    line = String.format("%d,%d,%d",
+                    this.backgroundMusic ? 1 : 0,
+                    this.studyTime,
+                    this.breakTime);
+
                 }
 
                 lines.add(line);
@@ -109,17 +101,13 @@ public class Settings {
             return;
         }
 
-        if (!updated) {
-            throw new IllegalArgumentException("Pet not found in the file: " + this.petName);
-        }
-
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (String updatedLine : lines) {
                 writer.write(updatedLine);
                 writer.newLine();
             }
 
-            System.out.println("Settings successfully saved for pet: " + this.petName);
+            System.out.println("Settings successfully saved");
         } catch (IOException e) {
             System.err.println("Error writing to the file: " + e.getMessage());
         }
@@ -174,24 +162,6 @@ public class Settings {
     }
 
     /**
-     * Sets the target study time.
-     *
-     * @param time The new target number of study sessions.
-     */
-    public void setTargetStudyTime(int time) {
-        this.targetStudyTime = time;
-    }
-
-    /**
-     * Retrieves the target study time.
-     *
-     * @return The target number of study sessions.
-     */
-    public int getTargetStudyTime() {
-        return this.targetStudyTime;
-    }
-
-    /**
      * Retrieves whether background music is enabled.
      *
      * @return {@code true} if background music is enabled; {@code false} otherwise.
@@ -210,24 +180,6 @@ public class Settings {
     }
 
     /**
-     * Checks if the player is in parent mode.
-     *
-     * @return {@code true} if the player is in parent mode; {@code false} otherwise.
-     */
-    public boolean isParent() {
-        return this.isParent;
-    }
-
-    /**
-     * Retrieves the name of the associated pet.
-     *
-     * @return The pet's name.
-     */
-    public String getPetName() {
-        return this.petName;
-    }
-
-    /**
      * Returns a string representation of the settings for the pet.
      *
      * @return A formatted string describing the settings.
@@ -235,12 +187,10 @@ public class Settings {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Settings for Pet: ").append(this.petName).append("\n");
+        sb.append("Settings for game: \n");
         sb.append("Background Music: ").append(this.backgroundMusic ? "On" : "Off").append("\n");
-        sb.append("Is Parent: ").append(this.isParent ? "Yes" : "No").append("\n");
         sb.append("Study Time: ").append(this.studyTime).append(" minutes\n");
         sb.append("Break Time: ").append(this.breakTime).append(" minutes\n");
-        sb.append("Target Study Time: ").append(this.targetStudyTime).append(" sessions\n");
         return sb.toString();
     }
 }
