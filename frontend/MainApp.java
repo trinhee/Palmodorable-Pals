@@ -1,10 +1,10 @@
+package frontend;
+import backend.GameManager;
+import backend.Pet;
+import backend.Settings;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
 public class MainApp {
     public static void main(String[] args) {
@@ -21,15 +21,17 @@ public class MainApp {
         // Loading screen wit da cat
         Loading loadingScreen = new Loading();
 
-        String petType = "cat";
+        Settings settings = Settings.getInstance();
+
+        GameManager gameManager = new GameManager("Buddy",1);
 
         // Add panels to cardLayout
         Menu menuScreen = new Menu(cardLayout, mainPanel);
-        ChoosePet choosePetScreen = new ChoosePet(cardLayout, mainPanel, menuScreen, window);
+        ChoosePet choosePetScreen = new ChoosePet(cardLayout, mainPanel, menuScreen, window, gameManager);
         Tutorial tutorialScreen = new Tutorial(cardLayout, mainPanel);
         Save saveScreen = new Save(cardLayout, mainPanel);
         Parent parentScreen = new Parent(cardLayout, mainPanel, cardLayout, window);
-        GameScreen gameScreen = new GameScreen(cardLayout, mainPanel, petType);
+        GameScreen gameScreen = new GameScreen(cardLayout, mainPanel, gameManager, settings);
 
         mainPanel.add(loadingScreen, "Loading"); // add loading panel to main panel
         mainPanel.add(menuScreen, "Menu");
@@ -55,6 +57,7 @@ public class MainApp {
 
         });
         checkloadingComplete.start();
-    }
 
+
+    }
 }

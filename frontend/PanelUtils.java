@@ -1,3 +1,4 @@
+package frontend;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,7 +16,7 @@ public class PanelUtils {
         actionMap.put("moveBack", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("ESC key pressed, moving back to: " + targetPanelName);
+                // System.out.println("ESC key pressed, moving back to: " + targetPanelName);
                 cardLayout.show(mainPanel, targetPanelName);
             }
         });

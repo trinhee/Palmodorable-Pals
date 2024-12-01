@@ -1,5 +1,6 @@
+package frontend;
 import javax.swing.*;
-import java.awt.*; 
+import java.awt.*;
 
 public class Save extends JPanel {
     private CardLayout cardLayout;
@@ -8,51 +9,47 @@ public class Save extends JPanel {
     public Save(CardLayout cardLayout, JPanel mainPanel) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); // Stack elements vertically
-        setBackground(Color.LIGHT_GRAY);
+        setLayout(new GridBagLayout()); // Use GridBagLayout for better centering
+        setBackground(new Color(240, 240, 240)); // Softer background color
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(20, 0, 20, 0); // Add padding between components
+        gbc.anchor = GridBagConstraints.CENTER;
 
         // Title
         JLabel title = new JLabel("Save/Load");
-        title.setFont(new Font("Arial", Font.BOLD, 32));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(Box.createVerticalStrut(50)); // Add vertical spacing
-        add(title);
+        title.setFont(new Font("Arial", Font.BOLD, 36));
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        add(title, gbc);
 
-        // Buttons
+        // Save Button
+        gbc.gridy++;
         JButton saveGameButton = createButton("Save Game");
-        JButton loadPreviousStateButton = createButton("Load Previous State");
-        JButton loadAlternatePetButton = createButton("Load Alternate Pet");
-
-        // Button actions
         saveGameButton.addActionListener(e -> System.out.println("Save Game button clicked"));
-        loadPreviousStateButton.addActionListener(e -> System.out.println("Load Previous State button clicked"));
-        loadAlternatePetButton.addActionListener(e -> System.out.println("Load Alternate Pet button clicked"));
+        add(saveGameButton, gbc);
 
-        add(Box.createVerticalStrut(20)); // Add spacing between title and buttons
-        add(saveGameButton);
-        add(Box.createVerticalStrut(10)); // Spacing between buttons
-        add(loadPreviousStateButton);
-        add(Box.createVerticalStrut(10)); // Spacing between buttons
-        add(loadAlternatePetButton);
+        // Load Button
+        gbc.gridy++;
+        JButton loadPreviousStateButton = createButton("Load Previous State");
+        loadPreviousStateButton.addActionListener(e -> System.out.println("Load Previous State button clicked"));
+        add(loadPreviousStateButton, gbc);
 
         // Back Button
+        gbc.gridy++;
         JButton backButton = createButton("Back");
         backButton.addActionListener(e -> cardLayout.show(mainPanel, "Menu")); // Return to the main menu
-        add(Box.createVerticalStrut(20));
-        add(backButton);
+        add(backButton, gbc);
+
         PanelUtils.moveBack(this, "Menu", cardLayout, mainPanel);
     }
 
     private JButton createButton(String text) {
         JButton button = new JButton(text);
-        button.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the button
-        button.setFont(new Font("Arial", Font.PLAIN, 18));
+        button.setFont(new Font("Arial", Font.PLAIN, 20));
         button.setFocusPainted(false);
-        button.setPreferredSize(new Dimension(200, 40)); // Set button size
+        button.setPreferredSize(new Dimension(200, 50)); // Set button size
         return button;
-    }
-
-    private void saveGame() {
-
     }
 }

@@ -1,3 +1,7 @@
+package frontend;
+import backend.GameManager;
+import backend.Settings;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -18,13 +22,16 @@ public class GameScreen extends JPanel {
     private BufferedImage[] petFrames;
     private Timer animationTimer;
     private int currentFrame = 0; // Added currentFrame for animation
+    private int petType;
+    private GameManager gameManager;
+    private Settings settings;
 
-    private String petType; // Added pet type
-
-    public GameScreen(CardLayout cardLayout, JPanel mainPanel, String petType) {
+    public GameScreen(CardLayout cardLayout, JPanel mainPanel, GameManager gameManager, Settings settings) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
-        this.petType = petType;
+        this.gameManager = gameManager;
+        this.settings = Settings.getInstance();
+        this.petType = gameManager.getCurrentPet().getPetType();
 
         // Load background image
         try {
@@ -46,7 +53,7 @@ public class GameScreen extends JPanel {
 
         // Add a start button and initialize the animated pet sprite
         initializeStartButton();
-        initializePetSprite();
+        initializePetSprite(petType);
 
         // Detect when the panel is shown
         addAncestorListener(new AncestorListenerAdapter() {
@@ -69,7 +76,12 @@ public class GameScreen extends JPanel {
             Music.getInstance().stop();
             Music.getInstance().play("/lofi.wav");
             remove(startButton); // Remove the button
-            initializeCountdown(1, 30, 0); // set to 1 hour 30 for test
+
+            int studyTime = settings.getStudyTime();
+            int hours = studyTime / 60;
+            int minutes = studyTime % 60;
+
+            initializeCountdown(hours, minutes, 0);
             revalidate();
             repaint();
         });
@@ -128,32 +140,26 @@ public class GameScreen extends JPanel {
         fadeTimer.start();
     }
 
-    private void initializePetSprite() {
+    private void initializePetSprite(int petType) {
         String resourcePath;
-        int frameWidth, frameHeight, scaledWidth, scaledHeight;
+        int frameWidth, frameHeight;
 
         // Determine the resource path and dimensions based on pet type
-        switch (petType.toLowerCase()) {
-            case "dog":
+        switch (petType) {
+            case 0:
                 resourcePath = "/dog_idle.png";
                 frameWidth = 48;
                 frameHeight = 48;
-                scaledWidth = 384;
-                scaledHeight = 384;
                 break;
-            case "cat":
+            case 1:
                 resourcePath = "/cat_idle.png";
                 frameWidth = 48;
                 frameHeight = 48;
-                scaledWidth = 384;
-                scaledHeight = 384;
                 break;
-            case "bird":
+            case 2:
                 resourcePath = "/bird_idle.png";
                 frameWidth = 32;
                 frameHeight = 32;
-                scaledWidth = 256;
-                scaledHeight = 256;
                 break;
             default:
                 throw new IllegalArgumentException("Invalid pet type: " + petType);
@@ -215,10 +221,29 @@ public class GameScreen extends JPanel {
 
         // Draw the animated pet sprite
         if (petFrames != null && petFrames.length > 0) {
-            int x = petType.equalsIgnoreCase("bird") ? 750 : 720;
-            int y = petType.equalsIgnoreCase("bird") ? 720 : 635;
-            int scaledWidth = petType.equalsIgnoreCase("bird") ? 256 : 384;
-            int scaledHeight = petType.equalsIgnoreCase("bird") ? 256 : 384;
+            int x, y, scaledWidth, scaledHeight;
+            switch (petType) {
+                case 0: // Dog
+                    x = 720;
+                    y = 635;
+                    scaledWidth = 384;
+                    scaledHeight = 384;
+                    break;
+                case 1: // Cat
+                    x = 720;
+                    y = 635;
+                    scaledWidth = 384;
+                    scaledHeight = 384;
+                    break;
+                case 2: // Bird
+                    x = 750;
+                    y = 720;
+                    scaledWidth = 256;
+                    scaledHeight = 256;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid pet type: " + petType);
+            }
             g2d.drawImage(petFrames[currentFrame], x, y, scaledWidth, scaledHeight, this);
         }
 

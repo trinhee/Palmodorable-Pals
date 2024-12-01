@@ -1,3 +1,4 @@
+package frontend;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -7,6 +8,10 @@ import javax.imageio.ImageIO;
 import javax.swing.border.LineBorder;
 import java.io.IOException;
 import java.net.URL;
+import java.util.function.Consumer;
+
+import backend.Game;
+import backend.GameManager;
 
 public class ChoosePet extends JPanel {
     private Timer animationTimer;
@@ -22,12 +27,16 @@ public class ChoosePet extends JPanel {
     private CardLayout cardLayout;
     private JPanel mainPanel;
 
+    private GameManager gameManager;
+    private Consumer<GameManager> gameScreenCallback;
 
-    public ChoosePet(CardLayout cardLayout, JPanel mainPanel, Menu menu, JFrame parentFrame) {
+
+    public ChoosePet(CardLayout cardLayout, JPanel mainPanel, Menu menu, JFrame parentFrame, GameManager gameManager) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
         this.menu = menu;
         this.parentFrame = parentFrame;
+        this.gameManager = gameManager;
         // Load background image
         try {
             URL bgUrl = getClass().getResource("/choose_pet_background.jpg");
@@ -80,9 +89,9 @@ public class ChoosePet extends JPanel {
         JButton catButton = createAnimatedButton(catFrames, "Cat", 384, 384);
         JButton birdButton = createAnimatedButton(birdFrames, "Bird", 256, 256);
 
-        dogButton.addActionListener(e -> showPopUp("/pop_up.png", "Dog Name: ", "dog"));
-        catButton.addActionListener(e -> showPopUp("/pop_up.png", "Cat Name: ", "cat"));
-        birdButton.addActionListener(e -> showPopUp("/pop_up.png", "Bird Name: ","bird"));
+        dogButton.addActionListener(e -> showPopUp("/pop_up.png", "", "dog"));
+        catButton.addActionListener(e -> showPopUp("/pop_up.png", "", "cat"));
+        birdButton.addActionListener(e -> showPopUp("/pop_up.png", "","bird"));
 
         // Add buttons to the panel
         buttonPanel.add(dogButton, gbc);
@@ -97,6 +106,14 @@ public class ChoosePet extends JPanel {
 
         // Start the animation timer
         startAnimation();
+
+        if (gameScreenCallback != null) {
+            gameScreenCallback.accept(gameManager);
+        }
+    }
+
+    public void setGameScreenCallback(Consumer<GameManager> callBack) {
+        this.gameScreenCallback = callBack;
     }
 
     @Override
@@ -148,7 +165,7 @@ public class ChoosePet extends JPanel {
         button.setBorderPainted(false);
         button.setContentAreaFilled(false);
 
-        button.setBorder(new LineBorder(Color.ORANGE, 2));
+        // button.setBorder(new LineBorder(Color.ORANGE, 2));
 
         // Add hover effect
         button.addMouseListener(new MouseAdapter() {
@@ -180,29 +197,40 @@ public class ChoosePet extends JPanel {
 
     private void showPopUp(String imagePath, String placeholder, String petType) {
         PopUp popup = new PopUp(parentFrame, imagePath, placeholder, e -> {
-            String input = e.getActionCommand();
+            String input = e.getActionCommand().trim();
             System.out.println("User input: " + input);
 
-            // Create a new pet object based on user input and pet type
-            Pet newPet;
+            // Use GameManager to manage the pet creation
             switch (petType.toLowerCase()) {
                 case "dog":
-                    newPet = new Pet(input, 10, 15); // Example stats for a dog
+                    gameManager.getCurrentPet().setPetType(0);
+                    gameManager.getCurrentPet().setName(input);
+                    gameManager.getCurrentPet().setSleepEffectiveness(10);
+                    gameManager.getCurrentPet().setPlayEffectiveness(15);
+                    gameManager.saveGame();
                     break;
                 case "cat":
-                    newPet = new Pet(input, 8, 12); // Example stats for a cat
+                    gameManager.getCurrentPet().setPetType(1);
+                    gameManager.getCurrentPet().setName(input);
+                    gameManager.getCurrentPet().setSleepEffectiveness(8);
+                    gameManager.getCurrentPet().setPlayEffectiveness(12);
+                    gameManager.saveGame();
                     break;
                 case "bird":
-                    newPet = new Pet(input, 5, 10); // Example stats for a bird
+                    gameManager.getCurrentPet().setPetType(2);
+                    gameManager.getCurrentPet().setName(input);
+                    gameManager.getCurrentPet().setSleepEffectiveness(5);
+                    gameManager.getCurrentPet().setPlayEffectiveness(10);
+                    gameManager.saveGame();
                     break;
                 default:
                     System.err.println("Invalid pet type!");
                     return;
             }
 
-            // Save the pet data
-            newPet.saveToFile();
-            System.out.println("New pet saved: " + newPet);
+            // Save the updated pet data
+            gameManager.saveGame();
+            System.out.println("Pet saved: " + gameManager.getCurrentPet());
 
             // Transition to the game screen
             cardLayout.show(mainPanel, "Game");

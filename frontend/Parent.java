@@ -1,27 +1,20 @@
+package frontend;
 import javax.swing.*;
-
 import java.awt.*;
-
+import backend.Settings;
 public class Parent extends JPanel {
     private CardLayout parentCardLayout;
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private JFrame parentFrame;
-    private static Settings globalSettings;
 
-    static {
-        globalSettings = new Settings("GlobalGameSettings");
-    }
-
-    public static Settings getGlobalSettings() {
-        return globalSettings;
-    }
 
     public Parent(CardLayout appCardLayout, JPanel mainPanel, CardLayout cardLayout, JFrame parentFrame) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
         this.parentFrame = parentFrame;
         parentCardLayout = new CardLayout();
+
 
         
         setLayout(parentCardLayout); // CardLayout for switching between subpanels
@@ -68,8 +61,8 @@ public class Parent extends JPanel {
         // Button actions
         revivePetButton.addActionListener(e -> System.out.println("Revive Pet button clicked"));
         viewStatsButton.addActionListener(e -> System.out.println("View Stats button clicked"));
-        setBreakTimeButton.addActionListener(e -> showPopUp("/pop_up.png", "Break Time: ", "break", globalSettings));
-        setStudyTimeButton.addActionListener(e -> showPopUp("/pop_up.png", "Study Time: ", "study", globalSettings));
+        setBreakTimeButton.addActionListener(e -> showPopUp("/pop_up.png", "", "break"));
+        setStudyTimeButton.addActionListener(e -> showPopUp("/pop_up.png", "", "study"));
 
         // Add components to the panel
         panel.add(Box.createVerticalStrut(20)); // Add spacing between title and buttons
@@ -96,21 +89,27 @@ public class Parent extends JPanel {
         return button;
     }
 
-    private void showPopUp(String imagePath, String placeholder, String type, Settings settings) {
+    private void showPopUp(String imagePath, String placeholder, String type) {
         PopUp popup = new PopUp(parentFrame, imagePath, placeholder, e -> {
             String input = e.getActionCommand().trim(); // Trim whitespace
-            System.out.println("Raw Input: " + input); // Log raw input for debugging
-            
+            // System.out.println("Raw Input: " + input); // Log raw input for debugging
+            int timeInMinutes = Integer.parseInt(input); // Parse the input as an integer
+            Settings settings = Settings.getInstance();
             try {
-                // Validate if the input is numeric
+                input = input.replace(placeholder, "").trim();
+                // Validate if the input is numeric and positive
                 if (!input.matches("\\d+")) { // Check if the input contains only digits
                     throw new NumberFormatException("Input is not a valid positive integer.");
                 }
-    
-                int timeInMinutes = Integer.parseInt(input); // Parse the input as an integer
-    
+
+
+
+                if (timeInMinutes <= 0) { // Additional validation for positive values
+                    throw new NumberFormatException("Time must be greater than zero.");
+                }
+
                 // Update the appropriate setting based on the type
-                switch (type.toLowerCase()) {
+                switch (type) {
                     case "study":
                         settings.setStudyTime(timeInMinutes);
                         System.out.println("Study time set to: " + timeInMinutes + " minutes");
@@ -122,15 +121,16 @@ public class Parent extends JPanel {
                     default:
                         throw new IllegalArgumentException("Invalid type: " + type);
                 }
-    
+
                 // Save settings to the file
                 settings.saveToFile();
+                // System.out.println("Settings successfully saved.");
             } catch (NumberFormatException ex) {
                 // Handle invalid input
-                JOptionPane.showMessageDialog(this, 
-                    "Please enter a valid positive integer for time.", 
-                    "Invalid Input", 
-                    JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(parentFrame,
+                        "Please enter a valid positive integer for time.",
+                        "Invalid Input",
+                        JOptionPane.ERROR_MESSAGE);
             } catch (IllegalArgumentException ex) {
                 // Handle invalid type
                 System.err.println("Error: " + ex.getMessage());
@@ -138,8 +138,9 @@ public class Parent extends JPanel {
         });
         popup.show();
     }
-    
-    
-    
+
+
+
+
 
 }
