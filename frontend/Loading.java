@@ -1,4 +1,4 @@
-package frontend;
+
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
