@@ -33,7 +33,7 @@ public class InventoryScreen extends JPanel {
         JLabel giftLabel = createLabel("Gift");
         add(giftLabel, gbc);
 
-        PanelUtils.moveBack(this, "GameScreen", cardLayout, mainPanel);
+        PanelUtils.moveBack(this, "Game", cardLayout, mainPanel);
 
     }
 
