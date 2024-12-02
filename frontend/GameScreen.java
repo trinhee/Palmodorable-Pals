@@ -23,15 +23,13 @@ public class GameScreen extends JPanel {
     private Timer animationTimer;
     private int currentFrame = 0; // Added currentFrame for animation
     private int petType;
-    private GameManager gameManager;
     private Settings settings;
 
-    public GameScreen(CardLayout cardLayout, JPanel mainPanel, GameManager gameManager, Settings settings) {
+    public GameScreen(CardLayout cardLayout, JPanel mainPanel) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
-        this.gameManager = gameManager;
         this.settings = Settings.getInstance();
-        this.petType = gameManager.getCurrentPet().getPetType();
+        this.petType = GameManager.getInstance().getCurrentPet().getPetType();
 
         // Load background image
         try {

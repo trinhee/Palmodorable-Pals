@@ -1,54 +1,54 @@
 package frontend;
 import javax.swing.*;
 import java.awt.*;
+import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.net.URL;
 
 public class Tutorial extends JPanel {
     private CardLayout cardLayout;
     private JPanel mainPanel;
+    private Image background;
 
     public Tutorial(CardLayout cardLayout, JPanel mainPanel) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
         setLayout(new BorderLayout());
-        setBackground(Color.WHITE);
 
-        // Title
-        JLabel title = new JLabel("Tutorial");
-        title.setFont(new Font("Arial", Font.BOLD, 28));
-        title.setHorizontalAlignment(SwingConstants.CENTER);
-        add(title, BorderLayout.NORTH);
+        // Load background image
+        try {
+            URL bgUrl = getClass().getResource("/tutorial_background.jpg");
+            if (bgUrl == null) {
+                throw new RuntimeException("Resource not found: /tutorial_background.jpg");
+            }
+            background = ImageIO.read(bgUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        // Tutorial Content
-        String tutorialText = """
-                Welcome to the game tutorial!
-                
-                1. Create or load an existing pet.
-                2. Feed your pet by clicking on the food icons.
-                3. Study to take care of your pet.
-                4. Complete daily challenges to earn rewards.
-                5. Explore the game world and unlock achievements.
-                
-                Have fun and enjoy the game!
-                """;
-
-        JTextArea textArea = new JTextArea(tutorialText);
-        textArea.setFont(new Font("Arial", Font.PLAIN, 16));
-        textArea.setLineWrap(true);
-        textArea.setWrapStyleWord(true);
-        textArea.setEditable(false);
-
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
-        add(scrollPane, BorderLayout.CENTER);
-
-        // Back Button
-        JButton backButton = new JButton("Back");
-        backButton.setFont(new Font("Arial", Font.PLAIN, 16));
-        backButton.addActionListener(e -> cardLayout.show(mainPanel, "Menu")); // Return to the main menu
-        add(backButton, BorderLayout.SOUTH);
+        // Tutorial Image Centered on the Panel
+        JLabel imageLabel = new JLabel();
+        imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        try {
+            URL imageUrl = getClass().getResource("/tutorial_text.png");
+            if (imageUrl == null) {
+                throw new RuntimeException("Resource not found: /tutorial_text.png");
+            }
+            ImageIcon imageIcon = new ImageIcon(ImageIO.read(imageUrl));
+            imageLabel.setIcon(imageIcon);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        add(imageLabel, BorderLayout.CENTER);
 
         PanelUtils.moveBack(this, "Menu", cardLayout, mainPanel);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (background != null) {
+            g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+        }
     }
 }

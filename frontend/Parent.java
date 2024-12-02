@@ -1,13 +1,17 @@
 package frontend;
 import javax.swing.*;
 import java.awt.*;
+import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.net.URL;
 import backend.Settings;
+
 public class Parent extends JPanel {
     private CardLayout parentCardLayout;
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private JFrame parentFrame;
-
+    private Image background;
 
     public Parent(CardLayout appCardLayout, JPanel mainPanel, CardLayout cardLayout, JFrame parentFrame) {
         this.cardLayout = cardLayout;
@@ -15,8 +19,17 @@ public class Parent extends JPanel {
         this.parentFrame = parentFrame;
         parentCardLayout = new CardLayout();
 
+        // Load background image
+        try {
+            URL bgUrl = getClass().getResource("/tutorial_background.jpg");
+            if (bgUrl == null) {
+                throw new RuntimeException("Resource not found: /tutorial_background.jpg");
+            }
+            background = ImageIO.read(bgUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        
         setLayout(parentCardLayout); // CardLayout for switching between subpanels
 
         // Create subpanels
@@ -29,9 +42,17 @@ public class Parent extends JPanel {
     }
 
     private JPanel createParentControlsPanel(CardLayout appCardLayout, JPanel mainPanel) {
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (background != null) {
+                    g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+                }
+            }
+        };
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(Color.LIGHT_GRAY);
+        panel.setOpaque(false);
 
         // Title
         JLabel title = new JLabel("Parent Controls");
@@ -102,8 +123,6 @@ public class Parent extends JPanel {
                     throw new NumberFormatException("Input is not a valid positive integer.");
                 }
 
-
-
                 if (timeInMinutes <= 0) { // Additional validation for positive values
                     throw new NumberFormatException("Time must be greater than zero.");
                 }
@@ -138,9 +157,4 @@ public class Parent extends JPanel {
         });
         popup.show();
     }
-
-
-
-
-
 }

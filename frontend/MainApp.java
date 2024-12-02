@@ -21,17 +21,14 @@ public class MainApp {
         // Loading screen wit da cat
         Loading loadingScreen = new Loading();
 
-        Settings settings = Settings.getInstance();
-
-        GameManager gameManager = new GameManager("Buddy",1);
 
         // Add panels to cardLayout
         Menu menuScreen = new Menu(cardLayout, mainPanel);
-        ChoosePet choosePetScreen = new ChoosePet(cardLayout, mainPanel, menuScreen, window, gameManager);
+        ChoosePet choosePetScreen = new ChoosePet(cardLayout, mainPanel, menuScreen, window);
         Tutorial tutorialScreen = new Tutorial(cardLayout, mainPanel);
         Save saveScreen = new Save(cardLayout, mainPanel);
         Parent parentScreen = new Parent(cardLayout, mainPanel, cardLayout, window);
-        GameScreen gameScreen = new GameScreen(cardLayout, mainPanel, gameManager, settings);
+        GameScreen gameScreen = new GameScreen(cardLayout, mainPanel);
 
         mainPanel.add(loadingScreen, "Loading"); // add loading panel to main panel
         mainPanel.add(menuScreen, "Menu");

@@ -1,16 +1,30 @@
 package frontend;
 import javax.swing.*;
 import java.awt.*;
+import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.net.URL;
 
 public class Save extends JPanel {
     private CardLayout cardLayout;
     private JPanel mainPanel;
+    private Image background;
 
     public Save(CardLayout cardLayout, JPanel mainPanel) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
         setLayout(new GridBagLayout()); // Use GridBagLayout for better centering
-        setBackground(new Color(240, 240, 240)); // Softer background color
+
+        // Load background image
+        try {
+            URL bgUrl = getClass().getResource("/save_background.png");
+            if (bgUrl == null) {
+                throw new RuntimeException("Resource not found: /save_background.jpg");
+            }
+            background = ImageIO.read(bgUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -51,5 +65,13 @@ public class Save extends JPanel {
         button.setFocusPainted(false);
         button.setPreferredSize(new Dimension(200, 50)); // Set button size
         return button;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (background != null) {
+            g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+        }
     }
 }

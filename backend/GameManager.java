@@ -11,7 +11,7 @@ import java.util.*;
  */
 public class GameManager {
 
-
+    private static GameManager instance;
     private Game currentGame; // The current game instance.
     private Pet currentPet; // The current pet being managed in the game.
     private Inventory currentInventory; // The inventory associated with the current pet.
@@ -19,6 +19,12 @@ public class GameManager {
     private String csvFilePath; // Path to the CSV file for storing inventory data.
     private StatisticsTracker currentStatisticsTracker; // Tracks statistics for the current pet.
 
+    public static GameManager getInstance() {
+        if (instance == null) {
+            instance = new GameManager("Buddy", 1); // Default pet for example
+        }
+        return instance;
+    }
 
     /**
      * Constructor for {@code GameManager}.

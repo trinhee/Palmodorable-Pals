@@ -28,15 +28,14 @@ public class ChoosePet extends JPanel {
     private JPanel mainPanel;
 
     private GameManager gameManager;
-    private Consumer<GameManager> gameScreenCallback;
 
 
-    public ChoosePet(CardLayout cardLayout, JPanel mainPanel, Menu menu, JFrame parentFrame, GameManager gameManager) {
+    public ChoosePet(CardLayout cardLayout, JPanel mainPanel, Menu menu, JFrame parentFrame) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
         this.menu = menu;
         this.parentFrame = parentFrame;
-        this.gameManager = gameManager;
+        this.gameManager = GameManager.getInstance();
         // Load background image
         try {
             URL bgUrl = getClass().getResource("/choose_pet_background.jpg");
@@ -89,9 +88,9 @@ public class ChoosePet extends JPanel {
         JButton catButton = createAnimatedButton(catFrames, "Cat", 384, 384);
         JButton birdButton = createAnimatedButton(birdFrames, "Bird", 256, 256);
 
-        dogButton.addActionListener(e -> showPopUp("/pop_up.png", "", "dog"));
-        catButton.addActionListener(e -> showPopUp("/pop_up.png", "", "cat"));
-        birdButton.addActionListener(e -> showPopUp("/pop_up.png", "","bird"));
+        dogButton.addActionListener(e -> showPopUp("/pop_up.png", "", 0));
+        catButton.addActionListener(e -> showPopUp("/pop_up.png", "", 1));
+        birdButton.addActionListener(e -> showPopUp("/pop_up.png", "",2));
 
         // Add buttons to the panel
         buttonPanel.add(dogButton, gbc);
@@ -107,13 +106,7 @@ public class ChoosePet extends JPanel {
         // Start the animation timer
         startAnimation();
 
-        if (gameScreenCallback != null) {
-            gameScreenCallback.accept(gameManager);
-        }
-    }
 
-    public void setGameScreenCallback(Consumer<GameManager> callBack) {
-        this.gameScreenCallback = callBack;
     }
 
     @Override
@@ -195,28 +188,28 @@ public class ChoosePet extends JPanel {
         return button;
     }
 
-    private void showPopUp(String imagePath, String placeholder, String petType) {
+    private void showPopUp(String imagePath, String placeholder, int petType) {
         PopUp popup = new PopUp(parentFrame, imagePath, placeholder, e -> {
             String input = e.getActionCommand().trim();
             System.out.println("User input: " + input);
 
             // Use GameManager to manage the pet creation
-            switch (petType.toLowerCase()) {
-                case "dog":
+            switch (petType) {
+                case 0:
                     gameManager.getCurrentPet().setPetType(0);
                     gameManager.getCurrentPet().setName(input);
                     gameManager.getCurrentPet().setSleepEffectiveness(10);
                     gameManager.getCurrentPet().setPlayEffectiveness(15);
                     gameManager.saveGame();
                     break;
-                case "cat":
+                case 1:
                     gameManager.getCurrentPet().setPetType(1);
                     gameManager.getCurrentPet().setName(input);
                     gameManager.getCurrentPet().setSleepEffectiveness(8);
                     gameManager.getCurrentPet().setPlayEffectiveness(12);
                     gameManager.saveGame();
                     break;
-                case "bird":
+                case 2:
                     gameManager.getCurrentPet().setPetType(2);
                     gameManager.getCurrentPet().setName(input);
                     gameManager.getCurrentPet().setSleepEffectiveness(5);
