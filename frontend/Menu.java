@@ -109,9 +109,9 @@ public class Menu extends JPanel {
                     } else if (buttonNames[index].equals("Load")) {
                         cardLayout.show(mainPanel, "Save");
                     } else if (buttonNames[index].equals("Parent")) {
-                        cardLayout.show(mainPanel, "Parent");
+                        cardLayout.show(mainPanel, "Password");
                     }
-                    System.out.println(buttonNames[index] + " button clicked");
+                    // System.out.println(buttonNames[index] + " button clicked");
                 });
             }
             add(buttons[i]);

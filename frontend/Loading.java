@@ -80,7 +80,7 @@ public class Loading extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
+        // System.out.println("painting loading");
         // Draw black background
         g.setColor(Color.DARK_GRAY);
         g.fillRect(0, 0, getWidth(), getHeight());
