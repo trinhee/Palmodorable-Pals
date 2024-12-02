@@ -1,18 +1,29 @@
 package frontend;
+
 import javax.swing.*;
+
+import backend.GameManager;
+import backend.Pet;
+
 import java.awt.*;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.net.URL;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 
 public class Save extends JPanel {
     private CardLayout cardLayout;
     private JPanel mainPanel;
+    private JFrame parentFrame;
     private Image background;
 
     public Save(CardLayout cardLayout, JPanel mainPanel) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
+        this.parentFrame = parentFrame;
         setLayout(new GridBagLayout()); // Use GridBagLayout for better centering
 
         // Load background image
@@ -47,7 +58,7 @@ public class Save extends JPanel {
         // Load Button
         gbc.gridy++;
         JButton loadPreviousStateButton = createButton("Load Previous State");
-        loadPreviousStateButton.addActionListener(e -> System.out.println("Load Previous State button clicked"));
+        loadPreviousStateButton.addActionListener(e -> showPopUp2("/pop_up.png", "Pet Name:"));
         add(loadPreviousStateButton, gbc);
 
         // Back Button
@@ -74,4 +85,64 @@ public class Save extends JPanel {
             g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
         }
     }
+
+    public Pet loadPetData(String petName) {
+        try (BufferedReader br = new BufferedReader(new FileReader("data_handling/pets_data.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] fields = line.split(",");
+                if (fields[0].equals(petName)) {
+                    // Extract pet data from the CSV line
+                    String name = fields[0];
+                    int type = Integer.parseInt(fields[1]);
+                    int health = Integer.parseInt(fields[2]);
+                    int sleep = Integer.parseInt(fields[3]);
+                    int fullness = Integer.parseInt(fields[4]);
+                    int happiness = Integer.parseInt(fields[5]);
+                    int sleepEffectiveness = Integer.parseInt(fields[6]);
+                    int playEffectiveness = Integer.parseInt(fields[7]);
+
+
+                    Pet pet = new Pet(name, type, sleepEffectiveness, playEffectiveness);
+                    pet.setHealth(health);
+                    pet.setSleep(sleep);
+                    pet.setFullness(fullness);
+                    pet.setHappiness(happiness);
+                    return pet;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;  
+    }  
+   
+    private void showPopUp2(String imagePath, String placeholder) {
+        PopUp popup = new PopUp(parentFrame, imagePath, placeholder, e -> {
+            String input = e.getActionCommand();
+            System.out.println("User input: " + input);
+            Pet pet = loadPetData(input);
+            int type = pet.getPetType();
+            GameManager gameManager;
+
+
+            switch (pet.getPetType()) {
+                case 0:
+                    gameManager = new GameManager(input, type);
+                    break;
+                case 1:
+                    gameManager = new GameManager(input, type);
+                    break;
+                case 2:
+                    gameManager = new GameManager(input, type);
+                    break;
+                default:
+                    System.err.println("Invalid pet type!");
+                    return;
+            }
+            cardLayout.show(mainPanel, "Game");
+        });
+        popup.show();
+    }
+
 }

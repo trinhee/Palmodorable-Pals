@@ -1,4 +1,5 @@
 package frontend;
+
 import backend.GameManager;
 import backend.Settings;
 
