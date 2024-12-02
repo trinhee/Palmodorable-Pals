@@ -10,7 +10,7 @@ import java.util.Map;
  * from a CSV file. It provides functionality to retrieve pets by their name or access all pets as a map.
  */
 public class PetsDictionary {
-    private static final String FILE_NAME = "data_handling/pets_data.csv";
+    private static final String FILE_NAME = "../data_handling/pets_data.csv";
     private Map<String, Pet> pets; // A map of pet names to their respective Pet objects.
 
     /**

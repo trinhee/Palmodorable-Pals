@@ -2,8 +2,8 @@ package frontend;
 
 import javax.swing.*;
 
-import backend.GameManager;
-import backend.Pet;
+import backend.*;
+
 
 import java.awt.*;
 import javax.imageio.ImageIO;
@@ -28,7 +28,7 @@ public class Save extends JPanel {
 
         // Load background image
         try {
-            URL bgUrl = getClass().getResource("/save_background.png");
+            URL bgUrl = getClass().getResource("resources/save_background.png");
             if (bgUrl == null) {
                 throw new RuntimeException("Resource not found: /save_background.jpg");
             }
@@ -58,7 +58,7 @@ public class Save extends JPanel {
         // Load Button
         gbc.gridy++;
         JButton loadPreviousStateButton = createButton("Load Previous State");
-        loadPreviousStateButton.addActionListener(e -> showPopUp2("/pop_up.png", "Pet Name:"));
+        loadPreviousStateButton.addActionListener(e -> showPopUp2("resources/pop_up.png", "Pet Name:"));
         add(loadPreviousStateButton, gbc);
 
         // Back Button

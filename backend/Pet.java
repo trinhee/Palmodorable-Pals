@@ -43,7 +43,7 @@ public class Pet {
     /**The type of the pet, 0 = dog, 1 = cat, 2 = bird*/
     public int petType;
 
-    private static final String FILE_PATH = "data_handling/pets_data.csv"; // The pet data file path
+    private static final String FILE_PATH = "../data_handling/pets_data.csv"; // The pet data file path
 
     /**
      * Constructs a {@code Pet} instance and initializes its attributes.

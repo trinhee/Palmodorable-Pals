@@ -15,7 +15,7 @@ import java.util.Map;
  * It allows adding, removing, and retrieving items, as well as loading inventory data from a CSV file.
  */
 public class Inventory {
-    private static final String FILE_PATH = "data_handling/pets_data.csv"; // The inventory file path
+    private static final String FILE_PATH = "../data_handling/pets_data.csv"; // The inventory file path
     private Map<Item, Integer> inventory; // A map of items and their quantities in the inventory.
 
     /**

@@ -1,8 +1,7 @@
 package frontend;
 
-import backend.GameManager;
-import backend.Pet;
-import backend.Settings;
+import backend.*;
+
 
 import javax.swing.*;
 import java.awt.*;

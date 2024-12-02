@@ -39,7 +39,7 @@ public class Loading extends JPanel {
                 repaint();
             } else {
                 ((Timer) e.getSource()).stop();
-                Music.getInstance().play("/Happy.wav");
+                Music.getInstance().play("resources/Happy.wav");
             }
         });
         loadingTimer.start();
@@ -65,7 +65,7 @@ public class Loading extends JPanel {
 
     private void loadSpriteSheet() {
         try {
-            spriteSheet = ImageIO.read(getClass().getResourceAsStream("/cat_loading.png"));
+            spriteSheet = ImageIO.read(getClass().getResourceAsStream("resources/cat_loading.png"));
             int frameCount = 5; // 5 frames in the sprite sheet
             frames = new BufferedImage[frameCount];
             for (int i = 0; i < frameCount; i++) {

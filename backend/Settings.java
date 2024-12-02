@@ -19,7 +19,7 @@ public class Settings {
     private int breakTime; // The break time in minutes
     private boolean backgroundMusic; // Indicates if background music is enabled
 
-    private static final String FILE_PATH = "data_handling/game_settings.csv"; // The settings file path
+    private static final String FILE_PATH = "../data_handling/game_settings.csv"; // The settings file path
 
 
     public Settings() {

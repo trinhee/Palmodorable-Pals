@@ -52,17 +52,17 @@ public class Menu extends JPanel {
     private void loadResources() {
         try {
             // Load background image
-            URL bgUrl = getClass().getResource("/background.png");
+            URL bgUrl = getClass().getResource("resources/background.png");
             if (bgUrl == null) throw new RuntimeException("Resource not found: /background.png");
             backgroundImage = ImageIO.read(bgUrl);
 
             // Load title GIF
-            URL titleUrl = getClass().getResource("/title.gif");
+            URL titleUrl = getClass().getResource("resources/title.gif");
             if (titleUrl == null) throw new RuntimeException("Resource not found: /title.gif");
             titleIcon = new ImageIcon(titleUrl);
 
             // Load button images
-            String[] buttonPaths = {"/new_button.png", "/load_button.png", "/tutorial_button.png", "/parent_button.png", "/quit_button.png"};
+            String[] buttonPaths = {"resources/new_button.png", "resources/load_button.png", "resources/tutorial_button.png", "resources/parent_button.png", "resources/quit_button.png"};
             for (int i = 0; i < buttonPaths.length; i++) {
                 URL buttonUrl = getClass().getResource(buttonPaths[i]);
                 if (buttonUrl == null) throw new RuntimeException("Resource not found: " + buttonPaths[i]);

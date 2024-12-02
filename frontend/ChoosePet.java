@@ -1,6 +1,7 @@
 package frontend;
 
 import javax.swing.*;
+import backend.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -11,8 +12,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.function.Consumer;
 
-import backend.Game;
-import backend.GameManager;
 
 public class ChoosePet extends JPanel {
     private Timer animationTimer;
@@ -39,7 +38,7 @@ public class ChoosePet extends JPanel {
         this.gameManager = GameManager.getInstance();
         // Load background image
         try {
-            URL bgUrl = getClass().getResource("/choose_pet_background.jpg");
+            URL bgUrl = getClass().getResource("resources/choose_pet_background.jpg");
             if (bgUrl == null) {
                 throw new RuntimeException("Resource not found: /choose_pet_background.png");
             }
@@ -56,7 +55,7 @@ public class ChoosePet extends JPanel {
         imageTitle.setHorizontalAlignment(SwingConstants.CENTER);
         imageTitle.setVerticalAlignment(SwingConstants.CENTER);
         try {
-            URL titleImageURL = getClass().getResource("/adopt_title.png");
+            URL titleImageURL = getClass().getResource("resources/adopt_title.png");
             if (titleImageURL == null) {
                 throw new RuntimeException("Resource not found: /adopt_title.png");
             }
@@ -69,9 +68,9 @@ public class ChoosePet extends JPanel {
         add(imageTitle, BorderLayout.NORTH);
 
         // Load sprite sheets
-        dogFrames = loadSpriteSheet("/dog_idle.png", 48, 48);
-        catFrames = loadSpriteSheet("/cat_idle.png", 48, 48);
-        birdFrames = loadSpriteSheet("/bird_idle.png", 32, 32);
+        dogFrames = loadSpriteSheet("resources/dog_idle.png", 48, 48);
+        catFrames = loadSpriteSheet("resources/cat_idle.png", 48, 48);
+        birdFrames = loadSpriteSheet("resources/bird_idle.png", 32, 32);
 
         // Create the button panel
         JPanel buttonPanel = new JPanel(new GridBagLayout());
@@ -89,9 +88,9 @@ public class ChoosePet extends JPanel {
         JButton catButton = createAnimatedButton(catFrames, "Cat", 384, 384);
         JButton birdButton = createAnimatedButton(birdFrames, "Bird", 256, 256);
 
-        dogButton.addActionListener(e -> showPopUp("/pop_up.png", "", 0));
-        catButton.addActionListener(e -> showPopUp("/pop_up.png", "", 1));
-        birdButton.addActionListener(e -> showPopUp("/pop_up.png", "",2));
+        dogButton.addActionListener(e -> showPopUp("resources/pop_up.png", "", 0));
+        catButton.addActionListener(e -> showPopUp("resources/pop_up.png", "", 1));
+        birdButton.addActionListener(e -> showPopUp("resources/pop_up.png", "",2));
 
         // Add buttons to the panel
         buttonPanel.add(dogButton, gbc);

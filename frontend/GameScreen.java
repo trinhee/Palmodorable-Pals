@@ -1,7 +1,7 @@
 package frontend;
 
-import backend.GameManager;
-import backend.Settings;
+import backend.*;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,7 +42,7 @@ public class GameScreen extends JPanel {
 
         // Load background image
         try {
-            URL bgUrl = getClass().getResource("/game_background.png");
+            URL bgUrl = getClass().getResource("resources/game_background.png");
             if (bgUrl == null) {
                 throw new RuntimeException("Resource not found: /game_background.png");
             }
@@ -80,7 +80,7 @@ public class GameScreen extends JPanel {
         startButton.setFocusPainted(false);
 
         try {
-            URL startButtonUrl = getClass().getResource("/start_button.png");
+            URL startButtonUrl = getClass().getResource("resources/start_button.png");
             if (startButtonUrl == null) {
                 throw new RuntimeException("Resource not found: /start_button.png");
             }
@@ -96,7 +96,7 @@ public class GameScreen extends JPanel {
         startButton.addActionListener(e -> {
             System.out.println("Start button clicked!");
             Music.getInstance().stop();
-            Music.getInstance().play("/lofi.wav");
+            Music.getInstance().play("resources/lofi.wav");
 
             startButton.setVisible(false); // Make the button invisible
 
@@ -170,17 +170,17 @@ public class GameScreen extends JPanel {
         // Determine the resource path and dimensions based on pet type
         switch (petType) {
             case 0:
-                resourcePath = "/dog_idle.png";
+                resourcePath = "resources/dog_idle.png";
                 frameWidth = 48;
                 frameHeight = 48;
                 break;
             case 1:
-                resourcePath = "/cat_idle.png";
+                resourcePath = "resources/cat_idle.png";
                 frameWidth = 48;
                 frameHeight = 48;
                 break;
             case 2:
-                resourcePath = "/bird_idle.png";
+                resourcePath = "resources/bird_idle.png";
                 frameWidth = 32;
                 frameHeight = 32;
                 break;
@@ -263,7 +263,7 @@ public class GameScreen extends JPanel {
 
         // Set the button as an image
         try {
-            URL imageUrl = getClass().getResource("/inventory.png");
+            URL imageUrl = getClass().getResource("resources/inventory.png");
             if (imageUrl == null) {
                 throw new RuntimeException("Resource not found: /inventory.png");
             }
@@ -294,7 +294,7 @@ public class GameScreen extends JPanel {
 
         // Set the button as an image
         try {
-            URL imageUrl = getClass().getResource("/sleep.png");
+            URL imageUrl = getClass().getResource("resources/sleep.png");
             if (imageUrl == null) {
                 throw new RuntimeException("Resource not found: /sleep.png");
             }
@@ -324,7 +324,7 @@ public class GameScreen extends JPanel {
 
         // Set the button as an image
         try {
-            URL imageUrl = getClass().getResource("/vet.png");
+            URL imageUrl = getClass().getResource("resources/vet.png");
             if (imageUrl == null) {
                 throw new RuntimeException("Resource not found: /vet.png");
             }
@@ -355,7 +355,7 @@ public class GameScreen extends JPanel {
 
         // Set the button as an image
         try {
-            URL imageUrl = getClass().getResource("/exercise.png");
+            URL imageUrl = getClass().getResource("resources/exercise.png");
             if (imageUrl == null) {
                 throw new RuntimeException("Resource not found: /exercise.png");
             }

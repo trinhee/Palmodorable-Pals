@@ -18,7 +18,7 @@ public class Tutorial extends JPanel {
 
         // Load background image
         try {
-            URL bgUrl = getClass().getResource("/tutorial_background.jpg");
+            URL bgUrl = getClass().getResource("resources/tutorial_background.jpg");
             if (bgUrl == null) {
                 throw new RuntimeException("Resource not found: /tutorial_background.jpg");
             }
@@ -31,7 +31,7 @@ public class Tutorial extends JPanel {
         JLabel imageLabel = new JLabel();
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         try {
-            URL imageUrl = getClass().getResource("/tutorial_text.png");
+            URL imageUrl = getClass().getResource("resources/tutorial_text.png");
             if (imageUrl == null) {
                 throw new RuntimeException("Resource not found: /tutorial_text.png");
             }

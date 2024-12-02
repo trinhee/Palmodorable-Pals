@@ -22,7 +22,7 @@ public class Parent extends JPanel {
 
         // Load background image
         try {
-            URL bgUrl = getClass().getResource("/tutorial_background.jpg");
+            URL bgUrl = getClass().getResource("resources/tutorial_background.jpg");
             if (bgUrl == null) {
                 throw new RuntimeException("Resource not found: /tutorial_background.jpg");
             }
@@ -83,8 +83,8 @@ public class Parent extends JPanel {
         // Button actions
         revivePetButton.addActionListener(e -> System.out.println("Revive Pet button clicked"));
         viewStatsButton.addActionListener(e -> System.out.println("View Stats button clicked"));
-        setBreakTimeButton.addActionListener(e -> showPopUp("/pop_up.png", "", "break"));
-        setStudyTimeButton.addActionListener(e -> showPopUp("/pop_up.png", "", "study"));
+        setBreakTimeButton.addActionListener(e -> showPopUp("resources/pop_up.png", "", "break"));
+        setStudyTimeButton.addActionListener(e -> showPopUp("resources/pop_up.png", "", "study"));
 
         // Add components to the panel
         panel.add(Box.createVerticalStrut(20)); // Add spacing between title and buttons

@@ -37,7 +37,7 @@ public class GameManager {
         this.currentPet = currentGame.getPet();
         this.currentSettings = currentGame.getSettings();
         this.currentInventory = new Inventory(); // Initialize Inventory
-        this.csvFilePath = "data_handling/pets_data.csv"; // Default inventory file path
+        this.csvFilePath = "../data_handling/pets_data.csv"; // Default inventory file path
         this.currentStatisticsTracker = new StatisticsTracker(petName);
         this.currentInventory.loadInventory(petName);
 

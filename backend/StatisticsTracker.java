@@ -20,7 +20,7 @@ public class StatisticsTracker {
     private String dayStart; // The start time for the current day
     private String dayEnd; // The end time for the current day
     private int totalStudyTime; // The total study time in minutes
-    private static final String FILE_PATH = "data_handling/statistics_tracker.csv"; // The statistics file path
+    private static final String FILE_PATH = "../data_handling/statistics_tracker.csv"; // The statistics file path
     /**
      * Constructs a {@code StatisticsTracker} instance and loads statistics for the specified name.
      *
@@ -67,7 +67,7 @@ public class StatisticsTracker {
      * Saves the current statistics to the CSV file. Updates the corresponding entry if it exists.
      */
     public void saveToFile() {
-        String fileName = "data_handling/statistics_tracker.csv";
+        String fileName = "../data_handling/statistics_tracker.csv";
         List<String> lines = new ArrayList<>();
         boolean updated = false;
 
