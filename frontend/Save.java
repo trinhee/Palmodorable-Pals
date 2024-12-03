@@ -62,8 +62,8 @@ public class Save extends JPanel {
 
         // Load Button
         gbc.gridy++;
-        JButton loadPreviousStateButton = createButton("Load Previous State");
-        loadPreviousStateButton.addActionListener(e -> showPopUp2("resources/pop_up.png", "Pet Name:"));
+        JButton loadPreviousStateButton = createButton("Load Save");
+        loadPreviousStateButton.addActionListener(e -> showPopUp2("resources/pop_up.png", "Pet Name: "));
         add(loadPreviousStateButton, gbc);
 
         // Back Button
@@ -96,6 +96,7 @@ public class Save extends JPanel {
     private void showPopUp2(String imagePath, String placeholder) {
         PopUp popup = new PopUp(parentFrame, imagePath, placeholder, e -> {
             String input = e.getActionCommand();
+            String result = input.substring(10); // "Pet Name: " has 10 characters
             Pet pet = petsDictionary.getPetByName(input);
             int type = pet.getPetType();
             GameManager gameManager;

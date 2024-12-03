@@ -64,6 +64,7 @@ public class GameManager {
      */
     public void startGame() {
         System.out.println("Starting game with pet: " + currentPet.getName());
+        
         System.out.println(currentInventory); // Optional: Display loaded inventory
     }
 
