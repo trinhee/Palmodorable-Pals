@@ -1,0 +1,5 @@
+name,type,health,sleep,fullness,happiness,sleepEffectiveness,playEffectiveness,inventory
+Buddy,0,100,100,40,0,10,15,"Gift: 1"
+Fluffy,2,100,0,0,145,20,25,"Gift: 2, Food: 4"
+Max,1,100,0,100,100,15,10,"Food: 6, Gift: 2"
+Kawi,1,100,100,100,100,0,0,"Food: 1, Gift: 1"

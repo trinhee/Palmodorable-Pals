@@ -1,0 +1,4 @@
+player_id,allowed_play_times,total_study_time,ontrack_for_target_time,pet_name,revive_permissions
+1,"[08:00-20:00]",120,30,"Buddy",true
+1,"[09:00-18:00]",90,25,"Fluffy",true
+2,"[07:00-19:00]",150,35,"Max",true
