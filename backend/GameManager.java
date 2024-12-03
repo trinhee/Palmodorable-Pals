@@ -150,8 +150,8 @@ public class GameManager {
      *
      * @param itemType The type of item to give (e.g., "Food").
      */
-    public void givePet(String itemType) {
-        Item inventoryItem = this.currentInventory.getItem(itemType);
+    public void givePet(String itemName) {
+        Item inventoryItem = this.currentInventory.getItem(itemName);
         if (inventoryItem != null) {
             this.currentInventory.removeItem(inventoryItem);
             this.currentPet.useItem(inventoryItem);
@@ -228,9 +228,9 @@ public class GameManager {
 
             if(foodOrGift == 1){
                 Item giftArray[] = new Item[3];
-                giftArray[0] = new Item("Keychain", "gift", 10);
-                giftArray[1] = new Item("Toy", "gift", 25);
-                giftArray[2] = new Item("Playset", "fgift", 50);
+                giftArray[0] = new Item("Plushy", "gift", 10);
+                giftArray[1] = new Item("Ball", "gift", 25);
+                giftArray[2] = new Item("Rattle", "gift", 50);
                 Random rand = new Random();
                 int randNum = rand.nextInt(3);
                 System.out.println("Gift given: " + giftArray[randNum].getName());

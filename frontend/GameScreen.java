@@ -97,6 +97,7 @@ public class GameScreen extends JPanel {
             System.out.println("Start button clicked!");
             Music.getInstance().stop();
             Music.getInstance().play("resources/lofi.wav");
+            Music.getInstance().setVolume(50 / 100f);
 
             startButton.setVisible(false);
 

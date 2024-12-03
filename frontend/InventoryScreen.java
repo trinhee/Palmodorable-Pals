@@ -1,65 +1,78 @@
 package frontend;
 
+import backend.*;
+
 import javax.swing.*;
-
-import backend.Game;
-import backend.GameManager;
-
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.net.URL;
 
 public class InventoryScreen extends JPanel {
     public InventoryScreen(CardLayout cardLayout, JPanel mainPanel) {
         setLayout(new GridBagLayout()); // Use GridBagLayout to center components
-        setBackground(Color.WHITE); // Set background color
-
+        this.setBackground(new Color(139, 69, 19)); //set to brown
+    
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.insets = new Insets(20, 0, 20, 0); // Add padding between components
         gbc.anchor = GridBagConstraints.CENTER;
+    
+        // Row for Food Buttons
+        gbc.gridy = 0;
+        gbc.insets = new Insets(20, 20, 5, 20); // Add small padding between buttons and labels
 
-        // Create Food Button
-        JButton foodButton = createButton("Food");
-        add(foodButton, gbc);
+        JButton treatButton = createImageButton("resources/sleep.png");
+        add(treatButton, gbc);
+        
+        JButton snackButton = createImageButton("resources/sleep.png");
+        add(snackButton, gbc);
 
-        // Add action listener for Food Button
-        foodButton.addActionListener(e -> {
-            GameManager.getInstance().givePet("food");
-            System.out.println("Food button clicked!");
-            // Add functionality to handle food button click
-        });
+        JButton mealButton = createImageButton("resources/sleep.png");
+        add(mealButton, gbc);
 
-        // Label for Food Button
         gbc.gridy++;
-        JLabel foodLabel = createLabel("Food");
-        add(foodLabel, gbc);
 
-        // Create Gift Button
+        JLabel treatLabel = createLabel("Treat");
+        add(treatLabel, gbc);
+
+        JLabel snackLabel = createLabel("Snack");
+        add(snackLabel, gbc);
+
+        JLabel mealLabel = createLabel("Meal");
+        add(mealLabel, gbc);
+
+        // Add extra space between Food and Gift buttons by creating an empty row
+        gbc.gridy = 2;
+        gbc.insets = new Insets(30, 20, 5, 20); // Increase top padding
+    
+        // Add an empty row to create more space between the food buttons and gift buttons
+        JPanel emptyPanel = new JPanel();
+        add(emptyPanel, gbc);
+    
+        // Create and add Gift Buttons for each item in giftNames array
+        gbc.gridy = 3; // Start the Gift Buttons row
+    
+        JButton plushyButton = createImageButton("resources/sleep.png");
+        add(plushyButton, gbc);
+
+        JButton ballButton = createImageButton("resources/sleep.png");
+        add(ballButton, gbc);
+
+        JButton rattleButton = createImageButton("resources/sleep.png");
+        add(rattleButton, gbc);
+
         gbc.gridy++;
-        JButton giftButton = createButton("Gift");
-        add(giftButton, gbc);
 
-        // Add action listener for Gift Button
-        giftButton.addActionListener(e -> {
-            GameManager.getInstance().givePet("food");
-            System.out.println("Gift button clicked!");
-            // Add functionality to handle gift button click
-        });
+        JLabel plushyLabel = createLabel("Plushy");
+        add(plushyLabel, gbc);
 
-        // Label for Gift Button
-        gbc.gridy++;
-        JLabel giftLabel = createLabel("Gift");
-        add(giftLabel, gbc);
+        JLabel ballLabel = createLabel("Ball");
+        add(ballLabel, gbc);
 
+        JLabel rattleLabel = createLabel("Rattle");
+        add(rattleLabel, gbc);
+    
         PanelUtils.moveBack(this, "Game", cardLayout, mainPanel);
-    }
-
-    private JButton createButton(String text) {
-        JButton button = new JButton(text);
-        button.setFont(new Font("Arial", Font.BOLD, 24));
-        button.setPreferredSize(new Dimension(200, 100)); // Set button size to make it large
-        button.setFocusPainted(false);
-        return button;
     }
 
     private JLabel createLabel(String text) {
@@ -67,5 +80,28 @@ public class InventoryScreen extends JPanel {
         label.setFont(new Font("Arial", Font.BOLD, 20));
         label.setHorizontalAlignment(SwingConstants.CENTER);
         return label;
+    }
+
+
+    private JButton createImageButton(String imagePath) {
+        JButton button = new JButton();
+        button.setPreferredSize(new Dimension(200, 200)); // Set button size to make it large
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+
+        // Set the button as an image
+        try {
+            URL imageUrl = getClass().getResource(imagePath);
+            if (imageUrl == null) {
+                throw new RuntimeException("Resource not found: " + imagePath);
+            }
+            BufferedImage image = ImageIO.read(imageUrl);
+            Image scaledImage = image.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+            button.setIcon(new ImageIcon(scaledImage));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    return button;
     }
 }
