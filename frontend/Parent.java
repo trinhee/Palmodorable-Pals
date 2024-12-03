@@ -67,6 +67,7 @@ public class Parent extends JPanel {
         JButton viewStatsButton = createButton("View Stats");
         JButton setBreakTimeButton = createButton("Set Break Time");
         JButton setStudyTimeButton = createButton("Set Study Time");
+        JButton updateStatsButton = createButton("Update Stats To Next Day");
 
         // Slider for music volume
         JLabel volumeLabel = new JLabel("Music Volume:");
@@ -82,9 +83,26 @@ public class Parent extends JPanel {
 
         // Button actions
         revivePetButton.addActionListener(e -> System.out.println("Revive Pet button clicked"));
-        viewStatsButton.addActionListener(e -> System.out.println("View Stats button clicked"));
+        viewStatsButton.addActionListener(e -> {
+            String stats = "Your Current Stats:\n"
+                    + "Study Time: " + Settings.getInstance().getStudyTime() + " minutes\n"
+                    + "Break Time: " + Settings.getInstance().getBreakTime() + " minutes\n"
+                    + "Other Stats: TBD";
+
+            JOptionPane.showMessageDialog(parentFrame,
+                    stats,
+                    "View Stats",
+                    JOptionPane.INFORMATION_MESSAGE);
+        });
         setBreakTimeButton.addActionListener(e -> showPopUp("resources/pop_up.png", "", "break"));
         setStudyTimeButton.addActionListener(e -> showPopUp("resources/pop_up.png", "", "study"));
+        updateStatsButton.addActionListener(e -> {
+            System.out.println("Updating stats to the next day...");
+            JOptionPane.showMessageDialog(parentFrame,
+                    "Stats have been updated to the next day!",
+                    "Update Successful",
+                    JOptionPane.INFORMATION_MESSAGE);
+        });
 
         // Add components to the panel
         panel.add(Box.createVerticalStrut(20)); // Add spacing between title and buttons
@@ -95,6 +113,8 @@ public class Parent extends JPanel {
         panel.add(setBreakTimeButton);
         panel.add(Box.createVerticalStrut(10)); // Spacing between buttons
         panel.add(setStudyTimeButton);
+        panel.add(Box.createVerticalStrut(10)); // Spacing between buttons
+        panel.add(updateStatsButton);
         panel.add(Box.createVerticalStrut(20));
         panel.add(volumeLabel);
         panel.add(volumeSlider);
@@ -114,21 +134,21 @@ public class Parent extends JPanel {
     private void showPopUp(String imagePath, String placeholder, String type) {
         PopUp popup = new PopUp(parentFrame, imagePath, placeholder, e -> {
             String input = e.getActionCommand().trim(); // Trim whitespace
-            // System.out.println("Raw Input: " + input); // Log raw input for debugging
-            int timeInMinutes = Integer.parseInt(input); // Parse the input as an integer
+            int timeInMinutes;
             Settings settings = Settings.getInstance();
             try {
                 input = input.replace(placeholder, "").trim();
-                // Validate if the input is numeric and positive
+
                 if (!input.matches("\\d+")) { // Check if the input contains only digits
                     throw new NumberFormatException("Input is not a valid positive integer.");
                 }
+
+                timeInMinutes = Integer.parseInt(input);
 
                 if (timeInMinutes <= 0) { // Additional validation for positive values
                     throw new NumberFormatException("Time must be greater than zero.");
                 }
 
-                // Update the appropriate setting based on the type
                 switch (type) {
                     case "study":
                         settings.setStudyTime(timeInMinutes);
@@ -142,17 +162,13 @@ public class Parent extends JPanel {
                         throw new IllegalArgumentException("Invalid type: " + type);
                 }
 
-                // Save settings to the file
                 settings.saveToFile();
-                // System.out.println("Settings successfully saved.");
             } catch (NumberFormatException ex) {
-                // Handle invalid input
                 JOptionPane.showMessageDialog(parentFrame,
                         "Please enter a valid positive integer for time.",
                         "Invalid Input",
                         JOptionPane.ERROR_MESSAGE);
             } catch (IllegalArgumentException ex) {
-                // Handle invalid type
                 System.err.println("Error: " + ex.getMessage());
             }
         });

@@ -15,12 +15,14 @@ import java.io.IOException;
 
 
 public class Save extends JPanel {
+    private PetsDictionary petsDictionary;
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private JFrame parentFrame;
     private Image background;
 
     public Save(CardLayout cardLayout, JPanel mainPanel) {
+        this.petsDictionary = new PetsDictionary();
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
         this.parentFrame = parentFrame;
@@ -52,7 +54,10 @@ public class Save extends JPanel {
         // Save Button
         gbc.gridy++;
         JButton saveGameButton = createButton("Save Game");
-        saveGameButton.addActionListener(e -> System.out.println("Save Game button clicked"));
+        saveGameButton.addActionListener(e -> {
+            GameManager.getInstance().saveGame();
+            System.out.println("Save Game button clicked");
+        });
         add(saveGameButton, gbc);
 
         // Load Button
@@ -86,42 +91,12 @@ public class Save extends JPanel {
         }
     }
 
-    public Pet loadPetData(String petName) {
-        try (BufferedReader br = new BufferedReader(new FileReader("data_handling/pets_data.csv"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] fields = line.split(",");
-                if (fields[0].equals(petName)) {
-                    // Extract pet data from the CSV line
-                    String name = fields[0];
-                    int type = Integer.parseInt(fields[1]);
-                    int health = Integer.parseInt(fields[2]);
-                    int sleep = Integer.parseInt(fields[3]);
-                    int fullness = Integer.parseInt(fields[4]);
-                    int happiness = Integer.parseInt(fields[5]);
-                    int sleepEffectiveness = Integer.parseInt(fields[6]);
-                    int playEffectiveness = Integer.parseInt(fields[7]);
-
-
-                    Pet pet = new Pet(name, type, sleepEffectiveness, playEffectiveness);
-                    pet.setHealth(health);
-                    pet.setSleep(sleep);
-                    pet.setFullness(fullness);
-                    pet.setHappiness(happiness);
-                    return pet;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;  
-    }  
+  
    
     private void showPopUp2(String imagePath, String placeholder) {
         PopUp popup = new PopUp(parentFrame, imagePath, placeholder, e -> {
             String input = e.getActionCommand();
-            System.out.println("User input: " + input);
-            Pet pet = loadPetData(input);
+            Pet pet = petsDictionary.getPetByName(input);
             int type = pet.getPetType();
             GameManager gameManager;
 
@@ -129,17 +104,23 @@ public class Save extends JPanel {
             switch (pet.getPetType()) {
                 case 0:
                     gameManager = new GameManager(input, type);
+                    GameManager.setInstance(gameManager);
                     break;
                 case 1:
                     gameManager = new GameManager(input, type);
+                    GameManager.setInstance(gameManager);
+
                     break;
                 case 2:
                     gameManager = new GameManager(input, type);
+                    GameManager.setInstance(gameManager);
                     break;
                 default:
                     System.err.println("Invalid pet type!");
                     return;
             }
+            GameScreen gameScreen = new GameScreen(cardLayout, mainPanel);
+            mainPanel.add(gameScreen, "Game");
             cardLayout.show(mainPanel, "Game");
         });
         popup.show();

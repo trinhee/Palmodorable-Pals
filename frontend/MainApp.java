@@ -29,7 +29,6 @@ public class MainApp {
             Tutorial tutorialScreen = new Tutorial(cardLayout, mainPanel);
             Save saveScreen = new Save(cardLayout, mainPanel);
             Parent parentScreen = new Parent(cardLayout, mainPanel, cardLayout, window);
-            GameScreen gameScreen = new GameScreen(cardLayout, mainPanel);
             InventoryScreen inventoryScreen = new InventoryScreen(cardLayout, mainPanel);
             PasswordScreen passwordScreen = new PasswordScreen(cardLayout, mainPanel);
 
@@ -40,7 +39,6 @@ public class MainApp {
             mainPanel.add(tutorialScreen, "Tutorial");
             mainPanel.add(saveScreen, "Save");
             mainPanel.add(parentScreen, "Parent");
-            mainPanel.add(gameScreen, "Game");
             mainPanel.add(inventoryScreen, "Inventory");
 
 

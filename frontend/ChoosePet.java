@@ -180,8 +180,6 @@ public class ChoosePet extends JPanel {
             }
         });
 
-
-
         // Set animation update
         button.putClientProperty("frames", scaledFrames);
 
@@ -190,42 +188,17 @@ public class ChoosePet extends JPanel {
 
     private void showPopUp(String imagePath, String placeholder, int petType) {
         PopUp popup = new PopUp(parentFrame, imagePath, placeholder, e -> {
+
             String input = e.getActionCommand().trim();
-            System.out.println("User input: " + input);
+            System.out.println(input);
+            Pet pet = new Pet(input,petType,0,0);
+            pet.saveToFile();
+            GameManager gameManager = new GameManager(input, petType);
+            StatisticsTracker.setInstance(new StatisticsTracker(input));
+            GameManager.setInstance(gameManager);
 
-            // Use GameManager to manage the pet creation
-            switch (petType) {
-                case 0:
-                    gameManager.getCurrentPet().setPetType(0);
-                    gameManager.getCurrentPet().setName(input);
-                    gameManager.getCurrentPet().setSleepEffectiveness(10);
-                    gameManager.getCurrentPet().setPlayEffectiveness(15);
-                    gameManager.saveGame();
-                    break;
-                case 1:
-                    gameManager.getCurrentPet().setPetType(1);
-                    gameManager.getCurrentPet().setName(input);
-                    gameManager.getCurrentPet().setSleepEffectiveness(8);
-                    gameManager.getCurrentPet().setPlayEffectiveness(12);
-                    gameManager.saveGame();
-                    break;
-                case 2:
-                    gameManager.getCurrentPet().setPetType(2);
-                    gameManager.getCurrentPet().setName(input);
-                    gameManager.getCurrentPet().setSleepEffectiveness(5);
-                    gameManager.getCurrentPet().setPlayEffectiveness(10);
-                    gameManager.saveGame();
-                    break;
-                default:
-                    System.err.println("Invalid pet type!");
-                    return;
-            }
-
-            // Save the updated pet data
-            gameManager.saveGame();
-            System.out.println("Pet saved: " + gameManager.getCurrentPet());
-
-            // Transition to the game screen
+            GameScreen gameScreen = new GameScreen(cardLayout, mainPanel);
+            mainPanel.add(gameScreen, "Game");
             cardLayout.show(mainPanel, "Game");
 
             // Fade out the current music
@@ -233,7 +206,6 @@ public class ChoosePet extends JPanel {
         });
         popup.show();
     }
-
 
     private void startAnimation() {
         animationTimer = new Timer(100, e -> {

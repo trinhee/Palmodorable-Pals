@@ -1,6 +1,10 @@
 package frontend;
 
 import javax.swing.*;
+
+import backend.Game;
+import backend.GameManager;
+
 import java.awt.*;
 
 public class InventoryScreen extends JPanel {
@@ -18,6 +22,13 @@ public class InventoryScreen extends JPanel {
         JButton foodButton = createButton("Food");
         add(foodButton, gbc);
 
+        // Add action listener for Food Button
+        foodButton.addActionListener(e -> {
+            GameManager.getInstance().givePet("food");
+            System.out.println("Food button clicked!");
+            // Add functionality to handle food button click
+        });
+
         // Label for Food Button
         gbc.gridy++;
         JLabel foodLabel = createLabel("Food");
@@ -28,13 +39,19 @@ public class InventoryScreen extends JPanel {
         JButton giftButton = createButton("Gift");
         add(giftButton, gbc);
 
+        // Add action listener for Gift Button
+        giftButton.addActionListener(e -> {
+            GameManager.getInstance().givePet("food");
+            System.out.println("Gift button clicked!");
+            // Add functionality to handle gift button click
+        });
+
         // Label for Gift Button
         gbc.gridy++;
         JLabel giftLabel = createLabel("Gift");
         add(giftLabel, gbc);
 
         PanelUtils.moveBack(this, "Game", cardLayout, mainPanel);
-
     }
 
     private JButton createButton(String text) {
@@ -51,5 +68,4 @@ public class InventoryScreen extends JPanel {
         label.setHorizontalAlignment(SwingConstants.CENTER);
         return label;
     }
-
 }

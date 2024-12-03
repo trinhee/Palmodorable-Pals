@@ -19,12 +19,6 @@ public class GameManager {
     private String csvFilePath; // Path to the CSV file for storing inventory data.
     private StatisticsTracker currentStatisticsTracker; // Tracks statistics for the current pet.
 
-    public static GameManager getInstance() {
-        if (instance == null) {
-            instance = new GameManager("Buddy", 1); // Default pet for example
-        }
-        return instance;
-    }
 
     /**
      * Constructor for {@code GameManager}.
@@ -45,6 +39,25 @@ public class GameManager {
         startGame();
     }
 
+    public static GameManager getInstance() {
+        if (instance == null) {
+            instance = new GameManager("Fluffy", 0); // Default pet or initialize as required
+        }
+        return instance;
+    }
+    
+
+    public static void setInstance(GameManager newInstance) {
+        instance = newInstance;
+    }
+    
+    public void exercisePet(){
+        this.currentPet.setHappiness(Math.min(this.currentPet.getHappiness() + 5, 100));
+    }
+
+    public void sleepPet(){
+        this.currentPet.setSleep(Math.min(this.currentPet.getSleep() + 5, 100));
+    }
 
     /**
      * Starts the game by displaying the loaded pet and inventory information.
@@ -128,7 +141,10 @@ public class GameManager {
         return currentStatisticsTracker;
     }
 
-
+    public void visitVet(){
+        this.currentPet.setHealth(100);
+    }
+    
     /**
      * Gives an item from the inventory to the pet. The item type must match an item in the inventory.
      *

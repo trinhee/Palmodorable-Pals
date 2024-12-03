@@ -19,29 +19,29 @@ import java.util.List;
 public class Pet {
 
     /** Pet's name */
-    public String name;
+    private String name;
     /** Pet's current health */
-    public int health;
+    private int health;
     /** Pet's current sleep level */
-    public int sleep;
+    private int sleep;
     /** Pet's current fullness */
-    public int fullness;
+    private int fullness;
     /** Pet's current happiness */
-    public int happiness;
+    private int happiness;
     /** Pet's maximum health */
-    public int maxHealth;
+    private int maxHealth;
     /** Pet's maximum sleep level */
-    public int maxSleep;
+    private int maxSleep;
     /** Pet's maximum fullness */
-    public int maxFullness;
+    private int maxFullness;
     /** Pet's maximum happiness */
-    public int maxHappiness;
+    private int maxHappiness;
     /** The effectiveness (stat increase) of sleep */
-    public int sleepEffectiveness;
+    private int sleepEffectiveness;
     /** The effectiveness (stat increase) of play */
-    public int playEffectiveness;
+    private int playEffectiveness;
     /**The type of the pet, 0 = dog, 1 = cat, 2 = bird*/
-    public int petType;
+    private int petType;
 
     private static final String FILE_PATH = "../data_handling/pets_data.csv"; // The pet data file path
 
@@ -117,7 +117,7 @@ public class Pet {
             }
 
             if (!updated) {
-                lines.add(String.format("%s,%d,%d,%d,%d,%d,%d,%d",
+                lines.add(String.format("%s,%d,%d,%d,%d,%d,%d,%d,%s",
                         name,
                         petType,
                         health,
@@ -125,7 +125,8 @@ public class Pet {
                         fullness,
                         happiness,
                         sleepEffectiveness,
-                        playEffectiveness));
+                        playEffectiveness,
+                        '"' + "Food: 1, Gift: 1" + '"'));
             }
         } catch (IOException e) {
             System.err.println("Error reading the file: " + e.getMessage());
@@ -133,7 +134,7 @@ public class Pet {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             for (String line : lines) {
-                writer.write(line);
+                writer.write(line); 
                 writer.newLine();
             }
             System.out.println("Pet data successfully saved to file: " + fileName);

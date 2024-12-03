@@ -13,7 +13,6 @@ if %ERRORLEVEL% NEQ 0 (
 
 REM Copy resources to the output folder
 echo Copying resources...
-xcopy frontend\resources out\frontend\resources /E /I
 
 REM Check if resources were copied successfully
 if %ERRORLEVEL% NEQ 0 (

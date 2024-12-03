@@ -39,7 +39,7 @@ public class Loading extends JPanel {
                 repaint();
             } else {
                 ((Timer) e.getSource()).stop();
-                Music.getInstance().play("resources/Happy.wav");
+                // Music.getInstance().play("resources/Happy.wav");
             }
         });
         loadingTimer.start();

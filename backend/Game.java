@@ -5,7 +5,6 @@ package backend;
  */
 public class Game {
 
-
     private Pet pet; // The pet being managed in the game.
     private Settings settings; // The settings specific to the game.
 
@@ -27,7 +26,7 @@ public class Game {
 
 
         // Initialize settings for the given pet
-        this.settings = new Settings(petName);
+        this.settings = new Settings();
 
 
         System.out.println("Game initialized with pet: " + this.pet.getName());

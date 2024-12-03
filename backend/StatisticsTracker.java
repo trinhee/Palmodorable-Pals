@@ -13,7 +13,7 @@ import java.util.List;
  * and tracks details such as the last study session, daily start and end times, and total study time.
  */
 public class StatisticsTracker {
-
+    private static StatisticsTracker instance; // Singleton instance
     private String name; // The name of the entity (e.g., pet or user)
     private String lastStudySession; // The timestamp of the last study session
     private String lastLogout; // The timestamp of the last logout
@@ -27,21 +27,39 @@ public class StatisticsTracker {
      * @param dogName The name of the entity whose statistics are being tracked.
      */
 
+     public static StatisticsTracker getInstance(String name) {
+        if (instance == null) {
+            instance = new StatisticsTracker(name);
+        }
+        return instance;
+    }
+
+    /**
+     * Updates the singleton instance of the {@code StatisticsTracker}.
+     *
+     * @param tracker The new {@code StatisticsTracker} instance to set.
+     */
+    public static void setInstance(StatisticsTracker tracker) {
+        instance = tracker;
+    }
+
     public StatisticsTracker(String dogName) {
         this(dogName, FILE_PATH);
     }
-
+    
     public StatisticsTracker(String dogName, String filePath) {
+        boolean found = false;
+        List<String> lines = new ArrayList<>();
+
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
-            boolean found = false;
 
-            // Skip the header row
-            br.readLine();
-
+            // Read all lines to handle file manipulation later
             while ((line = br.readLine()) != null) {
+                lines.add(line);
                 String[] data = line.split(","); // Split by comma
-                if (data[0].equalsIgnoreCase(dogName)) {
+
+                if (!line.equals(lines.get(0)) && data[0].equalsIgnoreCase(dogName)) {
                     this.name = data[0];
                     this.lastStudySession = data[1];
                     this.lastLogout = data[2];
@@ -49,17 +67,41 @@ public class StatisticsTracker {
                     this.dayEnd = data[4];
                     this.totalStudyTime = Integer.parseInt(data[5]);
                     found = true;
-                    break;
                 }
-            }
-
-            if (!found) {
-                System.err.println("Dog name not found in the CSV file: " + dogName);
             }
         } catch (IOException e) {
             System.err.println("Error reading CSV file: " + e.getMessage());
+            return;
         } catch (NumberFormatException e) {
             System.err.println("Error parsing integer values in the CSV file: " + e.getMessage());
+            return;
+        }
+
+        if (!found) {
+            System.out.println("Dog name not found in the CSV file: " + dogName);
+
+            // Default values for the new dog
+            this.name = dogName;
+            this.lastStudySession = StatisticsTracker.formatLocalDateTime(LocalDateTime.now());
+            this.lastLogout = StatisticsTracker.formatLocalDateTime(LocalDateTime.now());;
+            this.dayStart = StatisticsTracker.formatLocalDateTime(LocalDateTime.now());;
+            this.dayEnd = StatisticsTracker.formatLocalDateTime(LocalDateTime.now().plusDays(1));
+            this.totalStudyTime = 0;
+
+            // Append the new dog entry to the file
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
+                if (lines.isEmpty()) {
+                    // Add header if file is empty
+                    bw.write("Name,LastStudySession,LastLogout,DayStart,DayEnd,TotalStudyTime");
+                    bw.newLine();
+                }
+                bw.write(this.name + "," + this.lastStudySession + "," + this.lastLogout + "," +
+                        this.dayStart + "," + this.dayEnd + "," + this.totalStudyTime);
+                bw.newLine();
+                System.out.println("Added new dog to the file: " + this.name);
+            } catch (IOException e) {
+                System.err.println("Error writing to CSV file: " + e.getMessage());
+            }
         }
     }
 
