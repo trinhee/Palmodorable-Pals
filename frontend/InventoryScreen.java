@@ -73,7 +73,7 @@ public class InventoryScreen extends JPanel {
     private void initializeSnackButton(GridBagConstraints gbc) {
         JButton snackButton = createImageButton("resources/sleep.png");
         snackButton.addActionListener(e -> {
-            Item snack = new Item("Snack", "Food", 20);
+            Item snack = new Item("Snack", "Food", 25);
             gameManager.getCurrentPet().useItem(snack);
         });
         add(snackButton, gbc);
@@ -82,7 +82,7 @@ public class InventoryScreen extends JPanel {
     private void initializeMealButton(GridBagConstraints gbc) {
         JButton mealButton = createImageButton("resources/sleep.png");
         mealButton.addActionListener(e -> {
-            Item meal = new Item("Meal", "Food", 30);
+            Item meal = new Item("Meal", "Food", 50);
             gameManager.getCurrentPet().useItem(meal);
         });
         add(mealButton, gbc);
@@ -91,7 +91,7 @@ public class InventoryScreen extends JPanel {
     private void initializePlushyButton(GridBagConstraints gbc) {
         JButton plushyButton = createImageButton("resources/sleep.png");
         plushyButton.addActionListener(e -> {
-            Item plushy = new Item("Plushy", "Gift", 15);
+            Item plushy = new Item("Plushy", "Gift", 10);
             gameManager.getCurrentPet().useItem(plushy);
         });
         add(plushyButton, gbc);
@@ -100,7 +100,7 @@ public class InventoryScreen extends JPanel {
     private void initializeBallButton(GridBagConstraints gbc) {
         JButton ballButton = createImageButton("resources/sleep.png");
         ballButton.addActionListener(e -> {
-            Item ball = new Item("Ball", "Gift", 20);
+            Item ball = new Item("Ball", "Gift", 25);
             gameManager.getCurrentPet().useItem(ball);
         });
         add(ballButton, gbc);
@@ -109,7 +109,7 @@ public class InventoryScreen extends JPanel {
     private void initializeRattleButton(GridBagConstraints gbc) {
         JButton rattleButton = createImageButton("resources/sleep.png");
         rattleButton.addActionListener(e -> {
-            Item rattle = new Item("Rattle", "Gift", 25);
+            Item rattle = new Item("Rattle", "Gift", 50);
             gameManager.getCurrentPet().useItem(rattle);
         });
         add(rattleButton, gbc);
