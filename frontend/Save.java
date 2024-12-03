@@ -97,7 +97,7 @@ public class Save extends JPanel {
         PopUp popup = new PopUp(parentFrame, imagePath, placeholder, e -> {
             String input = e.getActionCommand();
             String result = input.substring(10); // "Pet Name: " has 10 characters
-            Pet pet = petsDictionary.getPetByName(input);
+            Pet pet = petsDictionary.getPetByName(result);
             int type = pet.getPetType();
             GameManager gameManager;
 
