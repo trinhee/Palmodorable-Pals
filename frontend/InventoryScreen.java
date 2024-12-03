@@ -50,7 +50,7 @@ public class InventoryScreen extends JPanel {
         gbc.gridx++;
         initializeBallButton(gbc);
         gbc.gridx++;
-        initializeRattleButton(gbc);
+        initializeBellButton(gbc);
         gbc.gridx++;
 
         gbc.gridy++;
@@ -62,7 +62,7 @@ public class InventoryScreen extends JPanel {
     }
 
     private void initializeTreatButton(GridBagConstraints gbc) {
-        JButton treatButton = createImageButton("resources/sleep.png");
+        JButton treatButton = createImageButton("resources/treat.png");
         treatButton.addActionListener(e -> {
             Item treat = new Item("Treat", "Food", 10);
             gameManager.getCurrentPet().useItem(treat);
@@ -71,48 +71,48 @@ public class InventoryScreen extends JPanel {
     }
 
     private void initializeSnackButton(GridBagConstraints gbc) {
-        JButton snackButton = createImageButton("resources/sleep.png");
+        JButton snackButton = createImageButton("resources/snack.png");
         snackButton.addActionListener(e -> {
-            Item snack = new Item("Snack", "Food", 25);
+            Item snack = new Item("Snack", "Food", 20);
             gameManager.getCurrentPet().useItem(snack);
         });
         add(snackButton, gbc);
     }
 
     private void initializeMealButton(GridBagConstraints gbc) {
-        JButton mealButton = createImageButton("resources/sleep.png");
+        JButton mealButton = createImageButton("resources/meal.png");
         mealButton.addActionListener(e -> {
-            Item meal = new Item("Meal", "Food", 50);
+            Item meal = new Item("Meal", "Food", 30);
             gameManager.getCurrentPet().useItem(meal);
         });
         add(mealButton, gbc);
     }
 
     private void initializePlushyButton(GridBagConstraints gbc) {
-        JButton plushyButton = createImageButton("resources/sleep.png");
+        JButton plushyButton = createImageButton("resources/plushy.png");
         plushyButton.addActionListener(e -> {
-            Item plushy = new Item("Plushy", "Gift", 10);
+            Item plushy = new Item("Plushy", "Gift", 15);
             gameManager.getCurrentPet().useItem(plushy);
         });
         add(plushyButton, gbc);
     }
 
     private void initializeBallButton(GridBagConstraints gbc) {
-        JButton ballButton = createImageButton("resources/sleep.png");
+        JButton ballButton = createImageButton("resources/ball.png");
         ballButton.addActionListener(e -> {
-            Item ball = new Item("Ball", "Gift", 25);
+            Item ball = new Item("Ball", "Gift", 20);
             gameManager.getCurrentPet().useItem(ball);
         });
         add(ballButton, gbc);
     }
 
-    private void initializeRattleButton(GridBagConstraints gbc) {
-        JButton rattleButton = createImageButton("resources/sleep.png");
-        rattleButton.addActionListener(e -> {
-            Item rattle = new Item("Rattle", "Gift", 50);
-            gameManager.getCurrentPet().useItem(rattle);
+    private void initializeBellButton(GridBagConstraints gbc) {
+        JButton bellButton = createImageButton("resources/bell.png");
+        bellButton.addActionListener(e -> {
+            Item Bell = new Item("Bell", "Gift", 25);
+            gameManager.getCurrentPet().useItem(Bell);
         });
-        add(rattleButton, gbc);
+        add(bellButton, gbc);
     }
 
     private void initializeFoodLabels(GridBagConstraints gbc) {
@@ -138,8 +138,8 @@ public class InventoryScreen extends JPanel {
         add(ballLabel, gbc);
         gbc.gridx++;
 
-        JLabel rattleLabel = createLabel("Rattle");
-        add(rattleLabel, gbc);
+        JLabel BellLabel = createLabel("Bell");
+        add(BellLabel, gbc);
         gbc.gridx++;
     }
 
