@@ -1,16 +1,27 @@
 package frontend;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.URL;
+
 
 public class PasswordScreen extends JPanel {
+    private Image background;
     public PasswordScreen(CardLayout cardLayout, JPanel mainPanel) {
         setLayout(new GridBagLayout()); // Use GridBagLayout to center components
-        setBackground(Color.WHITE); // Set background color
+
+        try {
+            URL bgUrl = getClass().getResource("resources/password_background.png");
+            background = ImageIO.read(bgUrl);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -21,6 +32,7 @@ public class PasswordScreen extends JPanel {
         // Create Label for the Text Field
         JLabel passwordLabel = new JLabel("Enter Password:");
         passwordLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        passwordLabel.setForeground(Color.BLACK);
         add(passwordLabel, gbc);
 
         // Create Text Field for Password Entry
@@ -57,5 +69,13 @@ public class PasswordScreen extends JPanel {
         });
 
         PanelUtils.moveBack(this, "Menu", cardLayout, mainPanel);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (background != null) {
+            g.drawImage(background,0,0, getWidth(),getHeight(), this);
+        }
     }
 }

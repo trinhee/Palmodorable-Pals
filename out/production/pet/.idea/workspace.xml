@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="219fef21-f507-4b03-9032-cbd740d1fc78" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/Testing.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/Testing.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/resources/ball.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/resources/bell.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/resources/meal.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/resources/plushy.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/resources/snack.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/resources/treat.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/backend/Game.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/backend/GameManager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/backend/Inventory.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/backend/Item.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/backend/Pet.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/backend/PetsDictionary.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/backend/Settings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/backend/StatisticsTracker.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/backend/UserInterface.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/data_handling/game_settings.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/data_handling/parental_controls.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/data_handling/pets_data.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/data_handling/player_data.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/data_handling/statistics_tracker.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/AncestorListenerAdapter.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/ChoosePet$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/ChoosePet.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/GameScreen$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/GameScreen.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/InventoryScreen.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/Loading.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/MainApp.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/Menu$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/Menu.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/Music.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/PanelUtils$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/PanelUtils.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/Parent$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/Parent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/PasswordScreen$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/PasswordScreen$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/PasswordScreen.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/PopUp.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/Save.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/Testing.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/Tutorial.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/Happy.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/adopt_title.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/background.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/ball.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/bell.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/bird_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/cancel_button.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/cat_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/cat_loading.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/choose_pet_background.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/dog_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/exercise.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/food.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/game_background.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/inventory.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/load_button.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/lofi.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/meal.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/new_button.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/parent_background.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/parent_button.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/plushy.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/pop_up.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/quit_button.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/save_background.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/sleep.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/snack.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/start_button.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/title.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/treat.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/tutorial_background.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/tutorial_button.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/tutorial_text.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/frontend/resources/vet.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run-app.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/README_flowchart.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/GameManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Inventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Inventory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Item.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Pet.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Pet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/PetsDictionary.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/PetsDictionary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Settings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/StatisticsTracker.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/StatisticsTracker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/UserInterface.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_handling/game_settings.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data_handling/game_settings.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_handling/pets_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data_handling/pets_data.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_handling/statistics_tracker.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data_handling/statistics_tracker.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/ChoosePet.java" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/ChoosePet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/GameScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/GameScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/InventoryScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/InventoryScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/Loading.java" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/Loading.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/MainApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/Menu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/Parent.java" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/Parent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/Save.java" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/Save.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/Tutorial.java" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/Tutorial.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2pbM1odzccZuIme8BvFvMu2tAEj" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Pomodorable Pals.executor": "Run",
+    "Application.Unnamed.executor": "Run",
+    "JUnit.StatisticsTrackerJTest.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "Merging implementation",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/ethan/Documents/Projects/2212/pet/frontend/resources",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\ethan\Documents\Projects\2212\pet\frontend\resources" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Pomodorable Pals" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="frontend.MainApp" />
+      <module name="pet" />
+      <option name="PROGRAM_PARAMETERS" value="frontend.MainApp" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.21565.193" />
+        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-IU-243.21565.193" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="219fef21-f507-4b03-9032-cbd740d1fc78" name="Changes" comment="" />
+      <created>1733030108699</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1733030108699</updated>
+      <workItem from="1733030110030" duration="39270000" />
+      <workItem from="1733267148060" duration="411000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
