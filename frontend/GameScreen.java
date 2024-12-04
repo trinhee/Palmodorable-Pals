@@ -4,6 +4,8 @@ import backend.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -33,6 +35,7 @@ public class GameScreen extends JPanel {
     private JProgressBar sleepBar;
     private JProgressBar hungerBar;
     private JProgressBar happinessBar;
+    private String petState;
 
     public GameScreen(CardLayout cardLayout, JPanel mainPanel) {
         this.cardLayout = cardLayout;
@@ -40,6 +43,7 @@ public class GameScreen extends JPanel {
         this.settings = Settings.getInstance();
         this.petType = GameManager.getInstance().getCurrentPet().getPetType();
         this.gameManager = GameManager.getInstance();
+
 
         // Load background image
         try {
@@ -67,6 +71,13 @@ public class GameScreen extends JPanel {
         initializePetSprite(petType);
         initializeStatusBars();
 
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                updatePositions();
+            }
+        });
+
         // Detect when the panel is shown
         addAncestorListener(new AncestorListenerAdapter() {
             @Override
@@ -79,24 +90,30 @@ public class GameScreen extends JPanel {
     private void initializeStartButton() {
         startButton = new JButton();
         startButton.setFocusPainted(false);
-
+        startButton.setContentAreaFilled(false);
+        startButton.setBorderPainted(false);
+        startButton.setFocusPainted(false);
+        startButton.setPreferredSize(new Dimension(468, 179));
         try {
             URL startButtonUrl = getClass().getResource("resources/start_button.png");
             if (startButtonUrl == null) {
                 throw new RuntimeException("Resource not found: /start_button.png");
             }
             BufferedImage image = ImageIO.read(startButtonUrl);
-            Image scaledImage = image.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+            Image scaledImage = image.getScaledInstance(468, 179, Image.SCALE_SMOOTH);
             startButton.setIcon(new ImageIcon(scaledImage));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        startButton.setBounds(755, 492, 300, 100);
+
         startButton.addActionListener(e -> {
-            System.out.println("Start button clicked!");
+            // System.out.println("Start button clicked!");
+
+
             Music.getInstance().stop();
             Music.getInstance().play("resources/lofi.wav");
+            Music.getInstance().setVolume(50 / 100f);
 
             startButton.setVisible(false);
 
@@ -108,6 +125,8 @@ public class GameScreen extends JPanel {
             revalidate();
             repaint();
         });
+
+        PanelUtils.mouseRollOver(startButton, 0.85f);
 
         add(startButton);
     }
@@ -218,22 +237,18 @@ public class GameScreen extends JPanel {
     private void initializeStatusBars() {
         healthBar = new JProgressBar(0, 100);
         healthBar.setForeground(Color.RED);
-        healthBar.setBounds(20, 850, 150, 20);
         add(healthBar);
 
         sleepBar = new JProgressBar(0, 100);
         sleepBar.setForeground(Color.BLUE);
-        sleepBar.setBounds(20, 880, 150, 20);
         add(sleepBar);
 
         hungerBar = new JProgressBar(0, 100);
         hungerBar.setForeground(Color.ORANGE);
-        hungerBar.setBounds(20, 910, 150, 20);
         add(hungerBar);
 
         happinessBar = new JProgressBar(0, 100);
         happinessBar.setForeground(Color.GREEN);
-        happinessBar.setBounds(20, 940, 150, 20);
         add(happinessBar);
 
         updateStatusBars();
@@ -264,7 +279,7 @@ public class GameScreen extends JPanel {
             e.printStackTrace();
         }
 
-        inventoryButton.setBounds(1500, 100, 200, 200);
+
         inventoryButton.addActionListener(e -> {
             System.out.println("Inventory button clicked!");
             cardLayout.show(mainPanel, "Inventory");
@@ -293,7 +308,7 @@ public class GameScreen extends JPanel {
             e.printStackTrace();
         }
 
-        sleepButton.setBounds(1100, 100, 200, 200);
+
         sleepButton.addActionListener(e -> {
             gameManager.sleepPet();
             System.out.println("Sleep button clicked!");
@@ -322,7 +337,7 @@ public class GameScreen extends JPanel {
             e.printStackTrace();
         }
 
-        vetButton.setBounds(700, 100, 200, 200);
+
         vetButton.addActionListener(e -> {
             gameManager.visitVet();
             System.out.println("Vet button clicked!");
@@ -351,7 +366,7 @@ public class GameScreen extends JPanel {
             e.printStackTrace();
         }
 
-        exerciseButton.setBounds(300, 100, 200, 200);
+
         exerciseButton.addActionListener(e -> {
             gameManager.exercisePet();
             System.out.println("Exercise button clicked!");
@@ -366,6 +381,7 @@ public class GameScreen extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g.create();
+        Dimension size = getSize();
 
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, getWidth(), getHeight());
@@ -381,20 +397,21 @@ public class GameScreen extends JPanel {
             int x, y, scaledWidth, scaledHeight;
             switch (petType) {
                 case 0:
-                    x = 720;
-                    y = 635;
+                    // relative to background
+                    x = (int) (0.48 * size.width - 384 /2.0);
+                    y = (int) (0.88 * size.height - 635 /2.0);
                     scaledWidth = 384;
                     scaledHeight = 384;
                     break;
                 case 1:
-                    x = 720;
-                    y = 635;
+                    x = (int) (0.48 * size.width - 384 /2.0);
+                    y = (int) (0.88 * size.height - 635 /2.0);
                     scaledWidth = 384;
                     scaledHeight = 384;
                     break;
                 case 2:
-                    x = 750;
-                    y = 720;
+                    x = (int) (0.48 * size.width - 256 /2.0);
+                    y = (int) (0.82 * size.height - 256 /2.0);
                     scaledWidth = 256;
                     scaledHeight = 256;
                     break;
@@ -405,5 +422,27 @@ public class GameScreen extends JPanel {
         }
 
         g2d.dispose();
+    }
+
+    // positions all the images for any screen (hopefully works :D)
+    private void updatePositions(){
+        Dimension size = getSize();
+
+        position(startButton, 0.47, 0.5, size, 450, 150);
+        position(sleepButton, 0.2, 0.15, size, 200, 200);
+        position(vetButton, 0.4, 0.15, size, 200, 200);
+        position(exerciseButton, 0.6, 0.15, size, 200, 200);
+        position(inventoryButton, 0.8, 0.15, size, 200, 200);
+        position(healthBar, 0.05, 0.87, size, 150, 20);
+        position(sleepBar, 0.05, 0.90, size, 150, 20);
+        position(hungerBar, 0.05, 0.93, size, 150, 20);
+        position(happinessBar, 0.05, 0.96, size, 150, 20);
+
+    }
+    // x and y for based on background image
+    private void position(JComponent component, double relativeX, double relativeY, Dimension size, int width, int height) {
+        int x = (int) (relativeX * size.width - width /2.0);
+        int y = (int) (relativeY * size.height - height /2.0);
+        component.setBounds(x, y, width, height);
     }
 }

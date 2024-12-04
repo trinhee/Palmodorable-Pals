@@ -257,6 +257,12 @@ public class Pet {
      */
     public void useItem(Item item) {
         item.applyEffect(this);
+        System.out.println("Pet " + name + " used item: " + item.getName() + 
+                           " | Type: " + item.getType() + 
+                           " | Effectiveness: " + item.getEffectiveness() + "\n");
+    
+        // Print the updated stats after using the item
+        System.out.println("Updated Stats:\n" + this);
     }
 
     /**

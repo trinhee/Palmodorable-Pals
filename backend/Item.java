@@ -89,26 +89,24 @@ public class Item {
      * @param pet the pet to which the item's effect will be applied.
      */
     public void applyEffect(Pet pet) {
+        int result;
         try {
             if (this.type.equalsIgnoreCase("gift")) {
-                if (pet.getHappiness() + this.effectiveness <= pet.getMaxHappiness()) {
-                    pet.setHappiness(pet.getHappiness() + this.effectiveness);
-                } else {
-                    pet.setHappiness(pet.getMaxHappiness());
-                }
+                result = pet.getHappiness() + this.effectiveness;
+                pet.setHappiness(Math.min(result, pet.getMaxHappiness()));
             } else if (this.type.equalsIgnoreCase("food")) {
-                if (pet.getFullness() + this.effectiveness <= pet.getMaxFullness()) {
-                    pet.setFullness(pet.getFullness() + this.effectiveness);
-                } else {
-                    pet.setFullness(pet.getMaxFullness());
-                }
+                result = pet.getFullness() + this.effectiveness;
+                pet.setFullness(Math.min(result, pet.getMaxFullness()));
             } else {
-                throw new Exception("Invalid type in item class");
+                throw new IllegalArgumentException("Invalid item type: " + this.type);
             }
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error applying item effect: " + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+    
 
     /**
      * Checks if this {@code Item} is equal to another object. Two items are considered equal

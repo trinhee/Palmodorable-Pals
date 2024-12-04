@@ -168,7 +168,7 @@ public class ChoosePet extends JPanel {
             public void mouseEntered(MouseEvent e) {
                 isHovered = true;
                 animationTimer.stop(); // Pause animation
-                Image hoverImage = menu.createTransparentImage(scaledFrames[currentFrame], 0.75f);
+                Image hoverImage = PanelUtils.hoverEffect(scaledFrames[currentFrame], 0.75f);
                 button.setIcon(new ImageIcon(hoverImage));
             }
 
@@ -202,7 +202,7 @@ public class ChoosePet extends JPanel {
             cardLayout.show(mainPanel, "Game");
 
             // Fade out the current music
-            Music.getInstance().fadeOut(4000);
+            Music.getInstance().fadeOut(3000);
         });
         popup.show();
     }
