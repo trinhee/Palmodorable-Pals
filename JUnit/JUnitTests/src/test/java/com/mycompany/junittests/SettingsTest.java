@@ -1,6 +1,4 @@
-package com.mycompany.camstests;
-
-
+package com.mycompany.junittests;
 
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;

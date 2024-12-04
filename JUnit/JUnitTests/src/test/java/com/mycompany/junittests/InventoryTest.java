@@ -1,4 +1,4 @@
-package com.mycompany.camstests;
+package com.mycompany.junittests;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

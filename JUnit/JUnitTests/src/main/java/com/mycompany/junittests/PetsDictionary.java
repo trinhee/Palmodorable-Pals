@@ -1,6 +1,4 @@
-package com.mycompany.camstests;
-
-
+package com.mycompany.junittests;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

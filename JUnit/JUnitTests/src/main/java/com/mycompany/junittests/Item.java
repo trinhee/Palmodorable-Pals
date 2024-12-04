@@ -1,6 +1,4 @@
-package com.mycompany.camstests;
-
-
+package com.mycompany.junittests;
 import java.util.Objects;
 
 /**

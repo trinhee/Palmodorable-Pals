@@ -1,6 +1,4 @@
-package com.mycompany.camstests;
-
-
+package com.mycompany.junittests;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
