@@ -16,8 +16,8 @@ public class Menu extends JPanel {
     private ImageIcon titleIcon;
     private JButton[] buttons = new JButton[5]; // Updated to include the "Quit" button
     private Image[] buttonImages = new Image[5]; // Updated for 5 buttons
-    private int buttonWidth = 522;
-    private int buttonHeight = 208;
+    private int buttonWidth = 522; //522
+    private int buttonHeight = 208; //208
     private float fadeOpacity = 0.0f;
     private float gifScale = 0.1f;
     private Timer fadeTimer, titleTimer;
@@ -79,24 +79,14 @@ public class Menu extends JPanel {
         for (int i = 0; i < buttons.length; i++) {
             int index = i; // Capture index for lambda and listeners
             buttons[i] = new JButton(new ImageIcon(buttonImages[i]));
+            buttons[i].setVerticalAlignment(SwingConstants.CENTER);
+            buttons[i].setHorizontalAlignment(SwingConstants.CENTER);
             buttons[i].setFocusPainted(false);
             buttons[i].setContentAreaFilled(false);
             buttons[i].setBorderPainted(false);
 
-            // Add mouse listener for hover effect
-            buttons[i].addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    // Reduce opacity by 25% when hovered
-                    buttons[index].setIcon(new ImageIcon(createTransparentImage(buttonImages[index], 0.75f)));
-                }
 
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    // Restore full opacity when mouse exits
-                    buttons[index].setIcon(new ImageIcon(buttonImages[index]));
-                }
-            });
+            PanelUtils.mouseRollOver(buttons[i], 0.75f);
 
             // Add action listeners
             if (buttonNames[index].equals("Quit")) {
@@ -119,20 +109,7 @@ public class Menu extends JPanel {
         }
     }
 
-    public Image createTransparentImage(Image originalImage, float opacity) {
-        int width = originalImage.getWidth(null);
-        int height = originalImage.getHeight(null);
 
-        BufferedImage transparentImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = transparentImage.createGraphics();
-
-        // Set the opacity
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-        g2d.drawImage(originalImage, 0, 0, null);
-        g2d.dispose();
-
-        return transparentImage;
-    }
 
     private void startTitleAnimation() {
         titleTimer = new Timer(40, e -> {

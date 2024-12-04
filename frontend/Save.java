@@ -1,10 +1,7 @@
 package frontend;
 
 import javax.swing.*;
-
 import backend.*;
-
-
 import java.awt.*;
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -30,7 +27,7 @@ public class Save extends JPanel {
 
         // Load background image
         try {
-            URL bgUrl = getClass().getResource("resources/save_background.png");
+            URL bgUrl = getClass().getResource("resources/save_background.jpg");
             if (bgUrl == null) {
                 throw new RuntimeException("Resource not found: /save_background.jpg");
             }
@@ -66,20 +63,30 @@ public class Save extends JPanel {
         loadPreviousStateButton.addActionListener(e -> showPopUp2("resources/pop_up.png", "Pet Name: "));
         add(loadPreviousStateButton, gbc);
 
-        // Back Button
-        gbc.gridy++;
-        JButton backButton = createButton("Back");
-        backButton.addActionListener(e -> cardLayout.show(mainPanel, "Menu")); // Return to the main menu
-        add(backButton, gbc);
 
         PanelUtils.moveBack(this, "Menu", cardLayout, mainPanel);
     }
 
     private JButton createButton(String text) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Arial", Font.PLAIN, 20));
+        button.setFont(new Font("Arial", Font.BOLD, 24));
         button.setFocusPainted(false);
-        button.setPreferredSize(new Dimension(200, 50)); // Set button size
+        button.setPreferredSize(new Dimension(250, 70)); // Set button size
+        button.setBackground(new Color(200, 200, 200));
+        button.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2)); // Add white border
+
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(80, 80, 80)); // Darken on hover
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(200, 200, 200)); // Revert color
+            }
+        });
+
         return button;
     }
 
