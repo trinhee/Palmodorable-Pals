@@ -1,15 +1,16 @@
-package com.mycompany.junittests;
+package JUnit.JUnitTests.src.test.java.com.mycompany.junittests;
 
 
 import org.junit.jupiter.api.Test;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
-import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
+
+import backend.Item;
+import backend.Pet;
+
+//import Item;
+//import Pet;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Testing for the Pet class

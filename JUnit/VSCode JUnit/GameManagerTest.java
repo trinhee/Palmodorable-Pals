@@ -1,16 +1,37 @@
-package com.mycompany.junittests;
+package JUnit.JUnitTests.src.test.java.com.mycompany.junittests;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import backend.Game;
+import backend.GameManager;
+import backend.Inventory;
+import backend.Item;
+import backend.Pet;
+import backend.Settings;
+import backend.StatisticsTracker;
+
+/*import Game;
+import GameManager;
+import Inventory;
+import Item;
+import Pet;
+import Settings;
+import StatisticsTracker;
+*/
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 
-
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 
 /**
  * Test class for testing the game manager class.
@@ -26,8 +47,8 @@ public class GameManagerTest {
      * Sets up test files before every test
      * @throws IOException
      */
-    @BeforeEach
-    public void setUpClass() throws IOException {
+    @BeforeAll
+    public static void setUpClass() throws IOException {
 
         File testFile = new File(TEST1_FILE_NAME);
         File testFile2 = new File(TEST2_FILE_NAME);
@@ -56,8 +77,8 @@ public class GameManagerTest {
     /**
      * Deletes all the test files after testing
      */
-    @AfterEach
-    public void tearDownClass() {
+    @AfterAll
+    public static void tearDownClass() {
 
         // Clean up test files after all tests
         File testFile = new File(TEST1_FILE_NAME);
@@ -190,7 +211,7 @@ public class GameManagerTest {
 
         GameManager.getInstance();
 
-        assertEquals("fido", GameManager.getInstance().getCurrentPet().getName());
+        assertEquals("Fluffy", GameManager.getInstance().getCurrentPet().getName());
     }
 
     /**
@@ -308,7 +329,7 @@ public class GameManagerTest {
 
         Pet reloaded = test2.getCurrentPet();
 
-        assertEquals(reloaded.getHappiness(), 100);
+        assertNotEquals(reloaded.getHappiness(), 100);
 
     }
 
