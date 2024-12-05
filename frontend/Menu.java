@@ -9,6 +9,11 @@ import javax.swing.border.LineBorder;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * The Menu class represents the main menu screen of the application.
+ * It displays different options such as New Game, Load Game, Tutorial, Parent Controls, and Quit.
+ * The menu includes animations such as a background fade-in effect and a title scaling effect.
+ */
 public class Menu extends JPanel {
     private CardLayout cardLayout;
     private JPanel mainPanel;
@@ -16,14 +21,21 @@ public class Menu extends JPanel {
     private ImageIcon titleIcon;
     private JButton[] buttons = new JButton[5]; // Updated to include the "Quit" button
     private Image[] buttonImages = new Image[5]; // Updated for 5 buttons
-    private int buttonWidth = 522; //522
-    private int buttonHeight = 208; //208
+    private int buttonWidth = 522;
+    private int buttonHeight = 208;
     private float fadeOpacity = 0.0f;
     private float gifScale = 0.1f;
     private Timer fadeTimer, titleTimer;
     private boolean buttonsVisible = false;
     private int spacing = 25; // Spacing between buttons
 
+    /**
+     * Constructs a new Menu panel that serves as the main menu for the application.
+     * This panel allows the user to navigate to different parts of the application.
+     *
+     * @param cardLayout The CardLayout used to manage different screens.
+     * @param mainPanel  The main panel containing all the screens.
+     */
     public Menu(CardLayout cardLayout, JPanel mainPanel) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
@@ -49,6 +61,10 @@ public class Menu extends JPanel {
         fadeTimer.start();
     }
 
+    /**
+     * Loads the resources required for the menu, such as the background image,
+     * the title GIF, and the button images.
+     */
     private void loadResources() {
         try {
             // Load background image
@@ -62,7 +78,13 @@ public class Menu extends JPanel {
             titleIcon = new ImageIcon(titleUrl);
 
             // Load button images
-            String[] buttonPaths = {"resources/new_button.png", "resources/load_button.png", "resources/tutorial_button.png", "resources/parent_button.png", "resources/quit_button.png"};
+            String[] buttonPaths = {
+                    "resources/new_button.png",
+                    "resources/load_button.png",
+                    "resources/tutorial_button.png",
+                    "resources/parent_button.png",
+                    "resources/quit_button.png"
+            };
             for (int i = 0; i < buttonPaths.length; i++) {
                 URL buttonUrl = getClass().getResource(buttonPaths[i]);
                 if (buttonUrl == null) throw new RuntimeException("Resource not found: " + buttonPaths[i]);
@@ -74,6 +96,10 @@ public class Menu extends JPanel {
         }
     }
 
+    /**
+     * Initializes the menu buttons and adds action listeners to each button
+     * to navigate to the appropriate screen or perform an action.
+     */
     private void initializeButtons() {
         String[] buttonNames = {"New", "Load", "Tutorial", "Parent", "Quit"};
         for (int i = 0; i < buttons.length; i++) {
@@ -85,7 +111,7 @@ public class Menu extends JPanel {
             buttons[i].setContentAreaFilled(false);
             buttons[i].setBorderPainted(false);
 
-
+            // Add rollover effect
             PanelUtils.mouseRollOver(buttons[i], 0.75f);
 
             // Add action listeners
@@ -93,24 +119,22 @@ public class Menu extends JPanel {
                 buttons[i].addActionListener(e -> System.exit(0)); // Quit the application
             } else {
                 buttons[i].addActionListener(e -> {
-                    if (buttonNames[index].equals("New")) {
-                        cardLayout.show(mainPanel, "ChoosePet");
-                    } else if (buttonNames[index].equals("Tutorial")) {
-                        cardLayout.show(mainPanel, "Tutorial");
-                    } else if (buttonNames[index].equals("Load")) {
-                        cardLayout.show(mainPanel, "Save");
-                    } else if (buttonNames[index].equals("Parent")) {
-                        cardLayout.show(mainPanel, "Password");
+                    switch (buttonNames[index]) {
+                        case "New" -> cardLayout.show(mainPanel, "ChoosePet");
+                        case "Tutorial" -> cardLayout.show(mainPanel, "Tutorial");
+                        case "Load" -> cardLayout.show(mainPanel, "Save");
+                        case "Parent" -> cardLayout.show(mainPanel, "Password");
                     }
-                    // System.out.println(buttonNames[index] + " button clicked");
                 });
             }
             add(buttons[i]);
         }
     }
 
-
-
+    /**
+     * Starts the title animation where the title GIF gradually scales up.
+     * Once the scaling is complete, the buttons are displayed.
+     */
     private void startTitleAnimation() {
         titleTimer = new Timer(40, e -> {
             gifScale = clamp(gifScale + 0.05f, 0.0f, 2.0f); // Scale up to 2x
@@ -123,6 +147,9 @@ public class Menu extends JPanel {
         titleTimer.start();
     }
 
+    /**
+     * Displays the menu buttons once the title animation has completed.
+     */
     private void showButtons() {
         if (!buttonsVisible) {
             for (JButton button : buttons) {
@@ -132,20 +159,33 @@ public class Menu extends JPanel {
         }
     }
 
+    /**
+     * Clamps a given value between a minimum and maximum.
+     *
+     * @param value The value to clamp.
+     * @param min   The minimum allowed value.
+     * @param max   The maximum allowed value.
+     * @return The clamped value.
+     */
     private float clamp(float value, float min, float max) {
         return Math.max(min, Math.min(max, value));
     }
 
+    /**
+     * Paints the components of the menu, including the background, buttons, and title animation.
+     *
+     * @param g The Graphics object used for painting.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g.create();
 
-        // Dark gray background
+        // Draw dark gray background
         g2d.setColor(Color.DARK_GRAY);
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
-        // Fade-in background
+        // Draw fade-in background
         if (backgroundImage != null) {
             Composite originalComposite = g2d.getComposite();
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeOpacity));
@@ -153,7 +193,7 @@ public class Menu extends JPanel {
             g2d.setComposite(originalComposite);
         }
 
-        // Center buttons in a 2x2 grid with Quit button below
+        // Position the buttons in a 2x2 grid with the Quit button below
         int panelWidth = getWidth();
         int panelHeight = getHeight();
         int totalButtonWidth = (buttonWidth * 2) + spacing;
@@ -176,7 +216,7 @@ public class Menu extends JPanel {
         int quitY = startY + (buttonHeight * 2) + (spacing * 2); // Below the grid
         quitButton.setBounds(quitX, quitY, buttonWidth, buttonHeight);
 
-        // Draw title GIF when the background is fully visible
+        // Draw the title GIF when the background is fully visible
         if (fadeOpacity >= 1.0f && titleIcon != null) {
             int originalWidth = titleIcon.getIconWidth();
             int originalHeight = titleIcon.getIconHeight();

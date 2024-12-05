@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 name,type,score,health,sleep,fullness,happiness,sleepEffectiveness,playEffectiveness,inventory
 Buddy,0,0,100,100,90,50,10,10,"Treat: 1, Meal: 1, Bell: 1"
 Fluffy,2,100,100,0,50,0,20,10,"Treat: 1, Meal: 1, Bell: 1"
@@ -8,3 +9,15 @@ asda,0,0,0,100,100,100,100,0,"Treat: 1, Meal: 1, Bell: 1"
 as,1,0,100,100,100,100,0,0
 asdas,1,0,100,100,100,100,0,0,"Treat: 1, Plushy: 1"
 asdasdasdasd,1,0,100,100,100,100,0,0,""
+=======
+name,type,health,sleep,fullness,happiness,sleepEffectiveness,playEffectiveness,inventory
+Buddy,0,100,100,40,20,10,15,"Gift: 1"
+Fluffy,2,100,0,0,0,20,25,"Gift: 2, Food: 4"
+Max,1,100,0,100,100,15,10,"Food: 6, Gift: 2"
+Kawi,1,100,100,100,100,0,0,"Food: 1, Gift: 1"
+a,1,100,100,100,100,0,0
+Fido,0,100,100,100,100,0,0,"Gift: 1, Food: 1"
+Flappy,2,100,100,100,100,0,0,"Food: 1, Gift: 1"
+dfd,0,100,100,100,100,0,0,"Food: 1, Gift: 1"
+gfdg,1,100,100,100,100,0,0,"Food: 1, Gift: 1"
+>>>>>>> e81dc07f1db4288377c7ae8ccf94838d2b668a66

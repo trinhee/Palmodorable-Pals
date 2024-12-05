@@ -8,10 +8,22 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * The PopUp class provides a customizable dialog window that can be used for input prompts.
+ * It supports displaying a background image, an input text field, and submit and cancel buttons.
+ */
 public class PopUp {
     private JDialog dialog;
     private JTextField textField;
 
+    /**
+     * Constructs a new PopUp dialog.
+     *
+     * @param parent       The parent JFrame to which this dialog is attached.
+     * @param imagePath    The path to the background image to be displayed in the dialog.
+     * @param placeholder  The placeholder text to be shown in the input text field.
+     * @param submitAction The action to be performed when the submit button is clicked or Enter is pressed.
+     */
     public PopUp(JFrame parent, String imagePath, String placeholder, ActionListener submitAction) {
         // Create the dialog
         dialog = new JDialog(parent, "", true); // Empty title for no title bar
@@ -73,6 +85,9 @@ public class PopUp {
         dialog.add(layeredPane);
     }
 
+    /**
+     * Displays the PopUp dialog to the user.
+     */
     public void show() {
         dialog.setVisible(true);
     }

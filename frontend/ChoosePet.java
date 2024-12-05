@@ -134,7 +134,6 @@ public class ChoosePet extends JPanel {
      * @param frameHeight the height of reach frame
      * @return an array of {@link BufferedImage} objects representing the frames
      */
-
     private BufferedImage[] loadSpriteSheet(String resourcePath, int frameWidth, int frameHeight) {
         try {
             URL spriteSheetURL = getClass().getResource(resourcePath);
@@ -210,13 +209,13 @@ public class ChoosePet extends JPanel {
 
         return button;
     }
+    
     /**
      * Shows the popup window 
      * @param imagePath the path to the pop up image
      * @param placeholder a placeholder string
      * @param petType type of pet selected
      */
-
     private void showPopUp(String imagePath, String placeholder, int petType) {
         PopUp popup = new PopUp(parentFrame, imagePath, placeholder, e -> {
 
@@ -237,10 +236,10 @@ public class ChoosePet extends JPanel {
         });
         popup.show();
     }
+
     /**
      * starts the animation timer for updating button images
      */
-
     private void startAnimation() {
         animationTimer = new Timer(100, e -> {
             currentFrame = (currentFrame + 1) % 4; // 4 frames in each sprite sheet

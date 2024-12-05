@@ -10,16 +10,26 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
 
-
+/**
+ * The PasswordScreen class provides a user interface for entering a password.
+ * If the correct password is entered, it allows access to the parent controls panel.
+ */
 public class PasswordScreen extends JPanel {
     private Image background;
+
+    /**
+     * Constructs a new PasswordScreen panel.
+     *
+     * @param cardLayout The CardLayout for navigating between different screens.
+     * @param mainPanel  The main panel containing all the different screens.
+     */
     public PasswordScreen(CardLayout cardLayout, JPanel mainPanel) {
         setLayout(new GridBagLayout()); // Use GridBagLayout to center components
         
         try {
             URL bgUrl = getClass().getResource("resources/password_background.png");
             background = ImageIO.read(bgUrl);
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -41,8 +51,8 @@ public class PasswordScreen extends JPanel {
         passwordField.setFont(new Font("Arial", Font.PLAIN, 18));
         add(passwordField, gbc);
 
+        // Request focus for the password field to allow immediate typing
         passwordField.requestFocusInWindow();
-        
 
         // Add ActionListener to detect when the user presses Enter
         passwordField.addActionListener(new ActionListener() {
@@ -71,14 +81,20 @@ public class PasswordScreen extends JPanel {
             }
         });
 
+        // Add functionality to move back to the main menu when ESC is pressed on the panel
         PanelUtils.moveBack(this, "Menu", cardLayout, mainPanel);
     }
 
+    /**
+     * Paints the background image of the panel.
+     *
+     * @param g The Graphics object used to draw the background image.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (background != null) {
-            g.drawImage(background,0,0, getWidth(),getHeight(), this);
+            g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
         }
     }
 }

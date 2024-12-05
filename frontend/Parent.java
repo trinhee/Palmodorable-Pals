@@ -8,6 +8,10 @@ import java.io.IOException;
 import java.net.URL;
 import backend.Settings;
 
+/**
+ * The Parent class represents a parent control panel in the application.
+ * It allows parents to manage certain settings such as break time, study time, and other pet-related controls.
+ */
 public class Parent extends JPanel {
     private CardLayout parentCardLayout;
     private CardLayout cardLayout;
@@ -15,6 +19,14 @@ public class Parent extends JPanel {
     private JFrame parentFrame;
     private Image background;
 
+    /**
+     * Constructs a new Parent control panel.
+     *
+     * @param appCardLayout The CardLayout for the entire application.
+     * @param mainPanel     The main panel containing all the different screens.
+     * @param cardLayout    The CardLayout to be used for navigating between screens.
+     * @param parentFrame   The JFrame used as the parent frame.
+     */
     public Parent(CardLayout appCardLayout, JPanel mainPanel, CardLayout cardLayout, JFrame parentFrame) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
@@ -43,6 +55,13 @@ public class Parent extends JPanel {
         PanelUtils.moveBack(this, "Menu", cardLayout, mainPanel);
     }
 
+    /**
+     * Creates the parent control panel where buttons and sliders are available for various actions.
+     *
+     * @param appCardLayout The CardLayout for the entire application.
+     * @param mainPanel     The main panel containing all the different screens.
+     * @return A JPanel with all the parent controls.
+     */
     private JPanel createParentControlsPanel(CardLayout appCardLayout, JPanel mainPanel) {
         JPanel panel = new JPanel() {
             @Override
@@ -69,7 +88,7 @@ public class Parent extends JPanel {
         title.setHorizontalAlignment(JLabel.CENTER);
         panel.add(title, gbc);
 
-        // Buttons
+        // Buttons for parent controls
         JButton revivePetButton = createButton("Revive Pet");
         revivePetButton.addActionListener(e -> System.out.println("Revive Pet button clicked"));
 
@@ -123,7 +142,7 @@ public class Parent extends JPanel {
             public void paintThumb(Graphics g) {
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2d.setColor(new Color(92, 64, 51)); // dark brown
+                g2d.setColor(new Color(92, 64, 51)); // Dark brown
                 g2d.fillOval(thumbRect.x, thumbRect.y, thumbRect.width, thumbRect.height);
             }
 
@@ -131,7 +150,7 @@ public class Parent extends JPanel {
             public void paintTrack(Graphics g) {
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2d.setColor(new Color(196, 164, 132)); // light brown
+                g2d.setColor(new Color(196, 164, 132)); // Light brown
                 g2d.fillRoundRect(trackRect.x, trackRect.y + trackRect.height / 3, trackRect.width, trackRect.height / 3, 5, 5);
             }
         });
@@ -146,6 +165,12 @@ public class Parent extends JPanel {
         return panel;
     }
 
+    /**
+     * Creates a button with standardized styling and hover effects.
+     *
+     * @param text The text to be displayed on the button.
+     * @return A JButton with the specified text and styling.
+     */
     private JButton createButton(String text) {
         JButton button = new JButton(text);
         button.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the button
@@ -159,10 +184,12 @@ public class Parent extends JPanel {
 
         // Add hover effect
         button.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(new Color(180, 180, 180)); // Darker gray on hover
             }
 
+            @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 button.setBackground(new Color(200, 200, 200)); // Original color
             }
@@ -171,6 +198,13 @@ public class Parent extends JPanel {
         return button;
     }
 
+    /**
+     * Shows a pop-up dialog for setting study or break times.
+     *
+     * @param imagePath  The path to the image to be displayed in the pop-up.
+     * @param placeholder Placeholder text for the input field.
+     * @param type       The type of time being set ("study" or "break").
+     */
     private void showPopUp(String imagePath, String placeholder, String type) {
         PopUp popup = new PopUp(parentFrame, imagePath, placeholder, e -> {
             String input = e.getActionCommand().trim(); // Trim whitespace
@@ -190,16 +224,9 @@ public class Parent extends JPanel {
                 }
 
                 switch (type) {
-                    case "study":
-                        settings.setStudyTime(timeInMinutes);
-                        System.out.println("Study time set to: " + timeInMinutes + " minutes");
-                        break;
-                    case "break":
-                        settings.setBreakTime(timeInMinutes);
-                        System.out.println("Break time set to: " + timeInMinutes + " minutes");
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Invalid type: " + type);
+                    case "study" -> settings.setStudyTime(timeInMinutes);
+                    case "break" -> settings.setBreakTime(timeInMinutes);
+                    default -> throw new IllegalArgumentException("Invalid type: " + type);
                 }
 
                 settings.saveToFile();

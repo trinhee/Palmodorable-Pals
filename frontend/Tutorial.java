@@ -6,11 +6,21 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * The Tutorial class provides a user interface for displaying the tutorial screen.
+ * It shows an informative image that guides the user through the application's features.
+ */
 public class Tutorial extends JPanel {
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private Image background;
 
+    /**
+     * Constructs a new Tutorial panel.
+     *
+     * @param cardLayout The CardLayout for navigating between different screens.
+     * @param mainPanel  The main panel containing all the different screens.
+     */
     public Tutorial(CardLayout cardLayout, JPanel mainPanel) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
@@ -42,9 +52,15 @@ public class Tutorial extends JPanel {
         }
         add(imageLabel, BorderLayout.CENTER);
 
+        // Add functionality to move back to the main menu when ESC is pressed
         PanelUtils.moveBack(this, "Menu", cardLayout, mainPanel);
     }
 
+    /**
+     * Paints the background image of the panel.
+     *
+     * @param g The Graphics object used to draw the background image.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

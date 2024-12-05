@@ -1,3 +1,7 @@
 /JUnit/JUnitTests/target/
+<<<<<<< HEAD
 /out/backend
 /out/frontend
+=======
+.idea/
+>>>>>>> e81dc07f1db4288377c7ae8ccf94838d2b668a66
