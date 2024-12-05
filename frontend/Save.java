@@ -111,16 +111,16 @@ public class Save extends JPanel {
 
             switch (pet.getPetType()) {
                 case 0:
-                    gameManager = new GameManager(input, type);
+                    gameManager = new GameManager(result, type);
                     GameManager.setInstance(gameManager);
                     break;
                 case 1:
-                    gameManager = new GameManager(input, type);
+                    gameManager = new GameManager(result, type);
                     GameManager.setInstance(gameManager);
 
                     break;
                 case 2:
-                    gameManager = new GameManager(input, type);
+                    gameManager = new GameManager(result, type);
                     GameManager.setInstance(gameManager);
                     break;
                 default:

@@ -4,8 +4,6 @@ import backend.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -35,7 +33,8 @@ public class GameScreen extends JPanel {
     private JProgressBar sleepBar;
     private JProgressBar hungerBar;
     private JProgressBar happinessBar;
-    private String petState;
+    private JLabel scoreLabel;
+    private String score; // FOR PK
 
     public GameScreen(CardLayout cardLayout, JPanel mainPanel) {
         this.cardLayout = cardLayout;
@@ -70,6 +69,7 @@ public class GameScreen extends JPanel {
         initializeExerciseButton();
         initializePetSprite(petType);
         initializeStatusBars();
+        initializeScoreLabel("A+"); // FOR PK
 
         addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
@@ -279,6 +279,7 @@ public class GameScreen extends JPanel {
             e.printStackTrace();
         }
 
+        PanelUtils.mouseRollOver(inventoryButton, 0.75f);
 
         inventoryButton.addActionListener(e -> {
             System.out.println("Inventory button clicked!");
@@ -308,6 +309,7 @@ public class GameScreen extends JPanel {
             e.printStackTrace();
         }
 
+        PanelUtils.mouseRollOver(sleepButton, 0.75f);
 
         sleepButton.addActionListener(e -> {
             gameManager.sleepPet();
@@ -337,6 +339,7 @@ public class GameScreen extends JPanel {
             e.printStackTrace();
         }
 
+        PanelUtils.mouseRollOver(vetButton, 0.75f);
 
         vetButton.addActionListener(e -> {
             gameManager.visitVet();
@@ -366,6 +369,7 @@ public class GameScreen extends JPanel {
             e.printStackTrace();
         }
 
+        PanelUtils.mouseRollOver(exerciseButton, 0.75f);
 
         exerciseButton.addActionListener(e -> {
             gameManager.exercisePet();
@@ -375,6 +379,13 @@ public class GameScreen extends JPanel {
             repaint();
         });
         add(exerciseButton);
+    }
+
+    private void initializeScoreLabel(String score){
+        scoreLabel = new JLabel("Score: " + score);
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 32));
+        scoreLabel.setForeground(Color.WHITE);
+        add(scoreLabel);
     }
 
     @Override
@@ -424,7 +435,9 @@ public class GameScreen extends JPanel {
         g2d.dispose();
     }
 
-    // positions all the images for any screen (hopefully works :D)
+    
+
+    // positions all the images for any screen 
     private void updatePositions(){
         Dimension size = getSize();
 
@@ -437,6 +450,7 @@ public class GameScreen extends JPanel {
         position(sleepBar, 0.05, 0.90, size, 150, 20);
         position(hungerBar, 0.05, 0.93, size, 150, 20);
         position(happinessBar, 0.05, 0.96, size, 150, 20);
+        position(scoreLabel, 0.065, 0.83, size, 200, 200);
 
     }
     // x and y for based on background image

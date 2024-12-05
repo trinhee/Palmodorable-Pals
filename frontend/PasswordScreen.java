@@ -15,7 +15,7 @@ public class PasswordScreen extends JPanel {
     private Image background;
     public PasswordScreen(CardLayout cardLayout, JPanel mainPanel) {
         setLayout(new GridBagLayout()); // Use GridBagLayout to center components
-
+        
         try {
             URL bgUrl = getClass().getResource("resources/password_background.png");
             background = ImageIO.read(bgUrl);
@@ -40,6 +40,9 @@ public class PasswordScreen extends JPanel {
         JTextField passwordField = new JTextField(20); // Text field with 20 columns
         passwordField.setFont(new Font("Arial", Font.PLAIN, 18));
         add(passwordField, gbc);
+
+        passwordField.requestFocusInWindow();
+        
 
         // Add ActionListener to detect when the user presses Enter
         passwordField.addActionListener(new ActionListener() {

@@ -41,6 +41,13 @@ public class PopUp {
         textField.setBounds(300, 200, 400, 30); // Centered placement
         textField.setFont(new Font("Arial", Font.PLAIN, 16));
 
+        textField.addActionListener(e -> {
+            if (submitAction != null) {
+                submitAction.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, textField.getText()));
+            }
+            dialog.dispose();
+        });
+
         // Buttons
         JButton submitButton = new JButton("Submit");
         submitButton.setBounds(550, 300, 100, 30);

@@ -12,6 +12,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.function.Consumer;
 
+/**
+ * @code ChoosePet class represents a panel where users can select a pet to adopt in the game.
+ * It provides animated buttons for selecting different types of pets and manages the transition onto the game screen
+ */
 
 public class ChoosePet extends JPanel {
     private Timer animationTimer;
@@ -109,6 +113,10 @@ public class ChoosePet extends JPanel {
 
     }
 
+    /**
+     * paints the component by drawing the background image
+     * @param g the {@link Graphics} object used for rendering
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -118,6 +126,14 @@ public class ChoosePet extends JPanel {
             g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
         }
     }
+
+    /**
+     * Loads a sprite sheet and splits into amount of frames
+     * @param resourcePath the path to the sprite sheet
+     * @param frameWidth the width of each frame
+     * @param frameHeight the height of reach frame
+     * @return an array of {@link BufferedImage} objects representing the frames
+     */
 
     private BufferedImage[] loadSpriteSheet(String resourcePath, int frameWidth, int frameHeight) {
         try {
@@ -144,6 +160,15 @@ public class ChoosePet extends JPanel {
         }
         return null;
     }
+
+    /**
+     * Creates an animated button with hover effects
+     * @param frames the animation frames for the button
+     * @param name the name of the button
+     * @param width the width of button
+     * @param height the height of button
+     * @return the created {@link} JButton
+     */
 
     private JButton createAnimatedButton(BufferedImage[] frames, String name, int width, int height) {
         // Scale frames to desired size
@@ -185,6 +210,12 @@ public class ChoosePet extends JPanel {
 
         return button;
     }
+    /**
+     * Shows the popup window 
+     * @param imagePath the path to the pop up image
+     * @param placeholder a placeholder string
+     * @param petType type of pet selected
+     */
 
     private void showPopUp(String imagePath, String placeholder, int petType) {
         PopUp popup = new PopUp(parentFrame, imagePath, placeholder, e -> {
@@ -206,6 +237,9 @@ public class ChoosePet extends JPanel {
         });
         popup.show();
     }
+    /**
+     * starts the animation timer for updating button images
+     */
 
     private void startAnimation() {
         animationTimer = new Timer(100, e -> {
@@ -228,6 +262,13 @@ public class ChoosePet extends JPanel {
         animationTimer.start();
     }
 
+    /**
+     * 
+     * @param originalImage orignal image to scale
+     * @param width
+     * @param height
+     * @return a {@link BufferedImage} of the scaled image
+     */
     private BufferedImage scaleImage(BufferedImage originalImage, int width, int height) {
         Image scaledImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
