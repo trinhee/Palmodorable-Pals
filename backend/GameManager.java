@@ -142,6 +142,9 @@ public class GameManager {
         return currentStatisticsTracker;
     }
 
+    /**
+     * Sets the pets health back to full
+     */
     public void visitVet(){
         this.currentPet.setHealth(100);
     }
