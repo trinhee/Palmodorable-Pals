@@ -63,6 +63,7 @@ public class Inventory {
         saveToFile(petName, FILE_PATH);
     }
 
+    
     public void saveToFile(String petName, String filePath) {
         String fileName = filePath;
         List<String> lines = new ArrayList<>();
@@ -78,14 +79,11 @@ public class Inventory {
 
                 String[] data = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
-                if (data.length < 8) {
-                    System.err.println("Invalid data format: " + line);
-                    continue; // Skip invalid lines
-                }
+
 
                 if (data[0].trim().equalsIgnoreCase(petName)) {
                     // Update the pet's inventory
-                    line = String.format("%s,%s,%s,%s,%s,%s,%s,%s,\"%s\"",
+                    line = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,\"%s\"",
                             data[0].trim(),
                             data[1].trim(),
                             data[2].trim(),
@@ -94,6 +92,7 @@ public class Inventory {
                             data[5].trim(),
                             data[6].trim(),
                             data[7].trim(),
+                            data[8].trim(),
                             this.toString()); // Use Inventory's toString() method
                     updated = true;
                 }
@@ -138,29 +137,20 @@ public class Inventory {
                 }
 
                 String[] data = parseCSVLine(line);
-                if (data.length < 9) {
-                    System.err.println("Invalid CSV format.");
-                    continue;
-                }
 
                 String name = data[0].trim();
                 if (name.equalsIgnoreCase(petName)) {
-                    String inventoryData = data[8].trim(); // Assuming inventory is at column index 8
+                    String inventoryData = data[9].trim(); // Assuming inventory is at column index 8
 
                     if (inventoryData.startsWith("\"") && inventoryData.endsWith("\"")) {
                         inventoryData = inventoryData.substring(1, inventoryData.length() - 1);
                     }
 
                     String[] inventoryItems = inventoryData.split(",");
-
                     for (String item : inventoryItems) {
-                        String[] parts = item.split(":");
-                        if (parts.length != 2) {
-                            System.err.println("Invalid inventory item format: " + item);
-                            continue;
-                        }
 
-                        String itemType = parts[0].trim().toLowerCase();
+                        String[] parts = item.split(":");
+                        String itemName = parts[0].trim();
                         int quantity;
                         try {
                             quantity = Integer.parseInt(parts[1].trim());
@@ -171,15 +161,27 @@ public class Inventory {
 
                         Item inventoryItem = null;
 
-                        switch (itemType) {
-                            case "food":
-                                inventoryItem = new Item("Food", "food", 10);
+                        switch (itemName) {
+                            case "Treat":
+                                inventoryItem = new Item("Treat", "food", 10);
                                 break;
-                            case "gift":
-                                inventoryItem = new Item("Gift", "gift", 10);
+                            case "Snack":
+                                inventoryItem = new Item("Snack", "gift", 25);
+                                break;
+                            case "Meal":
+                                inventoryItem = new Item("Meal", "food", 50);
+                                break;
+                            case "Plushy":
+                                inventoryItem = new Item("Plushy", "gift", 10);
+                                break;
+                            case "Ball":
+                                inventoryItem = new Item("Ball", "gift", 25);
+                                break;
+                            case "Bell":
+                                inventoryItem = new Item("Bell", "gift", 50);
                                 break;
                             default:
-                                System.err.println("Unknown item type: " + itemType);
+                                System.err.println("Unknown item name: " + itemName);
                                 continue;
                         }
 
@@ -246,14 +248,14 @@ public class Inventory {
     }
 
     /**
-     * Retrieves an item from the inventory by its type.
+     * Retrieves an item from the inventory by its Name.
      *
      * @param name The name or type of the item to find.
      * @return The item if found, or {@code null} if not found.
      */
     public Item getItem(String name) {
         for (Item item : inventory.keySet()) {
-            if (item.getType().equalsIgnoreCase(name)) {
+            if (item.getName() == name) {
                 return item;
             }
         }

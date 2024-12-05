@@ -142,9 +142,6 @@ public class GameManager {
         return currentStatisticsTracker;
     }
 
-    /**
-     * Sets the pets health back to full
-     */
     public void visitVet(){
         this.currentPet.setHealth(100);
     }
@@ -206,7 +203,7 @@ public class GameManager {
             return;
         }
 
-
+        getCurrentPet().setPetScore(Math.min(100, getCurrentPet().getPetScore() + 10));
         System.out.println("\nTime for a break! Break time: " + breakTime + " minutes.");
         int actualBreakSeconds = countDownWithProgressBar(totalBreakSeconds, barLength, "Break");
 

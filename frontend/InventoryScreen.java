@@ -64,8 +64,8 @@ public class InventoryScreen extends JPanel {
     private void initializeTreatButton(GridBagConstraints gbc) {
         JButton treatButton = createImageButton("resources/treat.png");
         treatButton.addActionListener(e -> {
-            Item treat = new Item("Treat", "Food", 10);
-            gameManager.getCurrentPet().useItem(treat);
+
+            GameManager.getInstance().givePet("Treat");
         });
         add(treatButton, gbc);
     }
@@ -73,8 +73,8 @@ public class InventoryScreen extends JPanel {
     private void initializeSnackButton(GridBagConstraints gbc) {
         JButton snackButton = createImageButton("resources/snack.png");
         snackButton.addActionListener(e -> {
-            Item snack = new Item("Snack", "Food", 20);
-            gameManager.getCurrentPet().useItem(snack);
+            GameManager.getInstance().givePet("Snack");
+
         });
         add(snackButton, gbc);
     }
@@ -82,8 +82,8 @@ public class InventoryScreen extends JPanel {
     private void initializeMealButton(GridBagConstraints gbc) {
         JButton mealButton = createImageButton("resources/meal.png");
         mealButton.addActionListener(e -> {
-            Item meal = new Item("Meal", "Food", 30);
-            gameManager.getCurrentPet().useItem(meal);
+            GameManager.getInstance().givePet("Meal");
+
         });
         add(mealButton, gbc);
     }
@@ -91,8 +91,8 @@ public class InventoryScreen extends JPanel {
     private void initializePlushyButton(GridBagConstraints gbc) {
         JButton plushyButton = createImageButton("resources/plushy.png");
         plushyButton.addActionListener(e -> {
-            Item plushy = new Item("Plushy", "Gift", 15);
-            gameManager.getCurrentPet().useItem(plushy);
+            GameManager.getInstance().givePet("Plushy");
+
         });
         add(plushyButton, gbc);
     }
@@ -100,8 +100,8 @@ public class InventoryScreen extends JPanel {
     private void initializeBallButton(GridBagConstraints gbc) {
         JButton ballButton = createImageButton("resources/ball.png");
         ballButton.addActionListener(e -> {
-            Item ball = new Item("Ball", "Gift", 20);
-            gameManager.getCurrentPet().useItem(ball);
+            GameManager.getInstance().givePet("Ball");
+
         });
         add(ballButton, gbc);
     }
@@ -109,8 +109,7 @@ public class InventoryScreen extends JPanel {
     private void initializeBellButton(GridBagConstraints gbc) {
         JButton bellButton = createImageButton("resources/bell.png");
         bellButton.addActionListener(e -> {
-            Item Bell = new Item("Bell", "Gift", 25);
-            gameManager.getCurrentPet().useItem(Bell);
+            GameManager.getInstance().givePet("Bell");
         });
         add(bellButton, gbc);
     }

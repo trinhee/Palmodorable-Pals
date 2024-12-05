@@ -40,15 +40,17 @@ public class PetsDictionary {
 
                 String name = values[0];
                 int petType = Integer.parseInt(values[1]);
-                int health = Integer.parseInt(values[2]);
-                int sleep = Integer.parseInt(values[3]);
-                int fullness = Integer.parseInt(values[4]);
-                int happiness = Integer.parseInt(values[5]);
-                int sleepEffectiveness = Integer.parseInt(values[6]);
-                int playEffectiveness = Integer.parseInt(values[7]);
+                int petScore = Integer.parseInt(values[2]);
+                int health = Integer.parseInt(values[3]);
+                int sleep = Integer.parseInt(values[4]);
+                int fullness = Integer.parseInt(values[5]);
+                int happiness = Integer.parseInt(values[6]);
+                int sleepEffectiveness = Integer.parseInt(values[7]);
+                int playEffectiveness = Integer.parseInt(values[8]);
 
                 Pet pet = new Pet(name, petType, sleepEffectiveness, playEffectiveness);
                 pet.setPetType(petType);
+                pet.setPetScore(petScore);
                 pet.setHealth(health);
                 pet.setSleep(sleep);
                 pet.setFullness(fullness);

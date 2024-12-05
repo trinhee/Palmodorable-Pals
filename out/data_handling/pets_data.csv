@@ -1,4 +1,7 @@
-name,type,health,sleep,fullness,happiness,sleepEffectiveness,playEffectiveness,inventory
-Buddy,0,100,0,10,20,10,15,"Gift: 1, Food: 3"
-Fluffy,2,100,100,100,100,20,25,"Food: 4, Gift: 2"
-Max,1,100,100,100,100,15,10,"Food: 6, Gift: 2"
+name,type,score,health,sleep,fullness,happiness,sleepEffectiveness,playEffectiveness,inventory
+Buddy,0,0,100,100,40,0,10,15,"Treat: 1, Meal: 1, Bell: 1"
+Fluffy,2,100,100,0,0,0,20,10,"Treat: 1, Meal: 1, Bell: 1"
+Max,1,50,100,0,0,100,15,10,"Treat: 1, Meal: 1, Bell: 1"
+Kawi,1,75,100,100,100,100,0,0,"Treat: 1, Meal: 1, Bell: 1"
+a,1,0,100,100,100,100,0,0,"Treat: 1, Meal: 1, Bell: 1"
+asda,1,0,100,100,100,100,0,0,"Treat: 1, Meal: 1, Bell: 1"

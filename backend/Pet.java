@@ -3,7 +3,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException; 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * 
  * This class includes functionality for saving pet data to a file.
  * 
- * @author Kaegan Walker Fulton
+ *
  */
 public class Pet {
 
@@ -42,6 +42,8 @@ public class Pet {
     private int playEffectiveness;
     /**The type of the pet, 0 = dog, 1 = cat, 2 = bird*/
     private int petType;
+    
+    private int petScore;
 
     private static final String FILE_PATH = "../data_handling/pets_data.csv"; // The pet data file path
 
@@ -55,6 +57,8 @@ public class Pet {
      */
     public Pet(String name, int petType, int sleepEffectiveness, int playEffectiveness) {
         this.name = name;
+        this.petType = petType;
+        this.petScore = 0;
         this.maxHealth = 100;
         this.maxSleep = 100;
         this.maxFullness = 100;
@@ -65,21 +69,16 @@ public class Pet {
         this.happiness = this.maxHappiness;
         this.sleepEffectiveness = sleepEffectiveness;
         this.playEffectiveness = playEffectiveness;
-        this.petType = petType;
     }
+
 
     /**
      * Saves the pet's data to a CSV file.
      * If the pet already exists in the file, its data is updated; otherwise, a new record is added.
      */
-/**
- * Saves the pet's data to a CSV file.
- * If the pet already exists in the file, its data is updated; otherwise, a new record is added.
- */
-    public void saveToFile () {
+    public void saveToFile() {
         saveToFile(FILE_PATH);
     }
-    
     public void saveToFile(String filePath) {
         String fileName = filePath;
         List<String> lines = new ArrayList<>();
@@ -95,15 +94,12 @@ public class Pet {
 
                 String[] data = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
-                if (data.length < 8) { // Adjusted to match the new format without inventory
-                    System.err.println("Invalid data format: " + line);
-                    continue; // Skip invalid lines
-                }
-
                 if (data[0].equalsIgnoreCase(name)) {
-                    line = String.format("%s,%d,%d,%d,%d,%d,%d,%d",
+                    // Update the line with new values, leaving the last column blank
+                    line = String.format("%s,%d,%d,%d,%d,%d,%d,%d,%d",
                             name,
                             petType,
+                            petScore,
                             health,
                             sleep,
                             fullness,
@@ -117,16 +113,18 @@ public class Pet {
             }
 
             if (!updated) {
-                lines.add(String.format("%s,%d,%d,%d,%d,%d,%d,%d,%s",
+                // Add new pet data with inventory
+                lines.add(String.format("%s,%d,%d,%d,%d,%d,%d,%d,%d,\"%s\"",
                         name,
                         petType,
+                        petScore,
                         health,
                         sleep,
                         fullness,
                         happiness,
                         sleepEffectiveness,
                         playEffectiveness,
-                        '"' + "Food: 1, Gift: 1" + '"'));
+                        "Treat: 1, Plushy: 1")); // Add inventory for a new pet
             }
         } catch (IOException e) {
             System.err.println("Error reading the file: " + e.getMessage());
@@ -134,7 +132,7 @@ public class Pet {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             for (String line : lines) {
-                writer.write(line); 
+                writer.write(line);
                 writer.newLine();
             }
             System.out.println("Pet data successfully saved to file: " + fileName);
@@ -142,6 +140,7 @@ public class Pet {
             System.err.println("Error writing to the file: " + e.getMessage());
         }
     }
+
 
     // Setter methods
     /** @param name Sets the pet's name. */
@@ -218,6 +217,10 @@ public class Pet {
     /** @return The type of the pet*/
     public int getPetType() { return this.petType; }
 
+    public int getPetScore() { return this.petScore; }
+
+    public int setPetScore(int score) { return this.petScore = score; }
+    
     /**
      * Increases the pet's sleep level by the sleep effectiveness value.
      * Caps sleep at the maximum sleep level.

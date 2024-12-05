@@ -34,7 +34,6 @@ public class GameScreen extends JPanel {
     private JProgressBar hungerBar;
     private JProgressBar happinessBar;
     private JLabel scoreLabel;
-    private String score; // FOR PK
 
     public GameScreen(CardLayout cardLayout, JPanel mainPanel) {
         this.cardLayout = cardLayout;
@@ -68,9 +67,12 @@ public class GameScreen extends JPanel {
         initializeVetButton();
         initializeExerciseButton();
         initializePetSprite(petType);
-        initializeStatusBars();
-        initializeScoreLabel("A+"); // FOR PK
 
+        initializeScoreLabel(GameScreen.intScoreToString(GameManager.getInstance().getCurrentPet().getPetScore()));
+
+        initializeStatusBars();
+
+        // Update positions when the panel is resized
         addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
             public void componentResized(java.awt.event.ComponentEvent evt) {
@@ -259,6 +261,8 @@ public class GameScreen extends JPanel {
         sleepBar.setValue(gameManager.getCurrentPet().getSleep());
         hungerBar.setValue(gameManager.getCurrentPet().getFullness());
         happinessBar.setValue(gameManager.getCurrentPet().getHappiness());
+        String score = GameScreen.intScoreToString(GameManager.getInstance().getCurrentPet().getPetScore()); 
+        scoreLabel.setText("Score: " + score);
     }
 
     private void initializeInventoryButton() {
@@ -381,12 +385,29 @@ public class GameScreen extends JPanel {
         add(exerciseButton);
     }
 
-    private void initializeScoreLabel(String score){
+    private static String intScoreToString(int score) {
+        if (score < 10) {
+            return "F";
+        } else if (score < 20) {
+            return "D";
+        } else if (score < 30) {
+            return "C";
+        } else if (score < 40) {
+            return "B";
+        } else if (score < 50) {
+            return "A";
+        } else {
+            return "A+";
+        }
+    }
+
+    private void initializeScoreLabel(String score) {
         scoreLabel = new JLabel("Score: " + score);
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 32));
         scoreLabel.setForeground(Color.WHITE);
         add(scoreLabel);
     }
+
 
     @Override
     protected void paintComponent(Graphics g) {
