@@ -1,4 +1,0 @@
-Paste this into browser:
-
-
-file:///Users/cameronsolomway/NetBeansProjects/JUnitTests/target/site/apidocs/com/mycompany/junittests/package-summary.html
