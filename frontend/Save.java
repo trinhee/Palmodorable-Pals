@@ -6,11 +6,11 @@ import java.awt.*;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.net.URL;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 
-
+/**
+ * The Save class provides a user interface for saving and loading the game state.
+ * It allows users to save the current game or load a previously saved state.
+ */
 public class Save extends JPanel {
     private PetsDictionary petsDictionary;
     private CardLayout cardLayout;
@@ -18,6 +18,12 @@ public class Save extends JPanel {
     private JFrame parentFrame;
     private Image background;
 
+    /**
+     * Constructs a new Save panel.
+     *
+     * @param cardLayout The CardLayout for navigating between different screens.
+     * @param mainPanel  The main panel containing all the different screens.
+     */
     public Save(CardLayout cardLayout, JPanel mainPanel) {
         this.petsDictionary = new PetsDictionary();
         this.cardLayout = cardLayout;
@@ -63,10 +69,16 @@ public class Save extends JPanel {
         loadPreviousStateButton.addActionListener(e -> showPopUp2("resources/pop_up.png", "Pet Name: "));
         add(loadPreviousStateButton, gbc);
 
-
+        // Add functionality to move back to the main menu when ESC is pressed
         PanelUtils.moveBack(this, "Menu", cardLayout, mainPanel);
     }
 
+    /**
+     * Creates a button with standardized styling and hover effects.
+     *
+     * @param text The text to be displayed on the button.
+     * @return A JButton with the specified text and styling.
+     */
     private JButton createButton(String text) {
         JButton button = new JButton(text);
         button.setFont(new Font("Arial", Font.BOLD, 24));
@@ -75,6 +87,7 @@ public class Save extends JPanel {
         button.setBackground(new Color(200, 200, 200));
         button.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2)); // Add white border
 
+        // Add hover effect
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -90,6 +103,11 @@ public class Save extends JPanel {
         return button;
     }
 
+    /**
+     * Paints the background image of the panel.
+     *
+     * @param g The Graphics object used to draw the background image.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -98,8 +116,12 @@ public class Save extends JPanel {
         }
     }
 
-  
-   
+    /**
+     * Shows a pop-up dialog for loading a previously saved game state.
+     *
+     * @param imagePath  The path to the image to be displayed in the pop-up.
+     * @param placeholder The placeholder text for the input field.
+     */
     private void showPopUp2(String imagePath, String placeholder) {
         PopUp popup = new PopUp(parentFrame, imagePath, placeholder, e -> {
             String input = e.getActionCommand();
@@ -108,17 +130,9 @@ public class Save extends JPanel {
             int type = pet.getPetType();
             GameManager gameManager;
 
-
             switch (pet.getPetType()) {
                 case 0:
-                    gameManager = new GameManager(result, type);
-                    GameManager.setInstance(gameManager);
-                    break;
                 case 1:
-                    gameManager = new GameManager(result, type);
-                    GameManager.setInstance(gameManager);
-
-                    break;
                 case 2:
                     gameManager = new GameManager(result, type);
                     GameManager.setInstance(gameManager);
@@ -127,11 +141,11 @@ public class Save extends JPanel {
                     System.err.println("Invalid pet type!");
                     return;
             }
+
             GameScreen gameScreen = new GameScreen(cardLayout, mainPanel);
             mainPanel.add(gameScreen, "Game");
             cardLayout.show(mainPanel, "Game");
         });
         popup.show();
     }
-
 }

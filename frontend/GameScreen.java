@@ -10,6 +10,10 @@ import java.io.IOException;
 import java.net.URL;
 import javax.swing.event.AncestorEvent;
 
+/**
+ * The GameScreen class represents the main screen where the game is played.
+ * It contains various controls and animations related to the pet's activities and health.
+ */
 public class GameScreen extends JPanel {
     private BufferedImage background;
     private GameManager gameManager;
@@ -36,13 +40,18 @@ public class GameScreen extends JPanel {
     private JLabel scoreLabel;
     private String score; // FOR PK
 
+    /**
+     * Constructs the GameScreen panel, initializing game elements and UI components.
+     *
+     * @param cardLayout The CardLayout used for navigating between different screens.
+     * @param mainPanel  The main panel containing all the different screens.
+     */
     public GameScreen(CardLayout cardLayout, JPanel mainPanel) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
         this.settings = Settings.getInstance();
         this.petType = GameManager.getInstance().getCurrentPet().getPetType();
         this.gameManager = GameManager.getInstance();
-
 
         // Load background image
         try {
@@ -87,12 +96,14 @@ public class GameScreen extends JPanel {
         });
     }
 
+    /**
+     * Initializes the start button and its properties.
+     */
     private void initializeStartButton() {
         startButton = new JButton();
         startButton.setFocusPainted(false);
         startButton.setContentAreaFilled(false);
         startButton.setBorderPainted(false);
-        startButton.setFocusPainted(false);
         startButton.setPreferredSize(new Dimension(468, 179));
         try {
             URL startButtonUrl = getClass().getResource("resources/start_button.png");
@@ -106,11 +117,7 @@ public class GameScreen extends JPanel {
             e.printStackTrace();
         }
 
-
         startButton.addActionListener(e -> {
-            // System.out.println("Start button clicked!");
-
-
             Music.getInstance().stop();
             Music.getInstance().play("resources/lofi.wav");
             Music.getInstance().setVolume(50 / 100f);
@@ -131,6 +138,12 @@ public class GameScreen extends JPanel {
         add(startButton);
     }
 
+    /**
+     * Initializes a countdown timer for the game.
+     *
+     * @param hours   The number of hours for the countdown.
+     * @param minutes The number of minutes for the countdown.
+     */
     private void initializeCountdown(int hours, int minutes) {
         countdownLabel = new JLabel(formatTime(hours, minutes, 0), SwingConstants.CENTER);
         countdownLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 48));
@@ -158,10 +171,21 @@ public class GameScreen extends JPanel {
         countdownTimer.start();
     }
 
+    /**
+     * Formats the given time into a string.
+     *
+     * @param hours   The number of hours.
+     * @param minutes The number of minutes.
+     * @param seconds The number of seconds.
+     * @return A formatted string representing the time.
+     */
     private String formatTime(int hours, int minutes, int seconds) {
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
+    /**
+     * Starts the fade-in animation for the game screen.
+     */
     private void startFadeIn() {
         fadeOpacity = 0.0f;
         if (fadeTimer != null && fadeTimer.isRunning()) {
@@ -179,6 +203,11 @@ public class GameScreen extends JPanel {
         fadeTimer.start();
     }
 
+    /**
+     * Initializes the pet sprite for animation.
+     *
+     * @param petType The type of pet to initialize.
+     */
     private void initializePetSprite(int petType) {
         String resourcePath;
         int frameWidth, frameHeight;
@@ -212,6 +241,14 @@ public class GameScreen extends JPanel {
         animationTimer.start();
     }
 
+    /**
+     * Loads the sprite sheet for pet animation.
+     *
+     * @param resourcePath The path to the sprite sheet resource.
+     * @param frameWidth   The width of each frame in the sprite sheet.
+     * @param frameHeight  The height of each frame in the sprite sheet.
+     * @return An array of BufferedImage frames.
+     */
     private BufferedImage[] loadSpriteSheet(String resourcePath, int frameWidth, int frameHeight) {
         try {
             URL spriteSheetURL = getClass().getResource(resourcePath);
@@ -234,6 +271,9 @@ public class GameScreen extends JPanel {
         return null;
     }
 
+    /**
+     * Initializes the status bars for pet health, sleep, hunger, and happiness.
+     */
     private void initializeStatusBars() {
         healthBar = new JProgressBar(0, 100);
         healthBar.setForeground(Color.RED);
@@ -254,6 +294,9 @@ public class GameScreen extends JPanel {
         updateStatusBars();
     }
 
+    /**
+     * Updates the values of the status bars based on the pet's current status.
+     */
     private void updateStatusBars() {
         healthBar.setValue(gameManager.getCurrentPet().getHealth());
         sleepBar.setValue(gameManager.getCurrentPet().getSleep());
@@ -261,6 +304,9 @@ public class GameScreen extends JPanel {
         happinessBar.setValue(gameManager.getCurrentPet().getHappiness());
     }
 
+    /**
+     * Initializes the inventory button and its properties.
+     */
     private void initializeInventoryButton() {
         inventoryButton = new JButton();
         inventoryButton.setFocusPainted(false);
@@ -291,6 +337,9 @@ public class GameScreen extends JPanel {
         add(inventoryButton);
     }
 
+    /**
+     * Initializes the sleep button and its properties.
+     */
     private void initializeSleepButton() {
         sleepButton = new JButton();
         sleepButton.setFocusPainted(false);
@@ -321,6 +370,9 @@ public class GameScreen extends JPanel {
         add(sleepButton);
     }
 
+    /**
+     * Initializes the vet button and its properties.
+     */
     private void initializeVetButton() {
         vetButton = new JButton();
         vetButton.setFocusPainted(false);
@@ -351,6 +403,9 @@ public class GameScreen extends JPanel {
         add(vetButton);
     }
 
+    /**
+     * Initializes the exercise button and its properties.
+     */
     private void initializeExerciseButton() {
         exerciseButton = new JButton();
         exerciseButton.setFocusPainted(false);
@@ -381,7 +436,12 @@ public class GameScreen extends JPanel {
         add(exerciseButton);
     }
 
-    private void initializeScoreLabel(String score){
+    /**
+     * Initializes the score label.
+     *
+     * @param score The score value to be displayed.
+     */
+    private void initializeScoreLabel(String score) {
         scoreLabel = new JLabel("Score: " + score);
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 32));
         scoreLabel.setForeground(Color.WHITE);
@@ -408,21 +468,20 @@ public class GameScreen extends JPanel {
             int x, y, scaledWidth, scaledHeight;
             switch (petType) {
                 case 0:
-                    // relative to background
-                    x = (int) (0.48 * size.width - 384 /2.0);
-                    y = (int) (0.88 * size.height - 635 /2.0);
+                    x = (int) (0.48 * size.width - 384 / 2.0);
+                    y = (int) (0.88 * size.height - 635 / 2.0);
                     scaledWidth = 384;
                     scaledHeight = 384;
                     break;
                 case 1:
-                    x = (int) (0.48 * size.width - 384 /2.0);
-                    y = (int) (0.88 * size.height - 635 /2.0);
+                    x = (int) (0.48 * size.width - 384 / 2.0);
+                    y = (int) (0.88 * size.height - 635 / 2.0);
                     scaledWidth = 384;
                     scaledHeight = 384;
                     break;
                 case 2:
-                    x = (int) (0.48 * size.width - 256 /2.0);
-                    y = (int) (0.82 * size.height - 256 /2.0);
+                    x = (int) (0.48 * size.width - 256 / 2.0);
+                    y = (int) (0.82 * size.height - 256 / 2.0);
                     scaledWidth = 256;
                     scaledHeight = 256;
                     break;
@@ -435,10 +494,10 @@ public class GameScreen extends JPanel {
         g2d.dispose();
     }
 
-    
-
-    // positions all the images for any screen 
-    private void updatePositions(){
+    /**
+     * Updates the positions of all components in the panel based on the current size.
+     */
+    private void updatePositions() {
         Dimension size = getSize();
 
         position(startButton, 0.47, 0.5, size, 450, 150);
@@ -451,12 +510,21 @@ public class GameScreen extends JPanel {
         position(hungerBar, 0.05, 0.93, size, 150, 20);
         position(happinessBar, 0.05, 0.96, size, 150, 20);
         position(scoreLabel, 0.065, 0.83, size, 200, 200);
-
     }
-    // x and y for based on background image
+
+    /**
+     * Positions a component based on relative x and y values, as well as the component's width and height.
+     *
+     * @param component The component to position.
+     * @param relativeX The relative x position (0.0 to 1.0) of the component.
+     * @param relativeY The relative y position (0.0 to 1.0) of the component.
+     * @param size      The size of the container in which the component is placed.
+     * @param width     The width of the component.
+     * @param height    The height of the component.
+     */
     private void position(JComponent component, double relativeX, double relativeY, Dimension size, int width, int height) {
-        int x = (int) (relativeX * size.width - width /2.0);
-        int y = (int) (relativeY * size.height - height /2.0);
+        int x = (int) (relativeX * size.width - width / 2.0);
+        int y = (int) (relativeY * size.height - height / 2.0);
         component.setBounds(x, y, width, height);
     }
 }

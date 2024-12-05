@@ -9,17 +9,28 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * The InventoryScreen class represents the inventory interface of the game.
+ * It allows the player to use food items or gift items on their pet.
+ * The panel is displayed as part of the main game interface.
+ */
 public class InventoryScreen extends JPanel {
     private GameManager gameManager; // Declare GameManager instance
 
+    /**
+     * Constructs a new InventoryScreen panel.
+     * 
+     * @param cardLayout The CardLayout used to switch between different panels.
+     * @param mainPanel The main panel containing all different screens of the application.
+     */
     public InventoryScreen(CardLayout cardLayout, JPanel mainPanel) {
         this.gameManager = GameManager.getInstance();
         setLayout(new GridBagLayout()); // Use GridBagLayout to center components
-        this.setBackground(new Color(139, 69, 19)); // set to brown
-    
+        this.setBackground(new Color(139, 69, 19)); // Set background to brown
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.CENTER;
-    
+
         // Row for Food Buttons
         gbc.gridy = 0;
         gbc.insets = new Insets(20, 20, 5, 20); // Add small padding between buttons and labels
@@ -30,7 +41,7 @@ public class InventoryScreen extends JPanel {
         initializeSnackButton(gbc);
         gbc.gridx++;
         initializeMealButton(gbc);
-        
+
         gbc.gridx = 0;
         gbc.gridy++;
 
@@ -39,13 +50,13 @@ public class InventoryScreen extends JPanel {
         // Add extra space between Food and Gift buttons by creating an empty row
         gbc.gridy = 2;
         gbc.insets = new Insets(30, 20, 5, 20); // Increase top padding
-    
+
         JPanel emptyPanel = new JPanel();
         add(emptyPanel, gbc);
-    
+
         gbc.gridy = 3; 
         gbc.gridx = 0;
-    
+
         initializePlushyButton(gbc);
         gbc.gridx++;
         initializeBallButton(gbc);
@@ -57,10 +68,16 @@ public class InventoryScreen extends JPanel {
         gbc.gridx = 0;
 
         initializeGiftLabels(gbc);
-    
+
         PanelUtils.moveBack(this, "Game", cardLayout, mainPanel);
     }
 
+    /**
+     * Initializes the Treat button and adds it to the inventory screen.
+     * The Treat button allows the player to feed a Treat to their pet.
+     * 
+     * @param gbc The GridBagConstraints used for component placement.
+     */
     private void initializeTreatButton(GridBagConstraints gbc) {
         JButton treatButton = createImageButton("resources/treat.png");
         treatButton.addActionListener(e -> {
@@ -70,6 +87,12 @@ public class InventoryScreen extends JPanel {
         add(treatButton, gbc);
     }
 
+    /**
+     * Initializes the Snack button and adds it to the inventory screen.
+     * The Snack button allows the player to feed a Snack to their pet.
+     * 
+     * @param gbc The GridBagConstraints used for component placement.
+     */
     private void initializeSnackButton(GridBagConstraints gbc) {
         JButton snackButton = createImageButton("resources/snack.png");
         snackButton.addActionListener(e -> {
@@ -79,6 +102,12 @@ public class InventoryScreen extends JPanel {
         add(snackButton, gbc);
     }
 
+    /**
+     * Initializes the Meal button and adds it to the inventory screen.
+     * The Meal button allows the player to feed a Meal to their pet.
+     * 
+     * @param gbc The GridBagConstraints used for component placement.
+     */
     private void initializeMealButton(GridBagConstraints gbc) {
         JButton mealButton = createImageButton("resources/meal.png");
         mealButton.addActionListener(e -> {
@@ -88,6 +117,12 @@ public class InventoryScreen extends JPanel {
         add(mealButton, gbc);
     }
 
+    /**
+     * Initializes the Plushy button and adds it to the inventory screen.
+     * The Plushy button allows the player to give a Plushy gift to their pet.
+     * 
+     * @param gbc The GridBagConstraints used for component placement.
+     */
     private void initializePlushyButton(GridBagConstraints gbc) {
         JButton plushyButton = createImageButton("resources/plushy.png");
         plushyButton.addActionListener(e -> {
@@ -97,6 +132,12 @@ public class InventoryScreen extends JPanel {
         add(plushyButton, gbc);
     }
 
+    /**
+     * Initializes the Ball button and adds it to the inventory screen.
+     * The Ball button allows the player to give a Ball gift to their pet.
+     * 
+     * @param gbc The GridBagConstraints used for component placement.
+     */
     private void initializeBallButton(GridBagConstraints gbc) {
         JButton ballButton = createImageButton("resources/ball.png");
         ballButton.addActionListener(e -> {
@@ -106,6 +147,12 @@ public class InventoryScreen extends JPanel {
         add(ballButton, gbc);
     }
 
+    /**
+     * Initializes the Bell button and adds it to the inventory screen.
+     * The Bell button allows the player to give a Bell gift to their pet.
+     * 
+     * @param gbc The GridBagConstraints used for component placement.
+     */
     private void initializeBellButton(GridBagConstraints gbc) {
         JButton bellButton = createImageButton("resources/bell.png");
         bellButton.addActionListener(e -> {
@@ -115,6 +162,11 @@ public class InventoryScreen extends JPanel {
         add(bellButton, gbc);
     }
 
+    /**
+     * Initializes labels for the food items (Treat, Snack, Meal).
+     * 
+     * @param gbc The GridBagConstraints used for component placement.
+     */
     private void initializeFoodLabels(GridBagConstraints gbc) {
         JLabel treatLabel = createLabel("Treat");
         add(treatLabel, gbc);
@@ -129,6 +181,11 @@ public class InventoryScreen extends JPanel {
         gbc.gridx++;
     }
 
+    /**
+     * Initializes labels for the gift items (Plushy, Ball, Bell).
+     * 
+     * @param gbc The GridBagConstraints used for component placement.
+     */
     private void initializeGiftLabels(GridBagConstraints gbc) {
         JLabel plushyLabel = createLabel("Plushy");
         add(plushyLabel, gbc);
@@ -143,6 +200,12 @@ public class InventoryScreen extends JPanel {
         gbc.gridx++;
     }
 
+    /**
+     * Creates a label with the specified text.
+     * 
+     * @param text The text to be displayed on the label.
+     * @return A JLabel with the specified text.
+     */
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(new Font("Arial", Font.BOLD, 20));
@@ -150,6 +213,13 @@ public class InventoryScreen extends JPanel {
         return label;
     }
 
+    /**
+     * Creates a JButton with an image icon from the specified path.
+     * The button is set to be transparent and a specified size.
+     * 
+     * @param imagePath The path to the image resource.
+     * @return A JButton with the specified image.
+     */
     private JButton createImageButton(String imagePath) {
         JButton button = new JButton();
         button.setPreferredSize(new Dimension(200, 200)); // Set button size to make it large

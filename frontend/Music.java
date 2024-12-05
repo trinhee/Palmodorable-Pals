@@ -4,11 +4,18 @@ import javax.sound.sampled.*;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * The Music class provides methods to play, stop, fade out, and adjust the volume of audio files.
+ * It follows the singleton design pattern to ensure only one instance of the music player exists.
+ */
 public class Music {
     private static final Music instance = new Music();
     private Clip clip;
     private FloatControl volumeControl;
 
+    /**
+     * Private constructor to enforce the singleton pattern.
+     */
     private Music() {
         // Private constructor to enforce singleton pattern
     }
@@ -24,6 +31,7 @@ public class Music {
 
     /**
      * Plays a music file from the specified resource path.
+     * If music is already playing, it stops the current music before starting the new one.
      *
      * @param resourcePath Path to the audio file in the resources folder.
      */
@@ -61,7 +69,8 @@ public class Music {
     }
 
     /**
-     * Fades out the music over a specified duration.
+     * Fades out the currently playing music over a specified duration.
+     * If no music is playing, it simply returns.
      *
      * @param duration The fade-out duration in milliseconds.
      */
@@ -97,9 +106,10 @@ public class Music {
     }
 
     /**
-     * Adjusts the volume to a specific level.
+     * Adjusts the volume of the currently playing music to a specific level.
      *
      * @param volume A float value between 0.0 (mute) and 1.0 (full volume).
+     *               The value will be scaled to fit between the system's minimum and maximum volume.
      */
     public void setVolume(float volume) {
         if (volumeControl == null) {

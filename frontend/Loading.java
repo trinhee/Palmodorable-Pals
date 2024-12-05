@@ -1,4 +1,5 @@
 package frontend;
+
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
@@ -7,6 +8,10 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * The Loading class represents a loading screen with an animated cat sprite and a loading progress bar.
+ * It uses Swing components to create the animation and the loading effect.
+ */
 public class Loading extends JPanel {
     private BufferedImage spriteSheet;
     private BufferedImage[] frames;
@@ -19,6 +24,10 @@ public class Loading extends JPanel {
     private Timer loadingTimer;
     private Music music;
 
+    /**
+     * Constructs the Loading screen panel.
+     * This panel includes an animated cat sprite and a loading progress bar.
+     */
     public Loading() {
         setBackground(Color.DARK_GRAY);
 
@@ -45,25 +54,11 @@ public class Loading extends JPanel {
         });
         loadingTimer.start();
     }
-    /*
-    private void playMenuMusic() {
-        try{
-            URL soundURL = getClass().getResource("/Happy.wav");
-            if (soundURL == null) {
-                throw new RuntimeException("Music not Found");
-            }
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundURL);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        } catch (UnsupportedAudioFileException| IOException | LineUnavailableException e){
-            e.printStackTrace();
-        }
-    }
 
+    /**
+     * Loads the sprite sheet containing the cat animation frames.
+     * Extracts individual frames from the sprite sheet.
      */
-
     private void loadSpriteSheet() {
         try {
             spriteSheet = ImageIO.read(getClass().getResourceAsStream("resources/cat_loading.png"));
@@ -78,11 +73,16 @@ public class Loading extends JPanel {
         }
     }
 
+    /**
+     * Paints the components of the loading screen, including the animation and the loading bar.
+     *
+     * @param g The Graphics object used for painting.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // System.out.println("painting loading");
-        // Draw black background
+        
+        // Draw dark gray background
         g.setColor(Color.DARK_GRAY);
         g.fillRect(0, 0, getWidth(), getHeight());
 
@@ -113,11 +113,21 @@ public class Loading extends JPanel {
         }
     }
 
+    /**
+     * Checks if the loading is complete.
+     *
+     * @return true if loading progress is 100%, false otherwise.
+     */
     public boolean isLoadingComplete() {
         return loadingProgress >= 100;
     }
 
-    public Music getMusicInstance(){
+    /**
+     * Gets the Music instance associated with the loading screen.
+     *
+     * @return The Music instance.
+     */
+    public Music getMusicInstance() {
         return music;
     }
 }
