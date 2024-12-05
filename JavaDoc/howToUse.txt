@@ -1,3 +1,9 @@
 How to use:
 
+Unzip apidocs.zip
+
+Enter unzipped apidocs
+
 Click on index.html
+
+Website will open up
