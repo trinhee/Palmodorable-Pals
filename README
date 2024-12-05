@@ -1,10 +1,39 @@
 # Project Title
+Pomodorable Pals
 
 ## Description
+Pomodorable Pals is a study companion game designed to make learning fun and engaging. Players adopt and care for adorable virtual pets by studying in timed sessions. As players meet their study goals, they earn rewards to keep their pets happy, healthy, and thriving.
 
 ## Flowchart
 [Flowchart of the Project](assets/README_flowchart.png)
 
 ## Installation
+Windows 11:
+	Method 1:
+	-Enter the group20-main directory
+
+	-Double click on run-app.bat
+
+	or
+
+	Method 2:
+	-Enter the group20-main directory via the terminal
+
+	-Type "./run-app.bat"
+
+Then the game should compile and start.
 
 ## Usage
+1. Start game.
+2. View tutorial page.
+3. Set Study goals in parental controls.
+4. Select a new pet or load an existing pet.
+5. Start a study session.
+6. Recieve rewards for completing study sessions.
+7. Use your rewards to ineract with your pet and increase its vitals.
+8. Monitor your pets stats.
+9. Explore settings.
+
+##Parental Controls
+Password: study hard
+

@@ -1,6 +1,7 @@
 package frontend;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicSliderUI;
 import java.awt.*;
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -52,37 +53,27 @@ public class Parent extends JPanel {
                 }
             }
         };
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setLayout(new GridBagLayout());
         panel.setOpaque(false);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = GridBagConstraints.RELATIVE;
+        gbc.insets = new Insets(10, 0, 10, 0);
+        gbc.anchor = GridBagConstraints.CENTER;
 
         // Title
         JLabel title = new JLabel("Parent Controls");
-        title.setFont(new Font("Arial", Font.BOLD, 32));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(Box.createVerticalStrut(50)); // Add vertical spacing
-        panel.add(title);
+        title.setFont(new Font("Arial", Font.BOLD, 48));
+        title.setForeground(Color.BLACK);
+        title.setHorizontalAlignment(JLabel.CENTER);
+        panel.add(title, gbc);
 
         // Buttons
         JButton revivePetButton = createButton("Revive Pet");
-        JButton viewStatsButton = createButton("View Stats");
-        JButton setBreakTimeButton = createButton("Set Break Time");
-        JButton setStudyTimeButton = createButton("Set Study Time");
-        JButton updateStatsButton = createButton("Update Stats To Next Day");
-
-        // Slider for music volume
-        JLabel volumeLabel = new JLabel("Music Volume:");
-        volumeLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        volumeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JSlider volumeSlider = new JSlider(0, 100, 50); // Min 0, Max 100, Default 50
-        volumeSlider.setMaximumSize(new Dimension(300, 50));
-        volumeSlider.addChangeListener(e -> {
-            int volume = volumeSlider.getValue();
-            System.out.println("Music Volume set to: " + volume);
-            Music.getInstance().setVolume(volume / 100f); // Assuming `setVolume(float)` in Music class
-        });
-
-        // Button actions
         revivePetButton.addActionListener(e -> System.out.println("Revive Pet button clicked"));
+
+        JButton viewStatsButton = createButton("View Stats");
         viewStatsButton.addActionListener(e -> {
             String stats = "Your Current Stats:\n"
                     + "Study Time: " + Settings.getInstance().getStudyTime() + " minutes\n"
@@ -94,8 +85,14 @@ public class Parent extends JPanel {
                     "View Stats",
                     JOptionPane.INFORMATION_MESSAGE);
         });
+
+        JButton setBreakTimeButton = createButton("Set Break Time");
         setBreakTimeButton.addActionListener(e -> showPopUp("resources/pop_up.png", "", "break"));
+
+        JButton setStudyTimeButton = createButton("Set Study Time");
         setStudyTimeButton.addActionListener(e -> showPopUp("resources/pop_up.png", "", "study"));
+
+        JButton updateStatsButton = createButton("Update Stats To Next Day");
         updateStatsButton.addActionListener(e -> {
             System.out.println("Updating stats to the next day...");
             JOptionPane.showMessageDialog(parentFrame,
@@ -104,20 +101,47 @@ public class Parent extends JPanel {
                     JOptionPane.INFORMATION_MESSAGE);
         });
 
-        // Add components to the panel
-        panel.add(Box.createVerticalStrut(20)); // Add spacing between title and buttons
-        panel.add(revivePetButton);
-        panel.add(Box.createVerticalStrut(10)); // Spacing between buttons
-        panel.add(viewStatsButton);
-        panel.add(Box.createVerticalStrut(10)); // Spacing between buttons
-        panel.add(setBreakTimeButton);
-        panel.add(Box.createVerticalStrut(10)); // Spacing between buttons
-        panel.add(setStudyTimeButton);
-        panel.add(Box.createVerticalStrut(10)); // Spacing between buttons
-        panel.add(updateStatsButton);
-        panel.add(Box.createVerticalStrut(20));
-        panel.add(volumeLabel);
-        panel.add(volumeSlider);
+        // Add buttons to the panel
+        panel.add(revivePetButton, gbc);
+        panel.add(viewStatsButton, gbc);
+        panel.add(setBreakTimeButton, gbc);
+        panel.add(setStudyTimeButton, gbc);
+        panel.add(updateStatsButton, gbc);
+
+        // Slider for music volume
+        JLabel volumeLabel = new JLabel("Music Volume:");
+        volumeLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        volumeLabel.setForeground(Color.BLACK);
+        volumeLabel.setHorizontalAlignment(JLabel.CENTER);
+        panel.add(volumeLabel, gbc);
+
+        JSlider volumeSlider = new JSlider(0, 100, 50); // Min 0, Max 100, Default 50
+        volumeSlider.setMaximumSize(new Dimension(300, 50));
+        volumeSlider.setPreferredSize(new Dimension(300, 50));
+        volumeSlider.setUI(new BasicSliderUI(volumeSlider) {
+            @Override
+            public void paintThumb(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setColor(new Color(92, 64, 51)); // dark brown
+                g2d.fillOval(thumbRect.x, thumbRect.y, thumbRect.width, thumbRect.height);
+            }
+
+            @Override
+            public void paintTrack(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setColor(new Color(196, 164, 132)); // light brown
+                g2d.fillRoundRect(trackRect.x, trackRect.y + trackRect.height / 3, trackRect.width, trackRect.height / 3, 5, 5);
+            }
+        });
+        volumeSlider.setOpaque(false);
+        volumeSlider.addChangeListener(e -> {
+            int volume = volumeSlider.getValue();
+            Music.getInstance().setVolume(volume / 100f); // Assuming `setVolume(float)` in Music class
+        });
+
+        panel.add(volumeSlider, gbc);
 
         return panel;
     }
@@ -125,9 +149,25 @@ public class Parent extends JPanel {
     private JButton createButton(String text) {
         JButton button = new JButton(text);
         button.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the button
-        button.setFont(new Font("Arial", Font.PLAIN, 18));
+        button.setFont(new Font("Arial", Font.BOLD, 18));
         button.setFocusPainted(false);
-        button.setPreferredSize(new Dimension(200, 40)); // Set button size
+        button.setBackground(new Color(200, 200, 200)); // Light gray background to contrast with blue
+        button.setForeground(Color.BLACK); // Black text for readability
+        button.setPreferredSize(new Dimension(300, 50)); // Set uniform button size
+        button.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Add hover effect
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(180, 180, 180)); // Darker gray on hover
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(200, 200, 200)); // Original color
+            }
+        });
+
         return button;
     }
 

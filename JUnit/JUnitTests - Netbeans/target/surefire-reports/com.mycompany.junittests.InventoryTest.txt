@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.mycompany.junittests.InventoryTest
+-------------------------------------------------------------------------------
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.076 sec - in com.mycompany.junittests.InventoryTest
