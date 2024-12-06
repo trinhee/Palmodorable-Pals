@@ -1,3 +1,4 @@
+name,type,health,sleep,fullness,happiness,sleepEffectiveness,playEffectiveness,inventory
 Buddy,0,0,100,100,90,50,10,10,"Treat: 1, Meal: 1, Bell: 1"
 Fluffy,2,100,100,0,50,0,20,10,"Treat: 1, Meal: 1, Bell: 1"
 Max,1,50,100,100,100,100,15,10,"Treat: 1, Meal: 1, Bell: 1"
