@@ -440,7 +440,6 @@ public class GameScreen extends JPanel {
         add(exerciseButton);
     }
 
-<<<<<<< HEAD
     private static String intScoreToString(int score) {
         if (score < 10) {
             return "F";
@@ -457,13 +456,11 @@ public class GameScreen extends JPanel {
         }
     }
 
-=======
     /**
      * Initializes the score label.
      *
      * @param score The score value to be displayed.
      */
->>>>>>> e81dc07f1db4288377c7ae8ccf94838d2b668a66
     private void initializeScoreLabel(String score) {
         scoreLabel = new JLabel("Score: " + score);
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 32));
